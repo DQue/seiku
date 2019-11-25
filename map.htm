@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<title>マップ表示テスト</title>
+
+<script>
+function w(a){document.write("<"+a+">")};
+function o(a){w('object type="image/svg+xml" data="./maps/map'+a+'.svg" width="400" height="250"'); w("/object")};
+w("table");
+for(i=1; i<=5; i++){
+	w("tr");
+	for(j=1; j<=5; j++){
+		w("td");
+		if( j<5 || i!=3 && i!=4 ) o(i+"-"+j);
+		w("/td");
+	}
+	w("/tr");
+}
+w("/table");
+</script>
+
+</html>

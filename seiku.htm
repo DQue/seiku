@@ -1,0 +1,1302 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<!--<link rel="shortcut icon" href="../../favicon.ico">-->
+	<title>制空争いシミュレータカッコカリ</title>
+	<link rel="stylesheet" href="seiku.css?7">
+	<link rel="stylesheet" href="map.css">
+	<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-48162218-1', '81.la');ga('send', 'pageview');</script>
+	
+	<script src="data.js?9"></script>
+	<script src="efleetdata.js?5"></script>
+	<script src="mapdata.js?5"></script>
+	<script src="enemydata.js?4"></script>
+	<script src="seiku_fes.js?6"></script>
+	<script src="data_migration.js?1"></script>
+	
+	<script src="data_version.js"></script>
+	<script src="seiku.js?7"></script>
+	<script src="euc.js?1"></script>
+	<script src="map.js?3"></script>
+	<script src="toggle.js?1"></script>
+	<script src="settings.js?1"></script>
+	<script src="wiki.js?1"></script>
+
+	<meta name="keywords" content="艦隊これくしょん,艦これ,空母,制空権,制空値,制空">
+	<meta name="description" content="「艦これ」の制空値を計算し、制空権争いの結果を予測できるWebアプリです。イベント海域にも対応。">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="制空争いシミュレータカッコカリ">
+	<meta name="twitter:description" content="道中の艦載機減少を考慮した制空計算ができます。">
+	<meta name="twitter:image" content="http://81.81.la/u/kancolle/seiku_card_19071.png">
+</head>
+
+<body data-fes="">
+	<header>
+		<div class="kata">
+			<p class="tweet"><a href="https://twitter.com/share" class="twitter-share-button"
+					data-text="制空争いシミュレータカッコカリ #艦これ" data-lang="ja">Tweet</a></p>
+			<div id="version_check"></div>
+		</div>
+		<h1>
+			制空争いシミュレータ<span class="カッコカリ">カッコカリ</span>
+			<!--
+			<span class="fes_mode">
+			<a href="https://wikiwiki.jp/kancolle/期間限定ドロップイベント#Sanma2019" target="_blank"><img src="./imgs/sanma_header.png" id="sanma"></a>
+			秋刀魚＆鰯祭りmode
+			<a href="https://wikiwiki.jp/kancolle/期間限定ドロップイベント#Sanma2019" target="_blank"><img src="./imgs/iwashi_header.png" id="iwashi"></a></span>
+			-->
+		</h1>
+	</header>
+
+
+	<section id="エラー" class="hide">
+		<p>処理中にエラーが発生しました。キャッシュをクリアしてページの更新を行ってください。
+			キャッシュクリア後にエラーが発生する場合、<button onclick="二_ローカルストレージデータをリセットする()">このボタン</button>をクリックしてデータを初期化してください。
+			それでもダメな場合、ブラウザ側の操作でローカルストレージを初期化してください。
+			繰り返しエラーが発生する場合、エラーが再現する操作方法などの情報と共に製作者に連絡を取ることで改善される場合があります。</p>
+		<p>エラー内容：<textarea id="エラー文"></textarea></p>
+	</section>
+
+
+	<section>
+		<h2 class="opener closed howtouse" id="sec_使い方">使いかた</h2>
+		<div class="inner hide howtouse_div">
+			<h3 class="opener">本隊の計算方法</h3>
+			<div class="inner">
+				<ol>
+					<li>艦隊の情報をセットします
+						<ol>
+							<li>「艦隊」内の表の「<em>艦娘を追加</em>」ボタンを押します</li>
+							<li><em>艦種</em>と<em>艦娘</em>(または基地航空隊)を選択します</li>
+							<li>「<em>装備</em>」のマスをクリックして装備を選択します</li>
+							<li>艦載機熟練度と装備改修を適用する場合は、「<em>熟練度</em>」「<em>改修</em>」のマスをクリック・右クリックして変更します</li>
+						</ol>
+					</li>
+					<li>マップ情報をセットします
+						<ol>
+							<li>「マップ」内の横並びボタンから<em>出撃方面</em>を選択し、下に出現するボタンから<em>海域</em>を選択します</li>
+							<li>ボスマスなどの<em>目的地</em>をクリックします</li>
+							<li>通る<em>ルート</em>をクリックします</li>
+							<li><em>敵艦隊</em>の一覧から1つの編成を選んでクリックします</li>
+						</ol>
+					</li>
+					<li>「結果」を見ます
+						<ul>
+							<li><em>右下</em>のマスが目的地の制空争い結果です</li>
+							<li>道中で艦載機が撃墜された分だけ制空値が減少し、目的地での制空権が予測されます</li>
+							<li>表の数字は撃墜分を差し引いた搭載数を表しています</li>
+						</ul>
+					</li>
+				</ol>
+			</div>
+			
+			<h3 class="opener closed">防空の計算方法</h3>
+			<div class="inner hide">
+				<ol>
+					<li>基地航空隊の情報をセットします
+						<ol>
+							<li>「艦隊」内の表の「<em>艦娘を追加</em>」ボタンを押します</li>
+							<li>一番下の<em>基地航空隊</em>を選択し、<em>防空</em>を選択します</li>
+							<li>「<em>装備</em>」のマスをクリックして装備を選択します</li>
+							<li>艦載機熟練度と装備改修を適用する場合は、「<em>熟練度</em>」「<em>改修</em>」のマスをクリック・右クリックして変更します</li>
+							<li>表の下部の<em>基地航空隊(防空)の合計制空値</em>のうち、上に表示されている数値が防空時の制空値、下に表示されている数値がロケット戦闘機の補正を加えた数値です</li>
+							<li>目標の数値が分からない場合、以下の手順で確認できます</li>
+						</ol>
+					</li>
+					<li>マップ情報をセットします
+						<ul>
+							<li>「マップ」内の横並びボタンから<em>出撃方面</em>を選択し、下に出現するボタンから<em>海域</em>を選択します</li>
+						</ul>
+					</li>
+					<li>「結果」を見ます
+						<ul>
+							<li><em>空襲に対する防空結果</em>という表が表示され、制空争い結果が表示されます</li>
+						</ul>
+					</li>
+				</ol>
+			</div>
+
+			<h3 class="opener closed" id="できるできない">できること・できないこと</h3>
+			<ul class="inner hide">
+				<li>できること
+					<ul>
+						<li>道中での艦載機被撃墜を考慮して制空値を計算できます</li>
+						<li>「道中で戦闘機を落とされても目的地で航空優勢を取りたい」といった需要にある程度対応できます</li>
+						<li>7隻以上の編成や同一艦娘の複数編成に対応できます</li>
+						<li>装備スロットを5つ持つ艦娘に対応しています</li>
+						<li>艦娘の搭載数や海域の敵編成を覚えていなくても使えます</li>
+						<li>艦載機熟練度・装備改修に対応しています</li>
+						<li>編成の記録・読込ができます</li>
+						<li>基地航空隊の出撃時・防空時の制空値を計算できます</li>
+					</ul>
+				</li>
+
+				<li>できないこと
+					<ul>
+						<li>基地航空隊による敵機撃墜後の敵制空値を計算することはできません</li>
+						<li>索敵値を計算することはできません</li>
+						<li>敵の対空砲火を考慮して計算することは（自動では）できません。搭載数の初期値を手動で変更することである程度は対応できます</li>
+						<li>艦これと連動してデータを読み取ったりリアルタイム表示することはできません。手動での入力が必要です</li>
+						<li>保存したデータをURL化して共有することはできません</li>
+					</ul>
+				</li>
+			</ul>
+
+			<h3 class="opener closed" id="補足">補足</h3>
+			<div class="inner hide">
+				<ul>
+					<li>▲結果 の表において、目的地の敵艦隊は選択したものが使用されます。道中の敵艦隊は出現する敵艦隊のうち最高制空値のものが使用されます</li>
+					<li>海域名の上に情報収集中と書かれている場合は情報（マップ・敵編成・敵制空値）の追加が遅れている可能性があります</li>
+					<li>本来、敵制空値が0の状況で航空戦が発生した場合は味方の制空値が0でも制空権確保となります。また、索敵失敗などの要因で航空戦が発生しなかった場合は互いの制空値に関わらず制空権は状態となり、一方で航空機の被撃墜は発生しません。そのような細かい挙動をこのシミュレータでは正確に再現していません
+					</li>
+					<li>深海棲艦の制空値が未確定の場合、制空値に「?」が付きます。甲作戦の敵はそれっぽい値が入っていることが多く、乙・丙・丁作戦の敵は甲作戦と同じ値が入っているか0になっていることが多いです</li>
+					<li>基地航空隊はスロット<del>[12, 12, 12, 12]</del><ins>[18, 18, 18, 18]</ins>の艦娘扱いで実装しています。「艦娘を追加」から選択してください
+					</li>
+					<li>艦娘に偵察機や飛行艇を装備できないのは今のところ仕様です（制空争いに関わらないため）</li>
+					<li>基地航空隊が行う航空戦では偵察機も制空争いに加わります。味方の偵察機は基地航空隊に装備可能なので通常の操作で計算可能ですが、敵の分は▼深海棲艦単体を追加 から別途追加する必要があります
+					</li>
+					<li>▲結果 のボーキ消費量は制空争い分のみの期待値であり、多くの場合は実際のボーキ消費量と一致しません</li>
+					<li>データはブラウザのローカルストレージに保存されます。保存を拒否した場合、別の端末やブラウザを使用した場合、ブラウザのデータを削除した場合などはデータの引き継ぎができません</li>
+					<li>▲編成 の表内に表示される攻撃力は、通常艦隊・本隊・単縦陣・同航戦・無損傷・砲撃戦・対水上時のキャップ前攻撃力です。
+					    装備ボーナスによる火力上昇は今のところ考慮されません。「艦爆」は爆装10、「艦攻」は雷装13として計算します。
+					    偵察機等の火力は考慮されません。</li>
+				</ul>
+			</div>
+
+			<h3 class="opener closed" id="tips">TIPS</h3>
+			<div class="inner hide">
+				<ul>
+					<li>装備はドラッグで移動可能です。別の装備欄にドロップすると交換、×ボタンにドロップするとはずします</li>
+					<li>艦娘もドラッグで移動可能です。一番左のマスがドラッグ可能です。別の艦娘のマスにドロップすると交換、×ボタンにドロップするとはずします</li>
+					<li>自動保存されたデータを消去したい場合は<button
+							onclick="二_ローカルストレージデータをリセットする()">このボタン</button>をクリックしてください。ページ下部の▼その他 内にもあります</li>
+					<li>艦娘追加時に表示される艦種をクリックすると、クリックした時点の艦種が常に表示されるようになります</li>
+					<li>各種表の<span class="clickable box">クリックできそうなセル</span>をクリックすると数値を変更できます</li>
+					<li>個別の深海棲艦の制空値を調べたい時は ▼敵艦隊詳細 をクリックしてください</li>
+					<li>編成展開を行うと直前の編成が_autosaveという名前で自動記録されます</li>
+				</ul>
+			</div>
+
+			<h3 class="opener closed" id="マップ凡例">マップ凡例</h3>
+			<div class="inner hide">
+				<div id="凡例親">
+				</div>
+				<ol id="凡例解説">
+					<li>出撃</li>
+					<li>戦闘</li>
+					<li>夜戦</li>
+					<li>払暁戦<span class="kome" data-help="夜戦を行ったあと昼戦に突入する戦闘">[?]</span></li>
+					<li>空襲戦<span class="kome" data-help="敵から空襲を受ける戦闘">[?]</span></li>
+					<li>航空戦<span class="kome" data-help="敵の機動部隊と航空戦を2度行う戦闘">[?]</span></li>
+					<li>航空隊基地<span class="kome" data-help="基地航空隊の格納庫・滑走路。敵の空襲に対して防空を行う">[?]</span></li>
+					<li>気のせい・能動分岐・泊地修理</li>
+					<li>うずしお</li>
+					<li>資源・航空偵察</li>
+					<li>揚陸地点<span class="kome" data-help="輸送物資の揚陸場所">[?]</span></li>
+					<li>ボス</li>
+					<li>ボス(払暁戦)<span class="kome" data-help="夜戦を行ったあと昼戦に突入する戦闘">[?]</span></li>
+					<li>帰投地点</li>
+					<li>航路</li>
+					<li>不明<span class="kome" data-help="データが得られていないマス">[?]</span></li>
+					<li>敵レーダー射撃</li>
+				</ol>
+			</div>
+		</div>
+	</section>
+
+
+	<section>
+		<h2 class="opener" id="sec_艦隊">艦隊</h2>
+		<div class="inner">
+			<div id="艦娘一覧">
+				<div id="自艦隊親">
+					<table id="自艦隊">
+						<thead>
+							<tr>
+								<th colspan="2">艦娘
+									<span id="remove_kanmusu" data-help="艦娘をここにドラッグ＆ドロップするとはずします。"
+										class="popup_help btn_in_table ポップアップ起動ボタン"><img src="./imgs/remove.png"></span>
+								</th>
+								<th>搭載数</th>
+								<th>装備
+									<span id="remove_equip" data-help="装備をここにドラッグ＆ドロップするとはずします。"
+										class="popup_help  btn_in_table ポップアップ起動ボタン"><img
+											src="./imgs/remove.png"></span>
+									<span id="search_equip"
+										data-help="装備をここにドラッグ＆ドロップすると、「艦隊これくしょん -艦これ- 攻略Wiki」の装備ページが開きます。正式名称とWikiの名称が異なっている装備の一部は今のところ非対応。"
+										class="popup_help  btn_in_table ポップアップ起動ボタン"><img
+											src="./imgs/search.png"></span>
+									<span id="open_equip_list"
+										data-help="このボタンをクリックで装備のリストを開きます。リストから装備欄にドラッグアンドドロップで装備をセットできます。"
+										class="ポップアップ起動ボタン  btn_in_table"><img src="./imgs/equip_list.png"></span>
+								</th>
+								<th>熟練度</th>
+								<th>改修</th>
+								<th colspan="2">制空値</th>
+								<th>その他</th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr>
+								<th colspan="6">艦娘の合計制空値</th>
+								<td colspan="2" id="艦娘合計制空値" class="num">0</td>
+								<td>-</td>
+							</tr>
+							<tr>
+								<th colspan="6">基地航空隊(防空)の合計制空値</th>
+								<td colspan="2" class="num"><span id="基地航空隊合計制空値" >0</span><br><span id="基地航空隊ロケット戦闘機込制空値"></span></td>
+								<td>-</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+				<div id="編成ボタン親">
+					<div class="編成ボタン clickable" id="編成記録ボタン">編成記録</div>
+					<div class="編成ボタン clickable" id="編成展開ボタン">編成展開</div>
+				</div>
+				<div id="編成展開親">
+					<table id="編成展開テーブル">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>艦隊情報</th>
+								<th>編成</th>
+								<th id="編成展開展記">展開</th>
+								<th>削除</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+					<div class="clickable" id="編成戻るボタン">艦隊編成画面に戻る</div>
+				</div>
+				<h3 class="opener closed" id="自艦隊ツール">ツール</h3>
+				<div id="自艦隊ツール親" class="inner hide">
+					<button id="埋める" class="ポップアップ起動ボタン">全員の装備を変更</button><br>
+					<!--				<button id="対空値順に艦戦を移動">高対空の艦戦を搭載数の大きいスロットへ移動する</button><br>-->
+					<button id="全スロットの熟練度を最大にする">全スロットの熟練度を&gt;&gt;にする</button>
+					<button id="全スロットの熟練度をリセットする">全スロットの熟練度を0にする</button>
+					<button id="全スロットの熟練度を調整する">戦闘機の熟練度を&gt;&gt;に、それ以外を0にする</button><br>
+					<button id="全スロットの改修値を最大にする">全スロットの改修値を★maxにする</button>
+					<button id="全スロットの改修値をリセットする">全スロットの改修値を0にする</button><br>
+					<button id="艦娘全員はずす" class="ポップアップ起動ボタン">艦娘全員はずす</button><br>
+					<!--				<button id="自艦隊ツール_DnDボタン">ドラッグ＆ドロップで設定</button><br>
+					<hr>
+										<span id="wikiで装備を検索">装備を検索(β)<span class="kome"
+							data-help="装備をここにドラッグ＆ドロップすると攻略Wikiの装備ページが開きます。正式名称とWikiの名称が異なっている装備は今のところ非対応。今のところ艦娘欄からのドラッグにのみ対応">[?]</span></span><br>
+-->
+					<h4 class="opener closed" id="データ入出力">データインポート・エクスポート(β)</h4>
+					<div class="inner hide">
+						書き出したデータを保存しておくとあとから読み込みが可能（かもしれない）　JSON形式　他サイトとの互換性はなし　<br>
+						エラーチェック等ほぼなしにつき取扱い注意　不適切なデータを読み込ませるとブラウザ本体の設定で全データリセットが必要になる可能性があります<br>
+						<strong>分からない人は触らないこと</strong><br>
+						<input type="button" id="データ入出力_出ボタン" value="艦隊データを↓に書き出し">
+						<input type="button" id="データ入出力_入ボタン" value="艦隊データを↓から読み込み"><br>
+						<textarea style="width:80%" rows="5" id="データ入出力textarea" onclick="this.select()"></textarea><br>
+
+						<input type="button" id="記録編成データ入出力_出ボタン" value="記録した編成データを↓に書き出し">
+						<input type="button" id="記録編成データ入出力_入ボタン" value="記録した編成データを↓から読み込み"><br>
+						<textarea style="width:80%" rows="5" id="記録編成データ入出力textarea"
+							onclick="this.select()"></textarea><br>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<section>
+		<h2 class="opener" id="sec_マップ">マップ</h2>
+		<div class="inner">
+			<form id="マップフィルタ選択" autocomplete="off">絞り込み……
+				<span>
+					<label><input type="checkbox" class="マップフィルタ選択" data-group="海域グループ" data-filter="通常海域"
+							checked="checked">通常海域</label>
+					<label><input type="checkbox" class="マップフィルタ選択" data-group="海域グループ" data-filter="期間限定海域"
+							checked="checked">期間限定海域</label>
+				</span>
+				<span>
+					<label><input type="checkbox" class="マップフィルタ選択" data-group="難易度グループ" data-filter="甲"
+							checked="checked">甲</label>
+					<label><input type="checkbox" class="マップフィルタ選択" data-group="難易度グループ" data-filter="乙">乙</label>
+					<label><input type="checkbox" class="マップフィルタ選択" data-group="難易度グループ" data-filter="丙">丙</label>
+					<label><input type="checkbox" class="マップフィルタ選択" data-group="難易度グループ" data-filter="丁">丁</label>
+					<label><input type="checkbox" class="マップフィルタ選択" data-group="難易度グループ" data-filter="難易度なし" checked="checked">その他
+						<span class="kome" data-help="通常海域や昔の期間限定海域など、甲乙丙丁の区分が無い海域">[?]</span></label>
+				</span>
+				<span>
+					<label><input type="checkbox" class="マップフィルタ選択" data-group="時期グループ" data-filter="第一期">第一期</label>
+					<label><input type="checkbox" class="マップフィルタ選択" data-group="時期グループ" data-filter="第二期"
+							checked="checked">第二期</label>
+				</span>
+			</form>
+
+			<div id="方面選択"><span id="該当海域なし" hidden>該当する海域がありません。絞り込み条件を確認してください</span></div>
+
+			<div id="マップ">
+				<h3>目的地選択</h3>
+				<!--SVG-->
+			</div>
+			<div id="ルート選択親">
+				<h3>ルート選択</h3>
+			</div>
+			<div id="敵艦隊選択親">
+				<h3>敵艦隊選択</h3>
+			</div>
+
+			<h3 class="opener closed" id="敵艦隊詳細">敵艦隊詳細</h3>
+			<div class="inner hide">
+				<table id="深海棲艦一覧">
+					<thead>
+						<tr>
+							<th colspan="2">深海棲艦</th>
+							<th>制空値</th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<td colspan="2">合計制空値</td>
+							<td id="敵艦隊合計制空値" class="num">0</td>
+						</tr>
+						<tr>
+							<td colspan="2">航空劣勢</td>
+							<td id="敵艦隊_航空劣勢" class="num">0</td>
+						</tr>
+						<tr>
+							<td colspan="2">制空権拮抗</td>
+							<td id="敵艦隊_航空拮抗" class="num">0</td>
+						</tr>
+						<tr>
+							<td colspan="2">航空優勢</td>
+							<td id="敵艦隊_航空優勢" class="num">0</td>
+						</tr>
+						<tr>
+							<td colspan="2">制空権確保</td>
+							<td id="敵艦隊_制空権確保" class="num">0</td>
+						</tr>
+					</tfoot>
+				</table>
+				<button onclick="二_深海棲艦を全員はずす()">深海棲艦全員はずす</button>
+				<hr>
+				<h3>深海棲艦単体を追加</h3>
+				<div id="深海棲艦追加親">
+					<dl>
+						<dt>制空値1のやつ</dt>
+						<dd>軽巡ホ級無印/elite</dd>
+						<dd>軽巡ヘ級無印/elite/flagship</dd>
+						<dd>軽巡ト級無印/elite</dd>
+						<dd>重巡リ級</dd>
+						<dd>軽巡ツ級無印/elite</dd>
+						<dd>戦艦ル級</dd>
+						<dd>軽巡棲鬼(A)/(B)</dd>
+						<dt>制空値2のやつ</dt>
+						<dd>重巡リ級elite/flagship</dd>
+						<dd>重巡ネ級無印/elite</dd>
+						<dd>戦艦ル級flagship</dd>
+						<dd>戦艦タ級無印/flagship</dd>
+						<dd>戦艦水鬼(A)/(B)</dd>
+						<dt>制空値4のやつ</dt>
+						<dd>重巡リ級改flagship</dd>
+						<dd>戦艦ル級改flagship</dd>
+						<dd>重巡棲姫?</dd>
+						<dd>中枢棲姫(A)/(B)?/(C)?</dd>
+						<dd>中枢棲姫-壊(A)/(B)?/(C)?</dd>
+						<dd>重巡夏姫(A)?/(B)?/(C)?</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<section>
+		<h2 class="opener" id="sec_結果">結果</h2>
+		<div class="inner">
+			<div id="結果一行親"></div>
+			<div id="結果親"></div>
+			<div id="結果オプション">
+				<p><label><input type="checkbox" id="平均で計算">撃墜数を最大ではなく平均で計算する</label></p>
+				<p><label><input type="checkbox" id="搭載1で計算">2戦目以降、艦戦・水戦以外を搭載数1扱いで計算する</label><span class="kome"
+						data-help="道中の敵の対空砲火を多めに見積もりたい場合にチェックを入れてください">[?]</span></p>
+				<p><label><input type="checkbox" checked="true"
+							id="熟練度120で計算">艦戦・水戦・局戦・陸戦の熟練度が>>のとき、内部熟練度を100ではなく120で計算する</label><span class="kome"
+						data-help="熟練度&gt;&gt;になったばかりの艦戦・水戦・局戦・陸戦を使用する場合はチェックを外してください">[?]</span></p>
+				<p><label><input type="checkbox" checked="true" id="装備無し搭載数を表示">制空争いに関与しないスロットの搭載数も表示する</label></p>
+				<p><label><input type="checkbox" checked="true" id="制空境界グラフを表示する">劣勢・拮抗・優勢・確保に必要な制空値をグラフで表示する</label>
+				</p>
+				<p><label><input type="checkbox" id="制空境界値を表示する">劣勢・拮抗・優勢・確保に必要な制空値を数値で表示する</label></p>
+			</div>
+		</div>
+	</section>
+
+
+	<section>
+		<h2 class="opener closed" id="sec_更新履歴">更新履歴</h2>
+		<div class="inner hide">
+			<dl id="his" itemscope itemtype="http://schema.org/SoftwareApplication">
+				<dt><time itemprop="dateModified" datetime="2019-11-25+0900" content="2019-11-25+0900">2019-11-25</time></dt>
+				<dd class="beg_of_month">設置サーバを一時的に変更</dd>
+				<dt>2019-10-25</dt>
+				<dd>秋刀魚＆鰯祭りmode開始</dd>
+				<dt>2019-10-10</dt>
+				<dd class="beg_of_month">目的地までのルートが多すぎる場合に抽出できる機能を追加</dd>
+				<dt>2019-09-27</dt>
+				<dd>▲編成 内に空母系の攻撃力を表示</dd>
+				<dt>2019-09-10</dt>
+				<dd>▲結果 の防空結果表を重爆に対応</dd>
+				<dt>2019-09-09</dt>
+				<dd>▲艦隊 内に重爆撃機を迎撃する最の制空値を表示</dd>
+				<dt>2019-09-04</dt>
+				<dd class="kancolle beg_of_month">「Fw190 A-5改(熟練)」「Fw190 D-9」の装備データを追加</dd>
+				<dt>2019-08-31～</dt>
+				<dd class="kancolle">「欧州方面反撃作戦 発動！「シングル作戦」」の海域データを追加</dd>
+				<dd class="kancolle">「飛行場姫(たこ焼き)」の深海棲艦データを追加</dd>
+				<dt>2019-08-28</dt>
+				<dd class="kancolle beg_of_month">「試製 秋水」「秋水」「Me163B」の装備データを追加</dd>
+				<dt>2019-07-09</dt>
+				<dd>夜間航空機の背景色を調整</dd>
+				<dd>対空4以上の艦上爆撃機のみを爆戦扱いにするように変更</dd>
+				<dd class="kancolle beg_of_month">「Richelieu改」の艦娘データを追加</dd>
+				<dt>2019-05-30</dt>
+				<dd class="kancolle">「流星改(一航戦)」「流星改(一航戦/熟練)」の装備データを追加</dd>
+				<dt>2019-05-21～</dt>
+				<dd class="kancolle">「赤城改二」「赤城改二戊」の艦娘データを追加</dd>
+				<dd class="kancolle">「烈風改」「烈風改(三五二空/熟練)」「烈風改(試製艦載型)」「烈風改二」<!--「烈風改二(一航戦/熟練)」-->「烈風改二戊型」「烈風改二戊型(一航戦/熟練)」の装備データを追加</dd>
+				<dd class="kancolle">「北方棲妹」「北方棲妹-壊」の深海棲艦データを追加</dd>
+				<dd class="kancolle beg_of_month">期間限定海域：発動！友軍救援「第二次ハワイ作戦」の海域データを追加</dd>
+				<dt>2019-04-22</dt>
+				<dd class="kancolle beg_of_month">「金剛改二丙」の艦娘データを追加</dd>
+				<dt>2019-03-27</dt>
+				<dd class="kancolle">「彗星一二型(六三四空/三号爆弾搭載機)」「瑞雲改二(六三四空)」「瑞雲改二(六三四空/熟練)」の装備データを追加</dd>
+				<dd class="kancolle">「日向改二」の艦娘データを追加</dd>
+				<dt>2019-03-22</dt>
+				<dd>▲艦隊 の表に艦娘のドラッグアンドドロップ入れ替え機能を追加</dd>
+				<dd>▲艦隊 の表に編成記録のドラッグアンドドロップ入れ替え機能を追加</dd>
+				<dd>▲艦隊 の表にドラッグアンドドロップで艦娘をはずす機能、装備をはずす機能、装備を艦これ攻略Wikiで検索する機能を追加</dd>
+				<dt>2019-03-08</dt>
+				<dd>編成記録も更新によって利用できなくなったデータを移行する対象に追加</dd>
+				<dd class="kancolle">「烈風」を「試製烈風 後期型」に名称変更</dd>
+				<dd class="kancolle beg_of_month">「烈風改」を「烈風 一一型」に名称変更</dd>
+				<dt>2019-02-27</dt>
+				<dd class="kancolle beg_of_month">「陸奥改二」の艦娘データを追加</dd>
+				<dt>2019-01-30</dt>
+				<dd class="kancolle beg_of_month">「Re.2001 CB改」の装備データを追加</dd>
+				<dt>2018-12-27～</dt>
+				<dd class="kancolle">期間限定海域「邀撃！ブイン防衛作戦」の海域データを追加</dd>
+				<dd class="kancolle">「二式陸上偵察機(熟練)」の装備データを追加(出撃時の偵察機補正は暫定)</dd>
+				<dd class="kancolle">「深海日棲姫」「深海日棲姫-壊」の深海棲艦データを追加</dd>
+				<dd class="kancolle">「日進」「日進改」「日進甲」の艦娘データを追加</dd>
+				<dt>2018-12-19</dt>
+				<dd>▲結果 に劣勢・拮抗・優勢・確保に必要な制空値をグラフで表示するオプションを追加</dd>
+				<dt>2018-12-02</dt>
+				<dd class="kancolle beg_of_month">「二式陸上偵察機」の装備データを追加</dd>
+				<dt>2018-11-29</dt>
+				<dd class="kancolle">「九六式艦戦」の対空値を変更</dd>
+				<dd>戦闘行動半径の表示を"延長後"から"素+延長分"に変更</dd>
+				<dt>2018-11-16</dt>
+				<dd class="kancolle">#7-2「タウイタウイ泊地沖」の海域データを追加</dd>
+				<dt>2018-11-14</dt>
+				<dd class="kancolle">局地戦闘機・陸軍戦闘機の対空値を迎撃値・対爆値を加味した実質的な対空値で表示するように変更</dd>
+				<dt>2018-11-13</dt>
+				<dd>セクションの開閉状態を次回アクセス時に再現するように</dd>
+				<dd>方面・海域の選択状態を次回アクセス時に再現するように</dd>
+				<dt>2018-11-07</dt>
+				<dd>▲結果 に空襲に対する防空結果の表を追加</dd>
+				<dt>2018-11-03</dt>
+				<dd class="kancolle beg_of_month">「爆装一式戦 隼III型改(55戦隊)」を「爆装一式戦 隼III型改(65戦隊)」に名称変更</dd>
+				<!--使わなすぎて忘れてたやつ-->
+				<dt>2018-10-09</dt>
+				<dd>艦娘を一時的に艦隊から除外する機能を追加</dd>
+				<dd>艦娘を連合艦隊の第2艦隊扱いにする（敵艦隊が連合艦隊の場合のみ航空戦を行う）機能を追加</dd>
+				<dt>2018-10-07</dt>
+				<dd>▲艦隊 に基地航空隊の出撃コストを追加</dd>
+				<dt>2018-10-04</dt>
+				<dd>▲艦隊 の合計制空値を艦娘と基地航空隊(防空)に分離</dd>
+				<dd>▲艦隊 に戦闘機の熟練度のみを&gt;&gt;にするボタンを追加</dd>
+				<dd>▲マップ の難易度フィルタを海域フィルタに変更</dd>
+				<dd>▲結果 に劣勢・拮抗・優勢・確保に必要な制空値を表示するオプションを追加</dd>
+				<dd class="beg_of_month">基地航空隊が▲結果 に影響を与えないように変更</dd>
+				<dt>2018-09-12</dt>
+				<dd class="kancolle">「欧州水姫」「欧州水姫-壊」「戦艦仏棲姫 バカンスmode」「戦艦仏棲姫 バカンスmode-壊」の深海棲艦データを追加</dd>
+				<dd class="kancolle">「Gotland」「Gotland改」の艦娘データを追加</dd>
+				<dt>2018-09-09～</dt>
+				<dd class="kancolle beg_of_month">期間限定海域「抜錨！連合艦隊、西へ！」の海域データを追加</dd>
+				<dd class="kancolle">「集積地棲姫 バカンスmode」「泊地水鬼 バカンスmode」「護衛独還姫」「護衛独還姫-壊」の深海棲艦データを追加</dd>
+				<dd class="kancolle">「神鷹」「神鷹改」「神鷹改二」の艦娘データを追加</dd>
+				<dt>2018-08-17</dt>
+				<dd class="kancolle">艦これ第二期への対応を開始</dd>
+				<dd class="kancolle">#7-1「ブルネイ泊地沖」の海域データを追加</dd>
+				<dd class="beg_of_month">難易度フィルタに「第一期」を追加<del>※第一期は難易度ではないので暫定対応</del><ins>正式対応</ins></dd>
+				<dt>2018-06-14</dt>
+				<dd>スロット数が4以外の艦娘に対応</dd>
+				<dd class="kancolle">「彗星二二型(六三四空)」「彗星二二型(六三四空/熟練)」の装備データを追加</dd>
+				<dd class="kancolle beg_of_month">「伊勢改二」の艦娘データを追加</dd>
+				<dt>2018-04-11</dt>
+				<dd class="kancolle beg_of_month">「阿賀野改」「能代改」「矢矧改」「酒匂改」の艦娘データを追加</dd>
+				<dt>2018-02-24</dt>
+				<dd class="kancolle">「Intrepid」「Intrepid改」の艦娘データを追加</dd>
+				<dd>「軽母ヌ級」「空母ヲ級」系統の深海棲艦の名称を整理</dd>
+				<dt>2018-02-21</dt>
+				<dd class="kancolle">「瑞鳳改二」「瑞鳳改二乙」の艦娘データを追加</dd>
+				<dt>2018-02-17～</dt>
+				<dd class="kancolle">期間限定海域「捷号決戦！邀撃、レイテ沖海戦(後篇)」の海域データを追加</dd>
+				<dt>2018-02-17</dt>
+				<dd class="kancolle">「武蔵改二」「Gambier Bay」「Gambier Bay改」の艦娘データを追加 <del>※5スロット目の表示は対応中</del><ins>対応済</ins>
+				</dd>
+				<dd class="kancolle">「紫電改(三四三空) 戦闘301」の装備データを追加</dd>
+				<dd class="beg_of_month">丁の難易度フィルタに対応</dd>
+				<dt>2018-01-28</dt>
+				<dd class="kancolle beg_of_month">「彩雲(偵四)」「FM-2」の装備データを追加</dd>
+				<dt>2017-12-31</dt>
+				<dd>▲マップ に期間限定海域の難易度フィルタを追加</dd>
+				<dd>▲艦隊 に基地航空隊の戦闘行動半径を追加</dd>
+				<dt>2017-12-12</dt>
+				<dd class="kancolle beg_of_month">「多摩改二」の艦娘データを追加</dd>
+				<dt>2017-11-18～</dt>
+				<dd class="kancolle beg_of_month">期間限定海域「捷号決戦！邀撃、レイテ沖海戦(前篇)」の海域データを追加</dd>
+				<dd class="kancolle">「伊400」「伊400改」の艦娘データを追加</dd>
+				<dd class="kancolle">「四式戦 疾風」「紫電改四」「零式水上偵察機11型乙(熟練)」の装備データを追加</dd>
+				<dd class="kancolle">
+					「軽母ヌ級elite(強)」「軽母ヌ級改elite(強)」「軽母ヌ級flagship(強)」「軽母ヌ級flagship(強B)」「軽母ヌ級改flagship(強)」の深海棲艦データを追加</dd>
+				<dt>2017-10-29</dt>
+				<dd class="kancolle beg_of_month">「紫電二一型」「紫電二一型 紫電改」の装備データを追加</dd>
+				<dt>2017-09-12</dt>
+				<dd class="kancolle">「TBF」「TBM-3D」の装備データを追加</dd>
+				<dd class="kancolle beg_of_month">「Saratoga Mk.II」「Saratoga Mk.II Mod.2」の艦娘データを追加</dd>
+				<dt>2017-08-29</dt>
+				<dd class="kancolle">「F6F-3N」「F6F-5N」の装備データを追加</dd>
+				<dt>2017-08-10～</dt>
+				<dd class="kancolle">期間限定海域「西方再打通！欧州救援作戦」の海域データを追加</dd>
+				<dd class="kancolle">「重巡ネ級flagship」「空母夏鬼」「空母夏姫」「集積地夏姫」「戦艦仏棲姫」「戦艦仏棲姫-壊」「欧州棲姫」「欧州棲姫-壊」の深海棲艦データを追加</dd>
+				<dd class="kancolle">「Skua」「Spitfire Mk.III改」「Spitfire Mk.I」「Spitfire Mk.V」「Spitfire Mk.IX(熟練)」の装備データを追加
+				</dd>
+				<dd class="kancolle">「Ark Royal」「Ark Royal改」の艦娘データを追加</dd>
+				<dt>2017-08-10</dt>
+				<dd class="beg_of_month">データが最新でない場合に通知する機能を追加</dd>
+				<dt>2017-06-29</dt>
+				<dd class="kancolle">「F6F-5」「F4U-1D」の装備データを追加</dd>
+				<dt>2017-06-25</dt>
+				<dd class="kancolle">「由良改二」の艦娘データを追加</dd>
+				<dd class="kancolle">「零式水上偵察機11型乙」「瑞雲(六三四空/熟練)」の装備データを追加</dd>
+				<dt>2017-06-06</dt>
+				<dd class="kancolle beg_of_month">「熊野改二」「熊野航改二」の艦娘データを追加</dd>
+				<dt>2017-05-10</dt>
+				<dd class="kancolle">「長門改二」の艦娘データを追加</dd>
+				<dt>2017-05-10</dt>
+				<dd>制空値が未確定の場合に数値に「?」を付けるように変更</dd>
+				<dd>制空値が未確定の深海棲艦の名前末尾の「*」を削除</dd>
+				<dt>2017-05-02～</dt>
+				<dd class="kancolle beg_of_month">期間限定海域「出撃！北東方面 第五艦隊」の海域データを追加</dd>
+				<dd class="kancolle">「神威改」「神威改母」「春日丸」「大鷹」「大鷹改」「大鷹改二」の艦娘データを追加</dd>
+				<dd class="kancolle">「九六式艦戦改」「爆装一式戦 隼III型改(55戦隊)」の装備データを追加</dd>
+				<dd class="kancolle">「軽母ヌ級改elite」「軽母ヌ級改flagship」「護衛棲姫」「北端上陸姫」「北方水姫」「北方水姫-壊」の深海棲艦データを追加</dd>
+				<dt>2017-04-29</dt>
+				<dd class="kancolle">「三式戦 飛燕」「三式戦 飛燕一型丁」「三式戦 (飛行第244戦隊)」の装備カテゴリを陸軍戦闘機に変更</dd>
+				<dd class="kancolle">「一式戦 隼II型」「一式戦 隼III型甲」「一式戦 隼III型甲(54戦隊)」「一式戦 隼II型(64戦隊)」の装備データを追加</dd>
+				<dt>2017-04-22</dt>
+				<dd>装備を選択する時に対空値の部分をクリックすると装備が正常に変更されず、その後操作を行うとエラーが発生する不具合を修正</dd>
+				<dt>2017-04-13</dt>
+				<dd>装備選択時の対空値表示を調整</dd>
+				<dd>装備選択時に装備の分類を表示してクリックでその種類の装備までスクロールする機能を追加</dd>
+				<dd>データ自動更新機能を追加　データ移行通知を実装</dd>
+				<dd>「ネームド艦攻」「ネームド艦爆」の装備データを削除</dd>
+				<dd class="kancolle">
+					「九七式艦攻(友永隊)」「天山一二型(友永隊)」「九七式艦攻(村田隊)」「天山一二型(村田隊)」「九九式艦爆(熟練)」「彗星(江草隊)」「試製南山」「九八式水上偵察機(夜偵)」「Ar196改」「OS2U」の装備データを追加
+				</dd>
+				<dt>2017-04-07</dt>
+				<dd class="kancolle">「速吸」の艦娘データを追加</dd>
+				<dt>2017-04-05</dt>
+				<dd class="kancolle beg_of_month">「鈴谷改二」「鈴谷航改二」の艦娘データを追加</dd>
+				<dt>2017-03-27</dt>
+				<dd class="kancolle">「強風改」「零式艦戦63型(爆戦)」の装備データを追加</dd>
+				<dt>2017-03-23</dt>
+				<dd class="kancolle">「彩雲(東カロリン空)」の装備データを追加</dd>
+				<dt>2017-03-19</dt>
+				<dd class="kancolle">「二式水戦改(熟練)」「Ro.44水上戦闘機bis」の装備データを追加</dd>
+				<dd>内部熟練度を120として計算する をオンにしたあと何か別の操作をするまで設定が反映されない不具合を修正</dd>
+				<dt>2017-03-01</dt>
+				<dd class="kancolle">「晴嵐(六三一空)」の装備データを追加</dd>
+				<dd class="kancolle beg_of_month">「Zara due」の艦娘データを追加</dd>
+				<dt>2017-02-23</dt>
+				<dd>基地航空隊の制空値調整用に「制空値1のやつ」「制空値2のやつ」「制空値4のやつ」の深海棲艦データを追加</dd>
+				<dt>2017-02-20
+</dt>
+				<dd>初回訪問時に▲使い方 を自動で展開するように変更</dd>
+				<dt>2017-02-11～</dt>
+				<dd class="kancolle">期間限定海域「偵察戦力緊急展開！「光」作戦」の海域データを追加</dd>
+				<dd class="kancolle">「深海双子棲姫」「深海双子棲姫(弱B)」「深海双子棲姫(弱C)」「深海双子棲姫-壊」「深海双子棲姫-壊(弱B)」「深海双子棲姫-壊(弱C)」の深海棲艦データを追加
+				</dd>
+				<dd class="kancolle">「伊13」「伊13改」「伊14」「伊14改」の艦娘データを追加</dd>
+				<dt>2017-02-10</dt>
+				<dd>艦娘を全員はずす時や記録済みの編成を削除する時に確認するように変更</dd>
+				<dd>「烈風で埋める」ボタン等を「全員の装備を変更」ボタンに統合</dd>
+				<dd>装備をドラッグアンドドロップで設定できる機能を追加</dd>
+				<dt>2017-02-04</dt>
+				<dd>ポップアップ部分以外をクリックでポップアップが閉じるように変更</dd>
+				<dd>深海棲艦単体を追加を毎回閉じないように改良</dd>
+				<dd class="beg_of_month">▲結果 の表で敵軍制空値を変更できる機能を追加</dd>
+				<dt>2017-01-27</dt>
+				<dd class="beg_of_month kancolle">「瑞雲(六三一空)」の装備データを追加</dd>
+				<dt>2016-12-31</dt>
+				<dd class="kancolle">「F6F-3」の装備データを追加</dd>
+				<dt>2016-12-16</dt>
+				<dd class="kancolle">「彩雲」「二式艦上偵察機」「試製景雲(艦偵型)」「零式水上偵察機」「零式水上観測機」「紫雲」「Ro.43水偵」「二式大艇」「PBY-5A
+					Catalina」「噴式景雲改」「橘花改」の装備データを追加</dd>
+				<dd>基地航空隊の防空時に偵察機を装備すると制空値が上昇する仕様に対応</dd>
+				<dd>基地航空隊に偵察機を装備すると搭載数が減少する仕様に対応</dd>
+				<dt>2016-12-09</dt>
+				<dd>航空戦が発生しないマスを目的地に選んだ場合に結果がおかしくなる不具合を修正</dd>
+				<dt>2016-12-07</dt>
+				<dd>「基地航空隊(防空)」の艦娘データを追加</dd>
+				<dd>基地航空隊の防空時に局地戦闘機の制空値計算式が変化する仕様に対応</dd>
+				<dd>艦娘ごとの制空値小計を表示</dd>
+				<dt>2016-12-02</dt>
+				<dd class="beg_of_month">目的地の敵艦隊のうち、最大ではない制空値を持つ艦隊を選択しても▲結果 の表に反映されない不具合を修正</dd>
+				<dt>2016-11-30</dt>
+				<dd>装備のドラッグアンドドロップで別の艦娘へ装備を移動させた時に熟練度と改修値が入れ替わらずコピー元のものに統一される不具合を修正</dd>
+				<dt>2016-11-23</dt>
+				<dd class="kancolle">
+					「水母水姫」「水母水姫(弱B)」「水母水姫(弱C)」「深海海月姫」「深海海月姫(弱B)」「深海海月姫(弱C)」「空母ヲ級改flagship(陸爆強)」「空母ヲ級改flagship(陸爆弱)」の深海棲艦データを追加
+				</dd>
+				<dt>2016-11-19</dt>
+				<dd class="kancolle">「Commandant Teste」「Commandant Teste改」「Saratoga」「Saratoga改」の艦娘データを追加</dd>
+				<dd class="kancolle">「Laté 298B」「SBD」「F4F-3」「F4F-4」
+					<!--「SB2U」-->の装備データを追加</dd>
+				<dd>マスをクリックした時のルート一覧の表示順を変更</dd>
+				<dt>2016-11-18～</dt>
+				<dd class="kancolle">期間限定海域「艦隊作戦第三法」の海域データを追加</dd>
+				<dt>2016-11-18</dt>
+				<dd>編成記録・展開機能を追加</dd>
+				<dd>autosaveに失敗する不具合を修正</dd>
+				<dd>保存済みの搭載数・装備・熟練度・改修が書き換わる不具合を修正</dd>
+				<dt>2016-11-05</dt>
+				<dd>▲結果 に何も装備していないスロットの搭載数も表示する機能を追加</dd>
+				<dd>一部の設定が正常に保存されない不具合を修正</dd>
+				<dd class="beg_of_month">▲結果 の表に自軍制空値と敵軍制空値を追加</dd>
+				<dt>2016-10-22</dt>
+				<dd>一部の艦娘の並び順の間違いを修正</dd>
+				<dt>2016-10-06</dt>
+				<dd class="kancolle beg_of_month">#6-5「KW環礁沖海域」の海域データを追加</dd>
+				<dt>2016-08-22</dt>
+				<dd class="kancolle">「Aquila」「Aquila改」「伊26改」の艦娘データを追加</dd>
+				<dt>2016-08-16</dt>
+				<dd class="kancolle">「港湾夏姫」「港湾夏姫(弱B)」「港湾夏姫(弱C)」「港湾夏姫-壊」「港湾夏姫-壊(弱B)」「港湾夏姫-壊(弱C)」の深海棲艦データを追加</dd>
+				<dd class="kancolle">「Re.2001 G改」「Re.2005 改」の装備データを追加</dd>
+				<dt>2016-08-13</dt>
+				<dd class="kancolle">「基地航空隊」の艦娘データを修正</dd>
+				<dd class="kancolle">「一式陸攻 三四型」「三式戦 飛燕一型丁」「銀河」の装備データを追加</dd>
+				<dt>2016-08-12～</dt>
+				<dd class="kancolle">期間限定海域「迎撃！第二次マレー沖海戦」の海域データを追加</dd>
+				<dt>2016-08-12</dt>
+				<dd class="beg_of_month">方面一覧のインターフェースを調整</dd>
+				<dt>2016-07-28</dt>
+				<dd class="kancolle">「Re.2001 OR改」の装備データを追加</dd>
+				<dt>2016-07-15</dt>
+				<dd>搭載数の変更を可能に</dd>
+				<dd><span class="clickable" onclick="alert('何もないのです')">クリックできる箇所</span>を分かりやすく表示するように変更</dd>
+				<dt>2016-07-02</dt>
+				<dd class="beg_of_month">艦載機の改修に対応</dd>
+				<dt>2016-06-30</dt>
+				<dd class="kancolle">「零式艦戦32型」「零式艦戦32型(熟練)」の装備データを追加</dd>
+				<dt>2016-06-02</dt>
+				<dd class="beg_of_month kancolle">「一式陸攻 二二型甲」の装備データを追加</dd>
+				<dt>2016-05-13</dt>
+				<dd>ドラッグ＆ドロップで装備を変更可能に</dd>
+				<dt>2016-05-09</dt>
+				<dd class="kancolle">「基地航空隊」の<i>艦娘データ</i>を追加</dd>
+				<dd class="kancolle">「一式陸攻(野中隊)」「雷電」「三式戦 飛燕」「三式戦 飛燕(飛行第244戦隊)」の装備データを追加</dd>
+				<dd class="kancolle">「Pola改」の艦娘データを追加</dd>
+				<dt>2016-05-07</dt>
+				<dd>水上戦闘機（水戦）の熟練度ボーナスを修正</dd>
+				<dt>2016-05-06</dt>
+				<dd class="kancolle">「リコリス棲姫(A)」「リコリス棲姫(陸爆強)」「リコリス棲姫(陸爆弱)」の深海棲艦データを追加</dd>
+				<dt>2016-05-03～</dt>
+				<dd class="kancolle beg_of_month">期間限定海域「開設！基地航空隊」のマップデータを追加</dd>
+				<dt>2016-04-26</dt>
+				<dd class="kancolle">「九六式陸攻」「一式陸攻」の装備データを追加</dd>
+				<dd>水上爆撃機・対空値のある艦上攻撃機・対空値のある艦上爆撃機の背景色をグラデーションに変更</dd>
+				<dt>2016-04-22</dt>
+				<dd class="kancolle beg_of_month">「最上改」「三隈改」「鈴谷改」「熊野改」の艦娘データを修正</dd>
+				<dt>2016-03-11</dt>
+				<dd class="kancolle">#6-4「中部北海域ピーコック島沖」の海域データを追加</dd>
+				<dd class="kancolle">「離島棲姫(空母A)」「離島棲姫(空母C)」「離島棲姫(航戦)」「離島棲姫(戦艦)」の深海棲艦データを追加</dd>
+				<dd class="kancolle">「二式水戦改」の装備データを追加</dd>
+				<dd class="kancolle">「大鯨」の艦娘データを追加</dd>
+				<dt>2016-03-05</dt>
+				<dd>▲結果 の表の一部の艦娘名がおかしかった不具合を修正</dd>
+				<dt>2016-03-01</dt>
+				<dd class="beg_of_month kancolle">「大和改」「武蔵改」「長門改」「陸奥改」「秋津洲」「秋津洲改」の艦娘データを追加</dd>
+				<!--2015/04/28実装なのに忘れられてたかも-->
+				<dt>2016-02-26</dt>
+				<dd>「Italia」を「Littorio」の、「龍鳳」「龍鳳改」を「大鯨」の系列に移動<del>（この影響で一部の環境でデータの初期化が必要になっています）</del></dd>
+				<dd>艦娘選択時にボタンの位置が揃うように変更</dd>
+				<!--Graf Z-->
+				<dt>2016-02-25</dt>
+				<dd class="kancolle">「Zara改」「Italia」「Roma改」の艦娘データを追加</dd>
+				<dd class="kancolle">「Ro.44水上戦闘機」の装備データを追加</dd>
+				<dt>2016-02-15</dt>
+				<dd class="kancolle">「集積地棲姫(壊)」を「集積地棲姫-壊」に名前変更</dd>
+				<dd class="kancolle">「集積地棲姫-壊(弱B)」「集積地棲姫-壊(弱C)」の深海棲艦データを追加</dd>
+				<dt>2016-02-12</dt>
+				<dd class="kancolle">「飛行場姫(陸爆)」「飛行場姫(陸爆弱B)」「飛行場姫(陸爆弱C)」「集積地棲姫」「集積地棲姫(壊)」の深海棲艦データを追加</dd>
+				<dt>2016-02-10</dt>
+				<dd class="beg_of_month kancolle">期間限定海域「出撃！礼号作戦」のマップデータを追加</dd>
+				<dt>2016-01-16</dt>
+				<dd class="beg_of_month">過去のイベントのマップデータを追加</dd>
+				<dt>2015-12-06</dt>
+				<dd class="beg_of_month">▲結果 に艦戦の内部熟練度を120として計算する機能を追加</dd>
+				<dt>2015-11-23</dt>
+				<dd>艦娘全員はずすボタンを追加</dd>
+				<dt>2015-11-20</dt>
+				<dd>▲結果 に艦戦以外を搭載数1扱いで計算する機能を追加</dd>
+				<dd class="kancolle">「Graf Zeppelin」「Graf Zeppelin改」の艦娘データを追加</dd>
+				<dt>2015-11-19～</dt>
+				<dd class="kancolle">期間限定海域「突入！海上輸送作戦」のマップデータを追加</dd>
+				<dd class="kancolle">「Bf109T改」「Fw190T改」の装備データを追加</dd>
+				<dt>2015-11-18</dt>
+				<dd>シミュレーション状態を自動で保存・次回読み込み時に再現する機能を追加</dd>
+				<dd>▲結果 に撃墜数を最大ではなく平均で計算する機能を追加</dd>
+				<dd>▲結果 に被撃墜数を表示するように変更</dd>
+				<dd>深海棲艦一覧表に制空権拮抗に必要な制空値と航空優勢に必要な制空値を追加</dd>
+				<dd><del>過去のイベントのマップデータを削除（マップ作ったら戻します）</del><ins>戻しました</ins></dd>
+				<dd>ルート一覧にマウスを乗せるとルートが赤く表示される機能を追加</dd>
+				<dd>海域マップをクリックした時にそのマスまでのルート一覧を表示する機能を追加</dd>
+				<dd>▲敵艦隊 を▲マップ に変更</dd>
+				<dd>全員の装備をはずすボタンを追加</dd>
+				<dd>▲自艦隊 の表の内容を変更</dd>
+				<dd>▲自艦隊 の艦娘選択方式を艦娘一覧から艦種→五十音順と選択するように変更</dd>
+				<dd>全体のデザインの微調整</dd>
+				<dd class="kancolle">「艦攻」「艦爆」の装備データを追加（対空0）</dd>
+				<dd class="beg_of_month kancolle">「速吸改」の艦娘データを追加</dd>
+				<dt>2015-10-30</dt>
+				<dd class="kancolle">
+					「零式艦戦52型(熟練)」「零戦52型丙(付岩井小隊)」「零戦62型(爆戦/岩井隊)」「零戦21型(付岩本小隊)」「零戦52型甲(付岩本小隊)」「零式艦戦53型(岩本隊)」の装備データを追加</dd>
+				<dd class="kancolle">「瑞鶴改二」「瑞鶴改二甲」の艦娘データを追加</dd>
+				<dt>2015-10-15</dt>
+				<dd class="beg_of_month">「翔鶴改二甲」が正規空母に分類されていたミスを修正</dd>
+				<dt>2015-09-25</dt>
+				<dd class="kancolle">「翔鶴改二」「翔鶴改二甲」の艦娘データを追加</dd>
+				<dt>2015-09-05</dt>
+				<dd class="beg_of_month">対空1の艦爆・艦攻を1つにまとめる</dd>
+				<dt>2015-08-29</dt>
+				<dd class="kancolle">「瑞穂」「瑞穂改」の艦娘データを追加</dd>
+				<dt>2015-08-25</dt>
+				<dd>「爆戦で埋める」「全熟練度を最大にする」「全熟練度をリセットする」ボタンを追加</dd>
+				<dd>熟練度欄を右クリックで熟練度を1段階下げる機能を追加</dd>
+				<dd>熟練度による艦攻・艦爆・水爆の制空値上昇値を有力な値に変更</dd>
+				<dd>▼結果 内の1行欄に熟練度を表示</dd>
+				<dt>2015-08-24</dt>
+				<dd>▼TIPS 内に深海棲艦のWikiにおける表記との対応表を追加</dd>
+				<dt>2015-08-14</dt>
+				<dd>艦載機熟練度システムに仮対応</dd>
+				<dt>2015-08-10～</dt>
+				<dd class="kancolle">期間限定海域「反撃！第二次SN作戦」のマップデータを追加</dd>
+				<dd class="kancolle">
+					「水母棲姫」「水母棲姫(弱)」「水母棲姫(弱C)」「空母ヲ級flagship(強B)」「空母ヲ級flagship(強C)」「空母ヲ級改flagship(強)」「空母ヲ級改flagship(強B)」「空母ヲ級改flagship(強C)」「飛行場姫(強)」「空母棲鬼(強)」「空母棲姫(強)」「離島棲鬼(強)」「離島棲鬼(強B)」「離島棲鬼(強C)」の深海棲艦データを追加
+				</dd>
+				<dt>2015-08-10</dt>
+				<dd class="beg_of_month">敵制空値が不明の場合に制空値を自分で入力できるシステムを追加</dd>
+				<dt>2015-06-26～</dt>
+				<dd class="kancolle">#6-3「グアノ環礁沖海域」の海域データを追加</dd>
+				<dt>2015-06-12～</dt>
+				<dd class="kancolle">「港湾棲姫(強)」の深海棲艦データを追加</dd>
+				<dd class="beg_of_month kancolle">#4-5「カレー洋リランカ島沖」の海域データを追加</dd>
+				<dt>2015-05-29</dt>
+				<dd>海域選択インターフェースを改良</dd>
+				<dd class="beg_of_month">マス目オンマウス時のツールチップを閉じるボタンを追加</dd>
+				<dt>2015-04-29</dt>
+				<dd class="kancolle">「葛城」「葛城改」の艦娘データを追加</dd>
+				<dd class="kancolle">「港湾水鬼」「港湾水鬼(本気)」「港湾水鬼(弱)」「港湾水鬼(弱本気)」の深海棲艦データを追加</dd>
+				<dt>2015-04-28～</dt>
+				<dd class="kancolle">期間限定海域「発令！第十一号作戦」のマップデータを追加</dd>
+				<dt>2015-04-22</dt>
+				<dd>過去のイベント海域のマップ画像を追加</dd>
+				<dt>2015-04-20</dt>
+				<dd>過去のイベント海域データと深海棲艦を1隻単位で追加するフォームを追加</dd>
+				<dd>Wikiの海域ページへのリンクを分かりやすく変更</dd>
+				<dd>マップ画像を表示（暫定的に）</dd>
+				<dt>2015-04-10～</dt>
+				<dd class="kancolle beg_of_month">#1-6「鎮守府近海航路」のマップデータを追加</dd>
+				<dt>2015-02-07</dt>
+				<dd class="kancolle">「天城」「天城改」の艦娘データを追加</dd>
+				<dt>2015-02-06～</dt>
+				<dd class="kancolle beg_of_month">期間限定海域「迎撃！トラック泊地強襲」のマップデータを追加</dd>
+				<dt>2014-11-20</dt>
+				<dd class="kancolle">「山城改二」の艦娘データを追加</dd>
+				<dt>2014-11-18</dt>
+				<dd>▼使い方 内に▼できること・できないこと を追加</dd>
+				<dt>2014-11-14</dt>
+				<dd>搭載数を1単位で増減できる機能を追加</dd>
+				<dt>2014-11-14～</dt>
+				<dd class="kancolle">期間限定海域「発動！渾作戦」のマップデータを追加</dd>
+				<dd class="kancolle">「空母水鬼」の深海棲艦データを追加</dd>
+				<dt>2014-11-13</dt>
+				<dd class="beg_of_month">「深海棲艦全員はずす」ボタンを追加</dd>
+				<dt>2014-10-24</dt>
+				<dd class="kancolle">「扶桑改二」の艦娘データを追加</dd>
+				<dd class="kancolle">「伊勢改」「日向改」の艦娘データを修正</dd>
+				<dt>2014-10-04</dt>
+				<dd>艦娘名にWikiへのリンクを設定</dd>
+				<dd>▼更新履歴 で艦これのアップデートによるデータ更新とそれ以外を区別するように変更</dd>
+				<dd class="beg_of_month">▼使い方 内の▼補足 を加筆し、単独で折りたたみ可能に</dd>
+				<dt>2014-09-26～</dt>
+				<dd class="kancolle">#6-1「中部海域哨戒線」 #6-2「MS諸島沖」のマップデータを追加</dd>
+				<dt>2014-09-12～</dt>
+				<dd class="kancolle">#3-5「北方AL海域」のマップデータを追加</dd>
+				<dd class="kancolle">「北方棲姫(3-5)」「北方棲姫(3-5本気)」「北方棲姫(3-5弱)」「北方棲姫(3-5弱本気)」の深海棲艦データを追加</dd>
+				<dt>2014-09-10</dt>
+				<dd class="kancolle">「九七式艦攻(友永隊)」の装備データを追加(本家実装時の追加し忘れを訂正)</dd>
+				<dt>2014-09-01</dt>
+				<dd class="beg_of_month">▼更新履歴 を追加</dd>
+				<dt>2014-08-29</dt>
+				<dd class="kancolle">「隼鷹改二」の艦娘データを追加</dd>
+				<dt>2014-08-20</dt>
+				<dd>ページ全体のレイアウトを改良</dd>
+				<dd>▼敵艦隊 の合計制空値の下に、航空優勢・制空権確保に必要な制空値を表示するように変更</dd>
+				<dt>2014-08-13</dt>
+				<dd>▼使い方 を追加</dd>
+				<dt>2014-08-08～</dt>
+				<dd class="kancolle">期間限定海域「AL作戦／MI作戦」のマップデータを追加</dd>
+				<dd class="kancolle">「空母ヲ級flagship(強)」「北方棲姫」「北方棲姫(強)」「空母棲鬼」「中間棲姫」「中間棲姫(強)」「空母棲姫」の深海棲艦データを追加</dd>
+				<dt>2014-08-08</dt>
+				<dd class="kancolle">「雲龍」「雲龍改」の艦娘データを追加</dd>
+				<dd class="kancolle">「零戦52型丙(六〇一空)」「烈風(六〇一空)」の装備データを追加</dd>
+				<dd>出撃可能海域と終了済みの期間限定海域をわかりやすく分離</dd>
+				<dd>装備の背景色を種類に応じて色分け</dd>
+				<dd>表・グラフを5%刻みからより便利な値に変更</dd>
+				<dd>グラフの表示のズレを修正</dd>
+				<dd class="beg_of_month">グラフへの補助線・軸数値の追加</dd>
+				<dt>2014-07-18</dt>
+				<dd class="kancolle">「蒼龍改二」の艦娘データを追加</dd>
+				<dd class="kancolle">「彗星(江草隊)」の装備データを追加</dd>
+				<dt>2014-07-09</dt>
+				<dd class="beg_of_month">▼結果 にグラフを表示するように変更</dd>
+				<dt>2014-06-20</dt>
+				<dd>過去のイベント海域のマップデータを追加</dd>
+				<dt>2014-06-16</dt>
+				<dd>▼結果 に被撃墜による制空値の低下を考慮した結果を表示するように変更</dd>
+				<dd>「烈風で埋める」「瑞雲で埋める」ボタンを追加</dd>
+				<dt>2014-06-06</dt>
+				<dd class="kancolle">「飛龍改二」「龍鳳」「龍鳳改」の艦娘データを追加</dd>
+				<dd class="kancolle beg_of_month">「零式艦戦21型(熟練)」「天山一二型(友永隊)」の装備データを追加</dd>
+				<dt>2014-05-23～</dt>
+				<dd class="kancolle">#2-5「沖ノ島沖」のマップデータを追加</dd>
+				<dt>2014-05-23</dt>
+				<dd class="kancolle beg_of_month">「龍驤改二」の艦娘データを追加</dd>
+				<dt>2014-04-23～</dt>
+				<dd class="kancolle beg_of_month">期間限定海域「索敵機、発艦始め！」のマップデータを追加</dd>
+				<dt>2014-03-14～</dt>
+				<dd class="kancolle">#1-5「鎮守府近海」 #5-5「サーモン海域北方」のマップデータを追加</dd>
+				<dd class="kancolle">「軽母ヌ級flagship」「戦艦レ級」「戦艦レ級elite」の深海棲艦データを追加</dd>
+				<dt>2014-03-14</dt>
+				<dd class="kancolle beg_of_month">「瑞雲(六三四空)」「瑞雲12型」の装備データを追加</dd>
+				<dt>2014-02-26～</dt>
+				<dd class="kancolle beg_of_month">#5-4「サーモン海域」のマップデータを追加</dd>
+				<dt itemprop="datePublished" datetime="2014-02-18+9">2014-02-18</dt>
+				<dd>作成</dd>
+			</dl>
+		</div>
+	</section>
+
+
+	<section>
+		<h2 class="opener" id="sec_その他">その他</h2>
+		<div class="inner small">
+			<p>
+				表示がおかしい・数値がおかしいなどの不具合が発生した時はブラウザのキャッシュクリアを試してください。
+				不具合が直らない場合は<button onclick="二_ローカルストレージデータをリセットする()">このボタン</button>をクリックしてデータを初期化してください。
+				ダメな場合、ブラウザ側の操作でローカルストレージを初期化してください。
+				それでも直らなければ情報を添えて下記の連絡先へ
+			</p>
+			<p>データや計算式はWikiとかから手作業で持ってきているから元データの間違いや写し間違いや更新の遅れがあっても怒らないでね</p>
+			<p>データの間違いや不足、プログラムのバグ、誤った使用法、艦これの仕様変更等の原因により計算結果が実際のゲームで再現されない場合があります。その際の責任は負いません</p>
+			<p>連絡は<a href="https://odaibako.net/u/DarkQuetzal" target="_blank">お題箱</a>へ　返信が必要な場合は<a
+					href="http://twitter.com/DarkQuetzal" target="_blank">Twitter @DarkQuetzal</a>へ</p>
+			<p>動作はWindows版Mozilla Firefox, Google Chromeでのみ確認しています。スマートフォン版ブラウザやInternet Explorer、Microsoft
+				Edge等では機能の一部または全てが正常に動作しない可能性があります</p>
+			<p>Webページ表示領域の横幅は最低450px　950px以上で快適</p>
+<!--			<p class="fes_img_source">画像：いらすとや
+				<a href="https://www.irasutoya.com/2016/04/blog-post_53.html">(1)</a>
+				<a href="https://www.irasutoya.com/2016/04/blog-post_61.html">(2)</a>
+				<a href="https://www.irasutoya.com/2015/05/blog-post_519.html">(3)</a>
+			</p>-->
+			<p>艦これ関連の作ったもの<a href="./index.htm" target="_blank">一覧</a></p>
+
+			<h3 class="opener closed" id="実装予定">実装予定殴り書き</h3>
+			<pre class="inner hide">
+修正予定の既知のバグ
+・n戦終了時の欄の自艦隊制空値が0と表示される
+・偵察機補正が1.13, 1.15, 1.16のときに特定の制空値で誤差が発生する
+
+▲艦隊 関連
+・対空の高い戦闘機を搭載の大きいスロットに移動するボタン
+	・「その他の装備」的な装備を実装してそのスロットは使わないようにする
+・装備選択の表にヘッダ付ける
+	・ヘッダをクリックでその順に並び替え可能に
+・一括設定の艦載機選択をちゃんと作る
+・艦種の先頭に[戦]とか付ける
+
+▲マップ 関連
+・（優先度低）航路のline要素1つにつきmarker要素を1つ生成するようにしてg要素で囲んでグループ化する
+	・航路がカーブしている時でも矢印を正しい方向にできる
+	・航路を選んだ時の色変更を矢印にも適用できる
+・ページ再読込時にルートと可能なら敵編成を選択状態にする
+
+▲結果 関連
+・防空時の敵機撃墜率
+・グラフの自艦隊制空値を被撃墜率最小・最大・平均全部表示する（平均だけドット打って上下にバーとか）
+	・または被撃墜割合を指定してドット打つ？ バーは最大最小
+・ページ再読込時に結果表を表示する
+・敵制空値入力画面で直接入力以外に敵編成一覧から選べるようにする
+
+基地航空隊対応関連
+・装備データを入れる
+	・（優先度低）道中の対空砲火シミュレーションもできるかも（願望）
+・制空値を毎回計算する
+・航空隊の出撃ポイント設定
+・敵制空値減少のシミュレーション（結果の出し方は要検討　下位何%相当の値を表示するかを設定する感じ？）
+・基地航空隊の制空値は直接入力できるようにしたい
+
+その他
+・▲設定 の新設
+	艦種選択の並び替えorその他枠の追加　その設定
+	艦載機の表示順の設定
+	艦載機のユーザー定義
+	内部熟練度の設定はこちらに移動　装備の種類ごとにそれぞれ設定できるように
+・データのインポート・エクスポート
+・ツールチップ内スクロール位置記憶
+・（優先度低）数値を小数点以下や「?」を除いて右揃えにする
+・カテゴリ選択→項目選択 のUIが3種類（艦種→艦娘　装備分類→装備　方面→海域）あるのでいい感じのUIを思いついたら統一したい
+・対空値付きの艦攻とかのグラデーションがclickableの三角を消す問題の対処（<del>グラデーションがbackground-image扱いなので要素を入れ子にする必要あり</del>::after疑似要素で対応）
+・ドラッグ時の視覚効果
+
+
+</pre>
+
+			<h3 class="opener closed" id="資料">資料</h3>
+			<div class="inner hide">
+				<ul>
+					<li>リンク（およびデータ・計算式の出典）
+						<dl>
+							<dt>公式サイト</dt>
+							<dd><a href="http://www.dmm.com/netgame/feature/kancolle.html">「艦隊これくしょん-艦これ-」 DMM
+									GAMES公式ページ</a></dd>
+							<dd><a href="http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/">艦隊これくしょん -艦これ- -
+									オンラインゲーム - DMM GAMES</a></dd>
+							<dt>制空計算・艦載機減少数</dt>
+							<dd><a href="http://wikiwiki.jp/kancolle/?%B9%D2%B6%F5%C0%EF#AirSupremacy">航空戦 - 艦隊これくしょん
+									-艦これ- 攻略 Wiki*</a></dd>
+							<dd><a href="http://ja.kancolle.wikia.com/wiki/航空戦">航空戦 | 艦これ検証Wiki | Fandom powered by
+									Wikia</a></dd>
+							<dt>高高度爆撃機・ロケット戦闘機</dt>
+							<dd>Twitter
+							<a href="https://twitter.com/Croshadow_/status/1168169501285699584">(1)</a>
+							<a href="https://twitter.com/syoukuretin/status/1168171596302798848">(2)</a>
+							<a href="https://twitter.com/Miyako_kc_tw/status/1170059047409610752">(3)</a>
+							</dd>
+							<dt>熟練度</dt>
+							<dd><a href="http://wikiwiki.jp/kancolle/?%B4%CF%BA%DC%B5%A1%BD%CF%CE%FD%C5%D9#Effect">艦載機熟練度
+									- 艦隊これくしょん -艦これ- 攻略 Wiki*</a></dd>
+							<dd><a
+									href="http://ja.kancolle.wikia.com/wiki/%E8%89%A6%E8%BC%89%E6%A9%9F%E7%86%9F%E7%B7%B4%E5%BA%A6">艦載機熟練度
+									| 艦これ検証Wiki | Fandom powered by Wikia</a></dd>
+							<dt>改修</dt>
+							<dd><a href="http://wikiwiki.jp/kancolle/?%B2%FE%BD%A4%B9%A9%BE%B3#ic9d577c">改修工廠 - 艦隊これくしょん
+									-艦これ- 攻略 Wiki*</a></dd>
+							<dd><a href="http://ja.kancolle.wikia.com/wiki/%E6%94%B9%E4%BF%AE%E5%8A%B9%E6%9E%9C">改修効果 |
+									艦これ検証Wiki | Fandom powered by Wikia</a></dd>
+							<dd><a href="https://twitter.com/trollkin_ball/status/1144714377024532480">Trollkinさんのツイート</a></dd>
+							<dt>基地航空隊</dt>
+							<dd><a href="http://wikiwiki.jp/kancolle/?%B4%F0%C3%CF%B9%D2%B6%F5%C2%E2">基地航空隊 - 艦隊これくしょん
+									-艦これ- 攻略 Wiki*</a></dd>
+							<dd><a
+									href="http://ja.kancolle.wikia.com/wiki/%E5%9F%BA%E5%9C%B0%E8%88%AA%E7%A9%BA%E9%9A%8A">基地航空隊
+									| 艦これ検証Wiki | Fandom powered by Wikia</a></dd>
+							<dt>敵制空値</dt>
+							<dd><a href="http://wikiwiki.jp/kancolle/?%C5%A8%B4%CF%C1%A5">敵艦船 - 艦隊これくしょん -艦これ- 攻略
+									Wiki*</a></dd>
+							<dd><a href="http://kancolle.wikia.com/wiki/Enemy_Vessel">Enemy Vessel | Kancolle Wiki |
+									Fandom powered by Wikia</a></dd>
+							<dd>自らによる検証</dd>
+							<dt>敵編成</dt>
+							<dd><a href="https://wikiwiki.jp/kancolle/%E5%87%BA%E6%92%83">出撃 - 艦隊これくしょん -艦これ- 攻略
+									Wiki*</a></dd>
+							<dd><a
+									href="https://wikiwiki.jp/kancolle/%E6%9C%9F%E9%96%93%E9%99%90%E5%AE%9A%E5%87%BA%E6%92%83">期間限定出撃
+									- 艦隊これくしょん -艦これ- 攻略 Wiki*</a></dd>
+							<dd><a href="http://kancolle.wikia.com/wiki/Sortie">Sortie | Kancolle Wiki | FANDOM powered
+									by Wikia</a></dd>
+							<dd><a href="http://kancolle.wikia.com/wiki/Events">Events | Kancolle Wiki | FANDOM powered
+									by Wikia</a></dd>
+							<dd>自らによる検証</dd>
+							<dt>攻撃力</dt>
+							<dd><a href="https://wikiwiki.jp/kancolle/戦闘について">戦闘について - 艦隊これくしょん -艦これ- 攻略 Wiki*</a></dd>
+
+
+						</dl>
+					</li>
+
+					<li>艦これ攻略Wikiの深海棲艦の表記との対応表
+						<table>
+							<tr>
+								<th>Wikiの表記</th>
+								<th>ここでの表記</th>
+							</tr>
+
+							<tr>
+								<td>軽母ヌ級elite(艦載機白)</td>
+								<td>ヌe(白猫)</td>
+							</tr>
+							<tr>
+								<td>軽母ヌ級elite(艦載機黒)</td>
+								<td>ヌe(黒猫)</td>
+							</tr>
+							<tr>
+								<td>軽母ヌ級flagship(艦載機白)</td>
+								<td>ヌf(白猫)</td>
+							</tr>
+							<tr>
+								<td>軽母ヌ級flagship(艦載機赤)</td>
+								<td>ヌf(赤猫)</td>
+							</tr>
+							<tr>
+								<td>軽母ヌ級改elite</td>
+								<td>ヌ改e(鷹)</td>
+							</tr>
+							<tr>
+								<td>軽母ヌ級改elite(艦載機白)</td>
+								<td rowSpan="2">ヌ改e(鷹+白猫)</td>
+							</tr>
+							<tr>
+								<td>軽母ヌ級改elite(艦載機鳥白)</td>
+							</tr>
+							<tr>
+								<td>軽母ヌ級改elite(艦載機黒)</td>
+								<td rowSpan="2">ヌ改e(黒猫)</td>
+							</tr>
+							<tr>
+								<td>軽母ヌ級改elite(艦載機鳥黒)</td>
+							</tr>
+							<tr>
+								<td>軽母ヌ級改flagship</td>
+								<td>ヌ改f(鷹)</td>
+							</tr>
+							<tr>
+								<td>軽母ヌ級改flagship(艦載機鳥赤)<br>軽母ヌ級改flagship(艦載機赤)</td>
+								<td>ヌ改f(鷹+赤猫)<br>ヌ改f(赤猫)</td>
+							</tr>
+							<tr>
+								<td>軽母ヌ級改flagship(艦載機黒)</td>
+								<td>ヌ改f(黒猫)</td>
+							</tr>
+
+							<tr>
+								<td>空母ヲ級flagship(新型艦載機)</td>
+								<td>ヲf(白猫)</td>
+							</tr>
+							<tr>
+								<td>空母ヲ級flagship(新型艦載機(準赤))</td>
+								<td>ヲf(赤猫+白猫)</td>
+							</tr>
+							<tr>
+								<td>空母ヲ級flagship(新型艦載機(赤))</td>
+								<td>ヲf(赤猫)</td>
+							</tr>
+
+							<tr>
+								<td>空母ヲ級改flagship(新型艦載機)</td>
+								<td rowspan="3">ヲ改f(白猫)</td>
+							</tr>
+							<tr>
+								<td>空母ヲ級改flagship(新型艦載機(白))</td>
+							</tr>
+							<tr>
+								<td>空母ヲ級改flagship(艦載機白)</td>
+							</tr>
+							<tr>
+								<td>空母ヲ級改flagship(艦載機準赤)</td>
+								<td>ヲ改f(赤猫+白猫)
+							</tr>
+							<tr>
+								<td>空母ヲ級改flagship(新型艦載機(赤))</td>
+								<td rowspan="2">ヲ改f(赤猫)</td>
+							</tr>
+							<tr>
+								<td>空母ヲ級改flagship(艦載機赤)</td>
+							</tr>
+
+							<tr>
+								<td>飛行場姫</td>
+								<td rowspan="3">飛行場姫</td>
+							</tr>
+							<tr>
+								<td>飛行場姫(通常艦載機)</td>
+							<tr>
+								<td>飛行場姫(D)</td>
+							</tr>
+							<tr>
+								<td>飛行場姫(A)</td>
+								<td>飛行場姫(強)</td>
+							</tr>
+							<tr>
+								<td>飛行場姫(B)</td>
+								<td>飛行場姫(強B)</td>
+							</tr>
+							<tr>
+								<td>飛行場姫(C)</td>
+								<td>飛行場姫(強C)</td>
+							</tr>
+							<tr>
+								<td>飛行場姫(陸爆強)</td>
+								<td>飛行場姫(陸爆)</td>
+							</tr>
+							<tr>
+								<td>飛行場姫(陸爆中)</td>
+								<td>飛行場姫(陸爆弱B)</td>
+							</tr>
+							<tr>
+								<td>飛行場姫(陸爆弱)</td>
+								<td>飛行場姫(陸爆弱C)</td>
+							</tr>
+							<tr>
+								<td>港湾棲姫</td>
+								<td rowspan="2">港湾棲姫</td>
+							</tr>
+							<tr>
+								<td>港湾棲姫(B)</td>
+							</tr>
+							<tr>
+								<td>港湾棲姫(A)</td>
+								<td>港湾棲姫(強)</td>
+							</tr>
+							<tr>
+								<td>離島棲鬼</td>
+								<td>離島棲鬼</td>
+							</tr>
+							<tr>
+								<td>離島棲鬼(A)</td>
+								<td>離島棲鬼(強)</td>
+							</tr>
+							<tr>
+								<td>北方棲姫(本気)</td>
+								<td>北方棲姫(本気)</td>
+							</tr>
+							<tr>
+								<td>北方棲姫(A)</td>
+								<td>北方棲姫(3-5)</td>
+							</tr>
+							<tr>
+								<td>北方棲姫(本気)(A)</td>
+								<td>北方棲姫(3-5本気)</td>
+							</tr>
+							<tr>
+								<td>北方棲姫(B)</td>
+								<td>北方棲姫(3-5弱)</td>
+							</tr>
+							<tr>
+								<td>北方棲姫(本気)(B)</td>
+								<td>北方棲姫(3-5弱本気)</td>
+							</tr>
+							<tr>
+								<td>中間棲姫(本気)</td>
+								<td>中間棲姫(強)</td>
+							</tr>
+							<tr>
+								<td>空母棲鬼(新型機赤)</td>
+								<td>空母棲鬼(強)</td>
+							</tr>
+							<tr>
+								<td>空母棲姫(新型機赤)</td>
+								<td>空母棲姫(強)</td>
+							</tr>
+							<tr>
+								<td>港湾水鬼(A)</td>
+								<td>港湾水鬼(本気)</td>
+							</tr>
+							<tr>
+								<td>港湾水鬼(B)</td>
+								<td>港湾水鬼(弱本気)</td>
+							</tr>
+							<tr>
+								<td>港湾水鬼(C)</td>
+								<td>港湾水鬼</td>
+							</tr>
+							<tr>
+								<td>港湾水鬼(D)</td>
+								<td>港湾水鬼(弱)</td>
+							</tr>
+							<tr>
+								<td>水母棲姫(A)</td>
+								<td>水母棲姫</td>
+							</tr>
+							<tr>
+								<td>水母棲姫(B)</td>
+								<td>水母棲姫(弱)</td>
+							</tr>
+							<tr>
+								<td>水母棲姫(C)</td>
+								<td>水母棲姫(弱C)</td>
+							</tr>
+							<tr>
+								<td>集積地棲姫(A)</td>
+								<td>集積地棲姫</td>
+							</tr>
+							<tr>
+								<td>集積地棲姫(B)</td>
+								<td>集積地棲姫(弱B)</td>
+							</tr>
+							<tr>
+								<td>集積地棲姫(C)</td>
+								<td>集積地棲姫(弱C)</td>
+							</tr>
+							<tr>
+								<td>集積地棲姫-壊(A)</td>
+								<td>集積地棲姫-壊</td>
+							</tr>
+							<tr>
+								<td>集積地棲姫-壊(B)</td>
+								<td>集積地棲姫-壊(弱B)</td>
+							</tr>
+							<tr>
+								<td>集積地棲姫-壊(C)</td>
+								<td>集積地棲姫-壊(弱C)</td>
+							</tr>
+							<tr>
+								<td>離島棲姫(A)</td>
+								<td rowspan="2">離島棲姫(航戦)</td>
+							</tr>
+							<!--671-->
+							<tr>
+								<td>離島棲姫(航空隊B)</td>
+							</tr>
+							<tr>
+								<td>離島棲姫(航空隊A)</td>
+								<td>離島棲姫(空母A)</td>
+							</tr>
+							<!--669-->
+							<tr>
+								<td>離島棲姫(航空隊C)</td>
+								<td>離島棲姫(空母C)</td>
+							</tr>
+							<!--668-->
+							<tr>
+								<td>離島棲姫(B)</td>
+								<td>離島棲姫(戦艦)</td>
+							</tr>
+							<!--672-->
+						</table>
+					</li>
+				</ul>
+			</div>
+
+			<script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
+		</div>
+	</section>
+
+
+</body>
+
+</html>
