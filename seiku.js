@@ -3583,9 +3583,8 @@ function 一_最新バージョンチェック() {
 			}
 		}
 	}
-	xhr.open("POST", "https://dque.github.io/seiku/data_version.js", true);
+	xhr.open("GET", "https://dque.github.io/seiku/data_version.js", true);
 	xhr.send();
-
 };
 function 一_バージョンチェック(s) {
 	if (s !== data_version) {
