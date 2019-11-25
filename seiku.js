@@ -232,8 +232,8 @@ window.addEventListener("DOMContentLoaded", function () {
 	$("記録編成データ入出力_入ボタン").addEventListener("click", function () { const str = $("記録編成データ入出力textarea").value; const obj = JSON.parse(str); K = obj; 零_ローカルストレージ保存(K, "K"); alert("読み込みok") });
 
 	document.addEventListener("click", function (e) { 二_全部隠すか(e) }, false);
-//	setTimeout(一_最新バージョンチェック, 1000);
-//	setInterval(一_最新バージョンチェック, 60000);
+	setTimeout(一_最新バージョンチェック, 1000);
+	setInterval(一_最新バージョンチェック, 60000);
 
 	$("凡例親").appendChild(makeMapSVG("Hanrei", "凡例"));
 
@@ -3583,7 +3583,7 @@ function 一_最新バージョンチェック() {
 			}
 		}
 	}
-	xhr.open("POST", "http://81.81.la/u/kancolle/data_version.js", true);
+	xhr.open("POST", "https://dque.github.io/seiku/data_version.js", true);
 	xhr.send();
 
 };
