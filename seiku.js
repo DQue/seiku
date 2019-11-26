@@ -3590,7 +3590,7 @@ function 一_バージョンチェック(s) {
 	if (s !== data_version) {
 		var a = s.match(/(\d+)-(\d+)/)
 		var b = String(data_version).match(/(\d+)-(\d+)/);
-		if (a[1] > b[1] || a[2] > b[2]) {
+		if (a[1] > b[1] || (a[1]===b[1] && a[2] > b[2])) {
 			//新しいバージョンがある
 			$("version_check").classList.add("old");
 		}
