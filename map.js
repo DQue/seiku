@@ -95,16 +95,45 @@ function ルートを特定する(p){
 	return document.getElementsByClassName("route"+p)[0]; //要改修　複数のマップが存在する場合に正しく動作しない
 }
 
-function 夜戦の塗りを描く(md){
-	var c=document.createElementNS(ns, "circle");
+const 夜戦の塗りを描く=(md)=>{
+	const c=document.createElementNS(ns, "circle");
+	const r=Math.floor(otherData["circle-r"]*0.7);
 	c.setAttribute("cx",md["x"]);
 	c.setAttribute("cy",md["y"]);
-	c.setAttribute("r",otherData["circle-r"]-4);
+	c.setAttribute("r",r);
 	c.setAttribute("class","夜戦の塗り");
 	c.setAttribute("pointer-events","none");
 	return c;
 }
-function 航空戦の飛行機を描く(md){
+const 払暁戦の塗りを描く=(md)=>{
+	const type=md.type;
+	const ty=type==="ボス_夜to昼"?-5:0;
+	const sc=type==="ボス_夜to昼"?1.2:1;
+	
+	const c1=document.createElementNS(ns, "path"); //下側
+	const c2=document.createElementNS(ns, "path"); //上側
+	const r=Math.floor(otherData["circle-r"]*0.7);
+	const x=[0,-r/5, -r, r,  r/5, 0];
+	const y=[0, r/5,  0, 0, -r/5, 0];
+	const rotate=-20;
+	const transform=`translate(${md.x},${md.y+ty}) rotate(${rotate}) scale(${sc})`;
+
+	const d1=`M ${-r},0 A ${r},${r},0,1,1,${r},0 A ${r},${r},0,1,1,${-r},0`;
+	const d2=`M 0,0 L ${x[1]},${y[1]} L ${x[2]},${y[2]} A ${r},${r},0,1,0,${r},0 L ${x[4]},${y[4]} L 0,0`;
+
+	
+	c1.setAttribute("transform",transform);
+	c1.setAttribute("d",d1);
+	c1.setAttribute("class","払暁戦の塗り下");
+	c1.setAttribute("pointer-events","none");
+
+	c2.setAttribute("transform",transform);
+	c2.setAttribute("d",d2);
+	c2.setAttribute("class","払暁戦の塗り上");
+	c2.setAttribute("pointer-events","none");
+	return [c1,c2];
+}
+function 航空戦の飛行機を描く(md){ //現在未使用
 	var c0=document.createElementNS(ns, "path");
 	var d="M 0,0 ";
 	d+="l 1,-1 v -4 h 0.2 v 5 h 1 v -1 h 4 c 0,0 0,-22 4,-22 c 6,0 5,22 5,21 l 12,1 c 0,0 1,-6 3,-6 c 3,0 3,14 0,14 c -2,0 -3,-6 -3,-6 l -12,1 c 0,0 1,21 -5,21 c -4,0 -4,-22 -4,-22 h -4 v -1 h -1 v 5 h -0.2 v -4 l -1,-1 z";
@@ -338,9 +367,10 @@ try{
 			var d="M 0,0 C -10,0 -11,-5 -12,-6 C -14,-10 -12,-10 -12,-12 C -12,-12 -10,-22 -10,-22 C -8,-19 -6.5,-17 -5,-17 C -3,-17 -2,-18 0,-18 C 2,-18 3,-17 5,-17 C 6.5,-17 8,-19 10,-22 C 10,-22 12,-12 12,-12 C 12,-10 14,-10 12,-6 C 11,-5 10,0 0,0";
 			c.setAttribute("transform","translate("+ (md[i]["x"]) + ", "+ (md[i]["y"]+10)+")scale(1.3,1.7)");
 			c.setAttribute("d",d);
-			if(mtype=="ボス_夜to昼"){
-				c.setAttribute("style","fill:url(#ボス_夜to昼)");
-			}
+//払暁戦を2色勾玉にしたのでコメントアウト
+//			if(mtype=="ボス_夜to昼"){
+//				c.setAttribute("style","fill:url(#ボス_夜to昼)");
+//			}
 		}else if(mtype==="接続点"){ //mapNp用
 			var c=document.createElementNS(ns, "circle");
 			c.setAttribute("cx",md[i]["x"]);
@@ -357,9 +387,11 @@ try{
 //艦これ公式の夜戦マスが単色になったためコメントアウト
 			}
 */
-			if(mtype=="夜to昼"){
-				c.setAttribute("style","fill:url(#夜to昼)");
-			}
+
+//払暁戦を2色勾玉にしたのでコメントアウト
+//			if(mtype=="夜to昼"){
+//				c.setAttribute("style","fill:url(#夜to昼)");
+//			}
 		}
 		
 		if(c){
@@ -370,6 +402,11 @@ try{
 		
 		if(mtype=="夜戦"){
 			svg.appendChild(夜戦の塗りを描く(md[i]));
+		}
+		if(mtype==="夜to昼" || mtype==="ボス_夜to昼"){
+			const c=払暁戦の塗りを描く(md[i]);
+			svg.appendChild(c[0]);
+			svg.appendChild(c[1]);
 		}
 		if(mtype=="航空戦"){
 			svg.appendChild(空襲戦の矢印を描く(md[i]));
@@ -412,6 +449,7 @@ try{
 		}
 	}
 
+
 	var dx=5,dy=10;
 	if(mn=="Hanrei"){ //凡例ではマス番号を大きめにずらす
 		dx=12;
@@ -440,6 +478,7 @@ try{
 			svg.appendChild(t);
 		}
 	}
+
 	
 	return svg;
 }

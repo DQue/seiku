@@ -1242,13 +1242,17 @@ td.jukuren,td.kaishu{
 	margin:0 auto 0 0;
 	width:95%;
 }
+#his dd>*{
+	vertical-align:middle;
+}
 #his dd:before{
 	content:"★";
 	display:inline-block;
 	width:1em;
+	height:100%;
 	text-indent:0;
 	font-size:12px;
-	vertical-align:top;
+	vertical-align:middle;
 	color:#f90;
 }
 #his dd.kancolle:before{
