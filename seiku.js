@@ -3584,6 +3584,8 @@ function 一_最新バージョンチェック() {
 		}
 	}
 	xhr.open("GET", "https://dque.github.io/seiku/data_version.js", true);
+	request.setRequestHeader("Pragma","no-cache");
+	request.setRequestHeader("Cache-Control","no-cache");
 	xhr.send();
 };
 function 一_バージョンチェック(s) {
