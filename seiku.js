@@ -3090,35 +3090,36 @@ function 零_装備できるか(艦種, 艦名, 改造, 種類, 装備名) {
 
 	switch (種類) {
 		case "艦上戦闘機":
-			if (eq(艦種, ["正規空母", "軽空母", "装甲空母", "揚陸艦", "基地航空隊"])) return true;
+			if (eq(艦種, ["正規空母", "軽空母", "装甲空母"])) return true;
 			if (艦名 == "伊勢" && 改造 == "改二") return true;
 			if (艦名 == "日向" && 改造 == "改二") return true;
+			if (艦名 === "あきつ丸") return true;
 			break;
 		case "艦上爆撃機":
-			if (eq(艦種, ["正規空母", "軽空母", "装甲空母", "基地航空隊"])) return true;
+			if (eq(艦種, ["正規空母", "軽空母", "装甲空母"])) return true;
 			if (艦名 == "伊勢" && 改造 == "改二") return true;
 			if (艦名 == "日向" && 改造 == "改二") return true;
 			break;
 		case "艦上攻撃機":
 			if (艦名 == "春日丸" && 改造 == "無印") return false;
-			if (eq(艦種, ["正規空母", "軽空母", "装甲空母", "基地航空隊"])) return true;
+			if (eq(艦種, ["正規空母", "軽空母", "装甲空母"])) return true;
 			if (艦名 == "速吸" && 改造 == "改") return true;
 			break;
 		case "水上爆撃機":
-			if (eq(艦種, ["水上機母艦", "航空巡洋艦", "航空戦艦", "補給艦", "潜水空母", "基地航空隊"])) return true;
+			if (eq(艦種, ["水上機母艦", "航空巡洋艦", "航空戦艦", "補給艦", "潜水空母"])) return true;
 			if (eq(艦名, ["Littorio", "Roma", "Zara", "Pola", "金剛"])) return true;
 			if(艦名==="Richelieu" && 装備名==="Laté 298B") return true;
 			if (艦種 === "軽巡洋艦") return true;
 			break;
 		case "水上戦闘機":
-			if (eq(艦種, ["水上機母艦", "航空巡洋艦", "航空戦艦", "潜水空母", "潜水母艦", "補給艦", "基地航空隊"])) return true;
+			if (eq(艦種, ["水上機母艦", "航空巡洋艦", "航空戦艦", "潜水空母", "潜水母艦", "補給艦"])) return true;
 			if (艦種 === "戦艦" && 艦名!=="金剛" && 艦名!=="Richelieu") return true;
 			if (艦種 === "重巡洋艦") return true;
 			if (艦名 === "由良") return true;
 			if (艦名 === "多摩") return true;
+			if (艦名 === "神州丸") return true;
 			break;
 		case "噴式戦闘爆撃機":
-			if (艦種 === "基地航空隊") return true;
 			if (艦名 === "翔鶴" && 改造 === "改二甲") return true;
 			if (艦名 === "瑞鶴" && 改造 === "改二甲") return true;
 			break;
