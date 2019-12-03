@@ -1,1 +1,1 @@
-var data_version="20191203-001";
+var data_version="20191203-002";
