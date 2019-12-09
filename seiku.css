@@ -135,14 +135,17 @@ a:active{}
 .水上戦闘機{
 	background-color:rgb(220,255,250);
 }
-.艦上爆撃機, .水上爆撃機{
+.艦上爆撃機{
 	background-color:rgb(255,220,250);
 }
 .艦上攻撃機{
 	background-color:rgb(220,230,255);
 }
-.艦上爆撃機.対空値有,
-.水上爆撃機.対空値有{
+.水上爆撃機{
+	background-color:rgb(240,215,230);
+}
+
+.艦上爆撃機.対空値有{
 	background-image:linear-gradient(left top, rgb(255,220,250) 0, rgb(255,220,250) 70%, rgb(220,255,250) 100%);
 	background-image:-webkit-linear-gradient(left top, rgb(255,220,250) 0, rgb(255,220,250) 70%, rgb(220,255,250) 100%);
 	background-image:-moz-linear-gradient(left top, rgb(255,220,250) 0, rgb(255,220,250) 70%, rgb(220,255,250) 100%);
@@ -162,6 +165,7 @@ a:active{}
 	background-image:-webkit-linear-gradient(left top, rgb(220,230,255) 0, rgb(220,230,255) 70%, rgb(99,89,224) 100%);
 	background-image:-moz-linear-gradient(left top, rgb(220,230,255) 0, rgb(220,230,255) 70%, rgb(99,89,224) 100%);
 }
+
 .陸上攻撃機{
 	background-color:rgb(200,225,220);
 }
