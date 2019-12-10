@@ -877,6 +877,7 @@ td.jukuren,td.kaishu{
 }
 .jukuren,kaishu{
 	font-weight:bold;
+	font-family:"IMPACT", monospace;
 }
 .jukuren[data-juk_color="k"]{color:#000;}
 .jukuren[data-juk_color="b"]{color:#00f;text-shadow:0 0 3px #88f;}
