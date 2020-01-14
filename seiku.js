@@ -1343,6 +1343,8 @@ function 零_制空値を計算(soubi, tousai, jukuren, kaishu, kanmusu, kaizou)
 		taiku += 0.2 * kaishu;
 	} else if (eq(零_種類(soubi), ["局地戦闘機", "陸軍戦闘機"])) {
 		taiku += 0.2 * kaishu;
+	}else if(零_種類(soubi)==="陸上攻撃機"){
+		taiku += 0.5 * Math.sqrt(kaishu);
 	}
 	var geigeki = 零_迎撃値(soubi);
 	var taibaku = 零_対爆値(soubi);
