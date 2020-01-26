@@ -441,6 +441,7 @@ try{
 				$("マップ").querySelector("h3").dataset.selected=`目的地：${i}`;
 				二_ルート選択を表示(e);
 				二_敵艦隊選択を表示(マス目から文字を特定する(e.target));
+				二_航空隊出撃ポイント選択を表示();
 			}})(i),false)
 		}else if(c && mapType==="ルート選択"){
 			c.addEventListener("click",((i)=>{return ()=>{

@@ -1,4 +1,5 @@
 /*全体*/
+[hidden]{display:none!important}
 body,html{
 	margin:0;
 	padding:0 0 1000px 0;
@@ -88,8 +89,6 @@ a:active{}
 
 
 
-
-
 /*全体クラス付き*/
 .num{
 	text-align:right;
@@ -121,8 +120,52 @@ a:active{}
 }
 .draggable:hover{
 }
-
-
+td.empty.t{
+	border-top-style:hidden;
+}
+td.empty.r{
+	border-right-style:hidden;
+}
+td.empty.b{
+	border-bottom-style:hidden;
+}
+td.empty.l{
+	border-left-style:hidden;
+}
+td.empty.c{
+	background-color:#eee;
+}
+.選択ボタン{
+	display:inline-block;
+	padding:4px;
+	margin:1px 2px;
+	vertical-align:middle;
+	border:1px solid #567;
+	border-radius:4px;
+	line-height:14px;
+	font-size:14px;
+	white-space:nowrap;
+	cursor:pointer;
+	font-weight:normal;
+}
+.選択ボタン.single{
+	display:block;
+	text-align:center;
+	margin:1px 4px;
+}
+.選択ボタン.big{
+	padding:6px;
+}
+.選択ボタン:hover, .選択ボタン.selected{
+	background-color:#def;
+	border-width:2px;
+	margin:0 1px;
+	transition:background-color 0.6s;
+}
+.選択ボタン.single:hover,
+.選択ボタン.single.selected{
+	margin:0 3px;
+}
 
 
 
@@ -279,6 +322,8 @@ a:active{}
 	box-shadow:
 		0 -0.5px 1px 0 rgba(150,150,255,.5) inset;
 	background:#eee url("imgs/draggable.png") right bottom no-repeat;
+	overflow:hidden;
+	white-space:nowrap;
 }
 .可動ポップアップ.long .タイトルバー{
 	width:276px;
@@ -779,6 +824,9 @@ h2.opener.closed{
 }
 #remove_kanmusu,#remove_equip{float:left;}
 #open_equip_list{cursor:pointer}
+#open_equip_list:hover::after, .kome:hover{
+	padding-bottom:260px;
+}
 #open_equip_list:hover::after, .kome:hover::after{
 	content:attr(data-help);
 	position:absolute;
@@ -916,32 +964,11 @@ td.jukuren,td.kaishu{
 	padding:0;
 	list-style-type:none;
 }
-.艦娘変更ボタン{
-	display:block;
-	margin-bottom:0.2em;
-}
+
 .艦娘改造リスト{
 	display:block;
 	margin:0;
 	padding:0;
-}
-.艦娘改造度{
-	vertical-align:middle;
-	display:inline-block;
-	padding:4px;
-	margin:1px 2px;
-	border-radius:4px;
-	border:1px solid #567;
-	height:14px;
-	line-height:14px;
-	font-size:14px;
-	shite-space:nowrap;
-}
-.艦娘改造度:hover,.現在改造度{
-	background-color:#def !important;
-	border-width:2px;
-	margin:0 1px;
-	transition:background-color 0.6s;
 }
 .艦娘セル{
 	line-height:1.2em;
@@ -981,15 +1008,7 @@ td.jukuren,td.kaishu{
 }
 
 #広域海域リスト>li, #海域選択リスト>li{
-	display:inline-block;
-	vertical-align:bottom;
-	padding:4px;
-	margin:1px 4px;
-	border-radius:4px;
-	border:1px solid #567;
-	cursor:pointer;
 	font-size:16px;
-	line-height:16px;
 }
 #広域海域リスト li.終了済{
 	font-size:14px;
@@ -1006,10 +1025,6 @@ td.jukuren,td.kaishu{
 }
 #広域海域リスト>li.selected, #海域選択リスト>li.selected,
 #広域海域リスト>li:hover,    #海域選択リスト>li:hover{
-	background-color:#def;
-	border-width:2px;
-	margin:0 3px;
-	transition:background-color 0.6s;
 }
 #海域選択リスト li a:hover{
 	background-color:#cde;
@@ -1065,10 +1080,11 @@ td.jukuren,td.kaishu{
 }
 #マップ.chked,
 #ルート選択親.chked,
-#敵艦隊選択親.chked{
+#敵艦隊選択親.chked,
+#航空隊選択親.chked{
 	border-width:1px;
 }
-#マップ h3, #ルート選択親 h3, #敵艦隊選択親 h3{
+#マップ h3, #ルート選択親 h3, #敵艦隊選択親 h3, #航空隊選択親 h3{
 	padding:0;
 	text-indent:24px;
 	position:relative;
@@ -1078,7 +1094,8 @@ td.jukuren,td.kaishu{
 #マップ.chked h3, #ルート選択親.chked h3, #敵艦隊選択親.chked h3{}
 #マップ.chked h3::before,
 #ルート選択親.chked h3::before,
-#敵艦隊選択親.chked h3::before{
+#敵艦隊選択親.chked h3::before,
+#航空隊選択親.chked h3::before{
 	content:"";
 	display:inline-block;
 	position:absolute;
@@ -1100,11 +1117,12 @@ td.jukuren,td.kaishu{
 	padding-left:6px;
 }
 
-#ルート選択親, #敵艦隊選択親{
+#ルート選択親, #敵艦隊選択親, #航空隊選択親{
 	display:inline-block;
 	vertical-align:top;
 	border:2px solid #026;
 	min-height:272px;
+	margin-bottom:2px;
 }
 #ルート選択親{
 	min-width:144px;
@@ -1112,8 +1130,15 @@ td.jukuren,td.kaishu{
 }
 #敵艦隊選択親{
 	min-width:244px;
+	margin-right:4px;
 }
-
+#航空隊選択親 table, #航空隊選択親 tr, #航空隊選択親 td, #航空隊選択親 th{
+	border:none;
+}
+.航空隊出撃マス{
+}
+.航空隊出撃マス:hover,.航空隊出撃マス.selected{
+}
 
 #敵艦隊選択{
 	list-style-type:none;
@@ -1222,7 +1247,18 @@ td.jukuren,td.kaishu{
 .現在の制空状況 small{
 	font-weight:bold;
 }
+.採用制空値{
+}
+.非採用制空値{
+	font-size:12px;
+}
 
+#結果,#防空結果{
+	display:inline-block;
+	vertical-align:top;
+	border:none;
+	margin-left:2px;
+}
 #防空結果 td{
 	padding:0 2px;
 }
@@ -1234,6 +1270,23 @@ td.jukuren,td.kaishu{
 #防空結果 tr:nth-of-type(2) td{
 	border-bottom-width:2px;
 }
+
+
+.航空隊後敵制空値, .航空隊後敵制空値 li{
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+#航空隊詳細{
+	width:400px;
+	height:476px;
+}
+
+/*▲設定*/
+.設定項目 div{
+	margin-left:2em;
+}
+
 
 
 

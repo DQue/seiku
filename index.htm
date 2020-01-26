@@ -7,12 +7,13 @@
 	<title>制空争いシミュレータカッコカリ</title>
 	<link rel="stylesheet" href="seiku.css?7">
 	<link rel="stylesheet" href="map.css">
-	<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-48162218-1', 'auto',{'allowLinker':true});ga('require','linker');ga('linker:autoLink',['81.la']);ga('send', 'pageview');</script>
+	<script>if(location.href.match(/dque.github.io/)){document.write(`<`+`script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-48162218-1', 'auto',{'allowLinker':true});ga('require','linker');ga('linker:autoLink',['81.la']);ga('send', 'pageview');<`+`/script>`)};</script>
 	
 	<script src="data.js?9"></script>
 	<script src="efleetdata.js?5"></script>
 	<script src="mapdata.js?5"></script>
 	<script src="enemydata.js?4"></script>
+	<script src="eedata.js?1"></script>
 	<script src="seiku_fes.js?6"></script>
 	<script src="data_migration.js?1"></script>
 	
@@ -23,6 +24,10 @@
 	<script src="toggle.js?1"></script>
 	<script src="settings.js?1"></script>
 	<script src="wiki.js?1"></script>
+	
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="c3.min.js"></script>
+	<link rel="stylesheet" href="c3.min.css">
 
 	<meta name="keywords" content="艦隊これくしょん,艦これ,空母,制空権,制空値,制空">
 	<meta name="description" content="「艦これ」の制空値を計算し、制空権争いの結果を予測できるWebアプリです。イベント海域にも対応。">
@@ -66,27 +71,36 @@
 			<h3 class="opener">本隊の計算方法</h3>
 			<div class="inner">
 				<ol>
-					<li>艦隊の情報をセットします
+					<li value="1">艦隊の情報をセットします
 						<ol>
-							<li>「艦隊」内の表の「<em>艦娘を追加</em>」ボタンを押します</li>
-							<li><em>艦種</em>と<em>艦娘</em>(または基地航空隊)を選択します</li>
+							<li>「艦隊」内の表の「<em>艦娘/航空隊を追加</em>」ボタンを押します</li>
+							<li><em>艦種</em>と<em>艦娘</em>を選択します</li>
 							<li>「<em>装備</em>」のマスをクリックして装備を選択します</li>
 							<li>艦載機熟練度と装備改修を適用する場合は、「<em>熟練度</em>」「<em>改修</em>」のマスをクリック・右クリックして変更します</li>
 						</ol>
 					</li>
-					<li>マップ情報をセットします
+					<li value="2">必要なら、基地航空隊の情報をセットします
+						<ol>
+							<li>「艦隊」内の表の「<em>艦娘/航空隊を追加</em>」ボタンを押します</li>
+							<li>一番下の<em>基地航空隊</em>→<em>出撃</em>の順に選択します</li>
+							<li>装備・熟練度・改修をセットします</li>
+						</ol>
+					</li>
+					<li value="3">マップ情報をセットします
 						<ol>
 							<li>「マップ」内の横並びボタンから<em>出撃方面</em>を選択し、下に出現するボタンから<em>海域</em>を選択します</li>
 							<li>ボスマスなどの<em>目的地</em>をクリックします</li>
 							<li>通る<em>ルート</em>をクリックします</li>
 							<li><em>敵艦隊</em>の一覧から1つの編成を選んでクリックします</li>
+							<li>基地航空隊をセットした場合、出撃地点をクリックします</li>
 						</ol>
 					</li>
-					<li>「結果」を見ます
+					<li value="4">「結果」を見ます
 						<ul>
 							<li><em>右下</em>のマスが目的地の制空争い結果です</li>
 							<li>道中で艦載機が撃墜された分だけ制空値が減少し、目的地での制空権が予測されます</li>
 							<li>表の数字は撃墜分を差し引いた搭載数を表しています</li>
+							<li>航空隊を出撃させた場合、敵艦隊制空値の欄に制空値と確率のペアが複数表示されます。括弧内の確率で左の制空値以下まで削れることを表します</li>
 						</ul>
 					</li>
 				</ol>
@@ -97,8 +111,8 @@
 				<ol>
 					<li>基地航空隊の情報をセットします
 						<ol>
-							<li>「艦隊」内の表の「<em>艦娘を追加</em>」ボタンを押します</li>
-							<li>一番下の<em>基地航空隊</em>を選択し、<em>防空</em>を選択します</li>
+							<li>「艦隊」内の表の「<em>艦娘/航空隊を追加</em>」ボタンを押します</li>
+							<li>一番下の<em>基地航空隊</em>→<em>防空</em>の順に選択します</li>
 							<li>「<em>装備</em>」のマスをクリックして装備を選択します</li>
 							<li>艦載機熟練度と装備改修を適用する場合は、「<em>熟練度</em>」「<em>改修</em>」のマスをクリック・右クリックして変更します</li>
 							<li>表の下部の<em>基地航空隊(防空)の合計制空値</em>のうち、上に表示されている数値が防空時の制空値、下に表示されている数値がロケット戦闘機の補正を加えた数値です</li>
@@ -124,6 +138,7 @@
 					<ul>
 						<li>道中での艦載機被撃墜を考慮して制空値を計算できます</li>
 						<li>「道中で戦闘機を落とされても目的地で航空優勢を取りたい」といった需要にある程度対応できます</li>
+						<li>基地航空隊による敵機撃墜後の敵制空値を計算できます</li>
 						<li>7隻以上の編成や同一艦娘の複数編成に対応できます</li>
 						<li>装備スロットを5つ持つ艦娘に対応しています</li>
 						<li>艦娘の搭載数や海域の敵編成を覚えていなくても使えます</li>
@@ -135,10 +150,9 @@
 
 				<li>できないこと
 					<ul>
-						<li>基地航空隊による敵機撃墜後の敵制空値を計算することはできません</li>
 						<li>索敵値を計算することはできません</li>
 						<li>敵の対空砲火を考慮して計算することは（自動では）できません。搭載数の初期値を手動で変更することである程度は対応できます</li>
-						<li>艦これと連動してデータを読み取ったりリアルタイム表示することはできません。手動での入力が必要です</li>
+						<li>艦これ・他サイトと連動してデータを読み取ったりリアルタイム表示することはできません。手動での入力が必要です</li>
 						<li>保存したデータをURL化して共有することはできません</li>
 					</ul>
 				</li>
@@ -151,13 +165,9 @@
 					<li>海域名の上に情報収集中と書かれている場合は情報（マップ・敵編成・敵制空値）の追加が遅れている可能性があります</li>
 					<li>本来、敵制空値が0の状況で航空戦が発生した場合は味方の制空値が0でも制空権確保となります。また、索敵失敗などの要因で航空戦が発生しなかった場合は互いの制空値に関わらず制空権は状態となり、一方で航空機の被撃墜は発生しません。そのような細かい挙動をこのシミュレータでは正確に再現していません
 					</li>
-					<li>深海棲艦の制空値が未確定の場合、制空値に「?」が付きます。甲作戦の敵はそれっぽい値が入っていることが多く、乙・丙・丁作戦の敵は甲作戦と同じ値が入っているか0になっていることが多いです</li>
-					<li>基地航空隊はスロット<del>[12, 12, 12, 12]</del><ins>[18, 18, 18, 18]</ins>の艦娘扱いで実装しています。「艦娘を追加」から選択してください
-					</li>
-					<li>艦娘に偵察機や飛行艇を装備できないのは今のところ仕様です（制空争いに関わらないため）</li>
-					<li>基地航空隊が行う航空戦では偵察機も制空争いに加わります。味方の偵察機は基地航空隊に装備可能なので通常の操作で計算可能ですが、敵の分は▼深海棲艦単体を追加 から別途追加する必要があります
-					</li>
-					<li>▲結果 のボーキ消費量は制空争い分のみの期待値であり、多くの場合は実際のボーキ消費量と一致しません</li>
+					<li><del>深海棲艦の制空値が未確定の場合、制空値に「?」が付きます。甲作戦の敵はそれっぽい値が入っていることが多く、乙・丙・丁作戦の敵は甲作戦と同じ値が入っているか0になっていることが多いです</del></li>
+					<li>艦娘に偵察機や飛行艇を装備できないのは仕様です（制空争いに関わらないため）</li>
+					<li>▲結果 のボーキ消費は制空争い分のみの期待値であり、多くの場合は実際のボーキ消費量と一致しません</li>
 					<li>データはブラウザのローカルストレージに保存されます。保存を拒否した場合、別の端末やブラウザを使用した場合、ブラウザのデータを削除した場合などはデータの引き継ぎができません</li>
 					<li>▲編成 の表内に表示される攻撃力は、通常艦隊・本隊・単縦陣・同航戦・無損傷・砲撃戦・対水上時のキャップ前攻撃力です。
 					    装備ボーナスによる火力上昇は今のところ考慮されません。「艦爆」は爆装10、「艦攻」は雷装13として計算します。
@@ -240,14 +250,14 @@
 						</thead>
 						<tfoot>
 							<tr>
-								<th colspan="6">艦娘の合計制空値</th>
-								<td colspan="2" id="艦娘合計制空値" class="num">0</td>
-								<td>-</td>
+								<td colspan="6">艦娘の合計制空値</th>
+								<td colspan="2" id="艦娘合計制空値" class="num empty l">0</td>
+								<td class="empty"></td>
 							</tr>
 							<tr>
-								<th colspan="6">基地航空隊(防空)の合計制空値</th>
-								<td colspan="2" class="num"><span id="基地航空隊合計制空値" >0</span><br><span id="基地航空隊ロケット戦闘機込制空値"></span></td>
-								<td>-</td>
+								<td colspan="6">基地航空隊(防空)の合計制空値</th>
+								<td colspan="2" class="num empty l"><span id="基地航空隊合計制空値" >0</span><br><span id="基地航空隊ロケット戦闘機込制空値"></span></td>
+								<td class="empty"></td>
 							</tr>
 						</tfoot>
 					</table>
@@ -308,6 +318,7 @@
 	</section>
 
 
+
 	<section>
 		<h2 class="opener" id="sec_マップ">マップ</h2>
 		<div class="inner">
@@ -345,6 +356,9 @@
 			</div>
 			<div id="敵艦隊選択親">
 				<h3>敵艦隊選択</h3>
+			</div>
+			<div id="航空隊選択親" hidden>
+				<h3>航空隊出撃ポイント選択</h3>
 			</div>
 
 			<h3 class="opener closed" id="敵艦隊詳細">敵艦隊詳細</h3>
@@ -417,7 +431,15 @@
 		<div class="inner">
 			<div id="結果一行親"></div>
 			<div id="結果親"></div>
-			<div id="結果オプション">
+		</div>
+	</section>
+
+
+	<section>
+		<h2 class="opener" id="sec_設定">設定</h2>
+		<div class="inner 設定項目">
+			<h3>結果関連</h3>
+			<div>
 				<p><label><input type="checkbox" id="平均で計算">撃墜数を最大ではなく平均で計算する</label></p>
 				<p><label><input type="checkbox" id="搭載1で計算">2戦目以降、艦戦・水戦以外を搭載数1扱いで計算する</label><span class="kome"
 						data-help="道中の敵の対空砲火を多めに見積もりたい場合にチェックを入れてください">[?]</span></p>
@@ -428,16 +450,33 @@
 				<p><label><input type="checkbox" checked="true" id="制空境界グラフを表示する">劣勢・拮抗・優勢・確保に必要な制空値をグラフで表示する</label>
 				</p>
 				<p><label><input type="checkbox" id="制空境界値を表示する">劣勢・拮抗・優勢・確保に必要な制空値を数値で表示する</label></p>
+				<p><label><input type="checkbox" id="空襲結果を表示する">空襲に対する防空結果表を表示する</label></p>
+			</div>
+			
+			<h3>基地航空隊シミュレーション関連</h3>
+			<div>
+				<p>シミュレート回数 <input type="number" value="10000" min="1000" max="1000000" step="1000" id="シミュレート回数">
+				<span class="kome" data-help="回数が多ければ多いほど計算に時間がかかりますが精度が向上します">[?]</span></p>
+				<p>上位<input type="number" value="90" min="1" max="99" step="1" id="累積確率ボーダー">%の制空値を使用する
+				<span class="kome" data-help="敵艦隊に基地航空隊を送ると敵制空値が確率的に分布します。自艦隊との制空争いにおいてどの値を採用するかを設定します">[?]</span></p>
 			</div>
 		</div>
 	</section>
-
 
 	<section>
 		<h2 class="opener closed" id="sec_更新履歴">更新履歴</h2>
 		<div class="inner hide">
 			<dl id="his" itemscope itemtype="http://schema.org/SoftwareApplication">
-				<dt><time itemprop="dateModified" datetime="2019-12-08+0900" content="2019-12-08+0900">2019-12-08</time></dt>
+				<dt><time itemprop="dateModified" datetime="2020-01-26+0900" content="2020-01-26+0900">2020-01-26</time></dt>
+				<dd>基地航空隊による敵制空値削りの計算機能を追加</dd>
+				<dd>基地航空隊の制空状況・敵制空値の取る確率をグラフで確認できる機能を追加</dd>
+				<dd>基地航空隊(2016春仕様)を削除（必要な場合は搭載数を12に設定してください）</dd>
+				<dd>敵制空値が暫定の場合に値に「?」を付ける機能を一時削除</dd>
+				<dd>ルート上の敵制空値を手動で設定できる機能を一時削除</dd>
+				<dd class="kancolle">「軽巡ホ級」など、水上偵察機を持つ深海棲艦データを追加</dd>
+				<dd>▲設定 を追加</dd>
+				<dd class="beg_of_month">防空結果表を非表示にする設定を追加</dd>
+				<dt>2019-12-08</dt>
 				<dd class="kancolle">「空母棲姫改」の深海棲艦データを追加</dd>
 				<dt>2019-12-03</dt>
 				<dd class="kancolle beg_of_month">「神州丸」「神州丸改」の艦娘データを追加</dd>
@@ -538,9 +577,9 @@
 				<dd class="kancolle">「欧州水姫」「欧州水姫-壊」「戦艦仏棲姫 バカンスmode」「戦艦仏棲姫 バカンスmode-壊」の深海棲艦データを追加</dd>
 				<dd class="kancolle">「Gotland」「Gotland改」の艦娘データを追加</dd>
 				<dt>2018-09-09～</dt>
-				<dd class="kancolle beg_of_month">期間限定海域「抜錨！連合艦隊、西へ！」の海域データを追加</dd>
 				<dd class="kancolle">「集積地棲姫 バカンスmode」「泊地水鬼 バカンスmode」「護衛独還姫」「護衛独還姫-壊」の深海棲艦データを追加</dd>
 				<dd class="kancolle">「神鷹」「神鷹改」「神鷹改二」の艦娘データを追加</dd>
+				<dd class="kancolle beg_of_month">期間限定海域「抜錨！連合艦隊、西へ！」の海域データを追加</dd>
 				<dt>2018-08-17</dt>
 				<dd class="kancolle">艦これ第二期への対応を開始</dd>
 				<dd class="kancolle">#7-1「ブルネイ泊地沖」の海域データを追加</dd>
@@ -960,6 +999,8 @@
 	・航路がカーブしている時でも矢印を正しい方向にできる
 	・航路を選んだ時の色変更を矢印にも適用できる
 ・ページ再読込時にルートと可能なら敵編成を選択状態にする
+・制空値を持たない敵を非表示に（特にマスの対艦隊制空値が0の場合）
+・敵艦隊詳細でツ級: 0(対航空隊: 1)みたいにする
 
 ▲結果 関連
 ・防空時の敵機撃墜率
@@ -967,13 +1008,7 @@
 	・または被撃墜割合を指定してドット打つ？ バーは最大最小
 ・ページ再読込時に結果表を表示する
 ・敵制空値入力画面で直接入力以外に敵編成一覧から選べるようにする
-
-基地航空隊対応関連
-・装備データを入れる
-	・（優先度低）道中の対空砲火シミュレーションもできるかも（願望）
-・制空値を毎回計算する
-・航空隊の出撃ポイント設定
-・敵制空値減少のシミュレーション（結果の出し方は要検討　下位何%相当の値を表示するかを設定する感じ？）
+・（優先度低）道中の対空砲火シミュレーション
 ・基地航空隊の制空値は直接入力できるようにしたい
 
 その他
@@ -981,7 +1016,6 @@
 	艦種選択の並び替えorその他枠の追加　その設定
 	艦載機の表示順の設定
 	艦載機のユーザー定義
-	内部熟練度の設定はこちらに移動　装備の種類ごとにそれぞれ設定できるように
 ・データのインポート・エクスポート
 ・ツールチップ内スクロール位置記憶
 ・（優先度低）数値を小数点以下や「?」を除いて右揃えにする
@@ -1055,8 +1089,9 @@
 							<dd>自らによる検証</dd>
 							<dt>攻撃力</dt>
 							<dd><a href="https://wikiwiki.jp/kancolle/戦闘について">戦闘について - 艦隊これくしょん -艦これ- 攻略 Wiki*</a></dd>
-
-
+							<dt>装備カテゴリ</dt>
+							<dd>七四式電子観測儀の
+							<a href="https://github.com/andanteyk/ElectronicObserver/blob/develop/ElectronicObserver/Other/Information/apilist.txt">Githubリポジトリ内データ</a> Copyright (c) 2014 Andante</dd>
 						</dl>
 					</li>
 

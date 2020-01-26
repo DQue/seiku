@@ -34,6 +34,21 @@ const 設定項目={
 		"default":true,
 		"ID":"制空境界グラフを表示する",
 	},
+	"num_simulate":{
+		"type":"number",
+		"default":10000,
+		"ID":"シミュレート回数",
+	},
+	"cumulative_threshold":{
+		"type":"number",
+		"default":95,
+		"ID":"累積確率ボーダー",
+	},
+	"show_kushu":{
+		type:"boolean",
+		"default":true,
+		"ID":"空襲結果を表示する",
+	},
 }
 
 const set_HTML要素操作=()=>{
@@ -45,13 +60,14 @@ const set_HTML要素操作=()=>{
 				$(_id).checked=O.settings[i];
 			}else if(type==="number"){
 				//input[type="number"]
+				$(_id).value=O.settings[i];
 			}else if(type==="string"){
-				//select-option
+				//select, option
 			}
 		}
 		
 		if($(_id)){ //eventListenerを設定
-			$(_id).addEventListener("click",(e)=>{return set_ev発生(e,type,i)},false);
+			$(_id).addEventListener("change",(e)=>{return set_ev発生(e,type,i)},false);
 		}
 	}
 }
@@ -65,8 +81,17 @@ const set_デフォルト値設定=()=>{
 }
 
 const set_ev発生=(e,type,name)=>{
-	if(type==="boolean"){
-		O.settings[name]=e.target.checked;
+	switch(type){
+		case "boolean":
+			O.settings[name]=e.target.checked;
+			break;
+		case "number":
+			O.settings[name]=Number(e.target.value);
+			break;
+		case "string":
+			//select, option
+			break;
 	}
+	if(eq(name,["num_simulate","cumulative_threshold"])) O.kouku_applied=false;
 	二_結果テーブルを表示();
 }
