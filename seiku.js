@@ -2819,13 +2819,11 @@ const 一_敵制空テーブルを生成=()=>{
 			if(r[i]===k[j]) list[i].push(j); //i戦目にj番目の航空隊が来る
 		}
 		
-		O.eseikus[i]={};
+		if(O.eseikus[i]===undefined) O.eseikus[i]={};
 		if(i===ss-1){ //目的地
-			if(O.eseikus[i].ユーザ設定!==true){
-				O.eseikus[i].制空値=O.eseiku;
-				O.eseikus[i].敵編成=deepcopy(O.etable);
-			}
-		}else{
+			O.eseikus[i].制空値=O.eseiku;
+			O.eseikus[i].敵編成=deepcopy(O.etable);
+		}else{ //道中
 			O.eseikus[i].制空値=零_敵最大制空値(r[i]);
 			O.eseikus[i].敵編成=零_敵最大制空値編成(r[i]);
 		}
@@ -2839,9 +2837,6 @@ const 一_敵制空テーブルを生成=()=>{
 				O.eseikus[i].累積確率=o.cumu;
 				O.eseikus[i].ボーダー制空値=o.set;
 				O.eseikus[i].制空状況=o.status;
-				O.kouku_bk=deepcopy(O.eseikus[i]);
-			}else if(O.kouku_bk.ボーダー制空値){ //前回の結果を再利用する
-				O.eseikus[i]=deepcopy(O.kouku_bk);
 			}
 		}
 		
@@ -2926,8 +2921,8 @@ function 二_結果フッタを生成(tableData, ss) {
 		//敵艦隊制空値 ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- 
 		var td3 = tr3.appendChild(ce("td"));
 		td3.classList.add("num")
-//		td3.classList.add("clickable", "ポップアップ起動ボタン", "num");
-//		td3.addEventListener("click", (function (ev, i) { return function (ev) { 二_敵制空値変更を表示(ev, i); } })(0, i)); //制空値設定機能　今度直す
+		td3.classList.add("clickable", "ポップアップ起動ボタン", "num");
+		td3.addEventListener("click", (function (ev, i) { return function (ev) { 二_敵制空値変更を表示(ev, i); } })(0, i));
 
 		if (i <= ss - 1) { //道中・目的地
 			td3.appendChild(二_航空隊後敵制空値を生成(O.eseikus[i]));
@@ -3042,8 +3037,8 @@ function 二_敵制空値変更を生成(i) {
 	var fo = el.appendChild(ce("form"));
 	fo.addEventListener("submit", function (e) {
 		e.preventDefault();
-		O.eseikus[i].制空値 = Math.max(0, parseInt($("敵制空値変更_input").value));
-		O.eseikus[i].ユーザ設定=true;
+		O.eseikus[i].ユーザ設定値 = Math.max(0, parseInt($("敵制空値変更_input").value));
+		if(O.eseikus[i].制空値===O.eseikus[i].ユーザ設定値) O.eseikus[i].ユーザ設定値=undefined;
 		
 		非表示("敵制空値変更");
 		二_結果テーブルを表示();
@@ -3297,7 +3292,7 @@ console.timeEnd(`航空隊シミュ(${シミュ回数}回)`)
 }
 
 const 零_使用制空値=(o)=>{
-	if(o.ユーザ設定) return o.制空値;
+	if(o.ユーザ設定値) return o.ユーザ設定値;
 	if(o.ボーダー制空値) return o.ボーダー制空値;
 	return o.制空値;
 }
@@ -3359,11 +3354,20 @@ function 一_戦闘数を取得() {
 }
 const 二_航空隊後敵制空値を生成=(o)=>{
 	const el=ce("ul");
-	if(o.ボーダー制空値){
+	el.classList.add("航空隊後敵制空値")
+	if(o.ユーザ設定値!==undefined){
 		const li=el.appendChild(ce("li"));
-		li.appendChild(ct(`${o.ボーダー制空値}(${O.settings.cumulative_threshold}%)`));
+		li.appendChild(ct(`${o.ユーザ設定値}(設定値)`));
 		li.classList.add("採用制空値");
+	}else{
+		if(o.ボーダー制空値){
+			const li=el.appendChild(ce("li"));
+			li.appendChild(ct(`${o.ボーダー制空値}(${O.settings.cumulative_threshold}%)`));
+			li.classList.add("採用制空値");
+		}
 	}
+	
+	
 	if(o.上位制空値){
 		for(let i in o.上位制空値){
 			if(i*100===parseInt(O.settings.cumulative_threshold)) continue;
@@ -3375,11 +3379,12 @@ const 二_航空隊後敵制空値を生成=(o)=>{
 		li.appendChild(ct(`${o.制空値}(元)`));
 		li.classList.add("非採用制空値");
 	}else{
+		let str="";
+		if(o.ユーザ設定値!==undefined) str="(元)";
 		const li=el.appendChild(ce("li"));
-		li.appendChild(ct(o.制空値));
+		li.appendChild(ct(o.制空値+str));
 		li.classList.add("採用制空値");
 	}
-	el.classList.add("航空隊後敵制空値")
 	return el;
 }
 
@@ -4034,7 +4039,7 @@ const 零_敵制空初期値=()=>{
 		制空値分布:new Map(),
 		艦隊:[],
 		暫定:true,
-		ユーザ設定:false,
+		ユーザ設定値:undefined,
 	};
 	return o;
 }

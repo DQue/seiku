@@ -18,7 +18,7 @@
 	<script src="data_migration.js?2"></script>
 	
 	<script src="data_version.js"></script>
-	<script src="seiku.js?8"></script>
+	<script src="seiku.js?9"></script>
 	<script src="euc.js?1"></script>
 	<script src="map.js?3"></script>
 	<script src="toggle.js?1"></script>
@@ -172,6 +172,7 @@
 					<li>▲編成 の表内に表示される攻撃力は、通常艦隊・本隊・単縦陣・同航戦・無損傷・砲撃戦・対水上時のキャップ前攻撃力です。
 					    装備ボーナスによる火力上昇は今のところ考慮されません。「艦爆」は爆装10、「艦攻」は雷装13として計算します。
 					    偵察機等の火力は考慮されません。</li>
+					<li>▲結果 の敵制空値を手動入力した場合、航空隊による制空削りは計算されずに入力した値がそのまま使用されます</li>
 				</ul>
 			</div>
 
@@ -467,12 +468,14 @@
 		<h2 class="opener closed" id="sec_更新履歴">更新履歴</h2>
 		<div class="inner hide">
 			<dl id="his" itemscope itemtype="http://schema.org/SoftwareApplication">
-				<dt><time itemprop="dateModified" datetime="2020-01-26+0900" content="2020-01-26+0900">2020-01-26</time></dt>
+				<dt><time itemprop="dateModified" datetime="2020-01-27+0900" content="2020-01-27+0900">2020-01-27</time></dt>
+				<dd>ルート上の敵制空値を手動で設定できる機能を復活</dd>
+				<dt>2020-01-26</dt>
 				<dd>基地航空隊による敵制空値削りの計算機能を追加</dd>
 				<dd>基地航空隊の制空状況・敵制空値の取る確率をグラフで確認できる機能を追加</dd>
 				<dd>基地航空隊(2016春仕様)を削除（必要な場合は搭載数を12に設定してください）</dd>
 				<dd>敵制空値が暫定の場合に値に「?」を付ける機能を一時削除</dd>
-				<dd>ルート上の敵制空値を手動で設定できる機能を一時削除</dd>
+				<dd><del>ルート上の敵制空値を手動で設定できる機能を一時削除</del></dd>
 				<dd class="kancolle">「軽巡ホ級」など、水上偵察機を持つ深海棲艦データを追加</dd>
 				<dd>▲設定 を追加</dd>
 				<dd class="beg_of_month">防空結果表を非表示にする設定を追加</dd>
