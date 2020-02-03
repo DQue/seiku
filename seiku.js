@@ -122,6 +122,7 @@ function getMousePos(e) { return { x: e.pageX, y: e.pageY, ox: e.offsetX } }
 var K = {};
 var O = {};
 var M = {};
+let C={};
 O.table = [];
 O.etable = [];
 O.route = [];
@@ -146,6 +147,7 @@ window.addEventListener("DOMContentLoaded", function () {
 		if (localStorage.seikuData !== undefined) {
 			O = JSON.parse(localStorage.seikuData);
 			データ移行(O);
+			O.kouku_show_detail=undefined;
 
 			if (O.filter !== undefined) {
 				二_マップフィルタチェックボックス();
@@ -160,7 +162,7 @@ window.addEventListener("DOMContentLoaded", function () {
 		}
 
 		if (O.settings === undefined) O.settings = {};
-		O.kouku_set=false;
+		O.kouku_calc=false,O.kouku_recalc=false;
 		set_デフォルト値設定();
 		set_HTML要素操作();
 		二_自艦隊の表を更新();
@@ -262,7 +264,8 @@ const 二_艦娘を入れ替え = (from, to) => {
 	const z1=O.table[from_i].data.kaizou;
 	const z2=O.table[to_i].data.kaizou;
 	if((z1==="出撃" || z2==="出撃")&&(k1==="基地航空隊"||k2==="基地航空隊")){
-		二_航空隊出撃ポイント選択を表示()
+		二_航空隊出撃ポイント選択を表示();
+		二_結果チャートをリセット();
 		二_結果テーブルを表示();
 	}
 	二_自艦隊の表を更新();
@@ -328,12 +331,6 @@ const 二_艦娘追加を生成=(idx)=>{
 		ei.appendChild(ct("はずす"));
 		ei.classList.add("clickable")
 		ei.addEventListener("click", function (e) {
-			const kanmusu=一_表のセルデータ取得(idx,"kanmusu");
-			const kaizou=一_表のセルデータ取得(idx,"kaizou");
-			if(kaizou==="出撃" && kanmusu==="基地航空隊"){
-				二_航空隊出撃ポイント選択を表示();
-				O.kouku_applied=false;
-			}
 			二_艦娘をはずす(idx);
 			二_艦娘選択ウィンドウを隠す();
 		});
@@ -395,8 +392,9 @@ function 二_艦娘選択を生成(e, idx, add) {
 						}
 						二_艦娘選択ウィンドウを隠す();
 						if(艦娘名==="基地航空隊" && 改造度==="出撃"){
-							O.kouku_applied=false;
+							O.kouku_recalc=true;
 							二_航空隊出撃ポイント選択を表示();
+							二_結果チャートをリセット();
 							二_結果テーブルを表示();
 						}
 						二_自艦隊の表を更新();
@@ -552,10 +550,6 @@ const 二_装備変更=(e, idx, di)=>{
 	} else {
 		一_表の搭載数をデフォルトに変更(idx, 一_表のセルデータ取得(idx, "kaizou"), di);
 	}
-	if(kaizou==="出撃" && kanmusu==="基地航空隊"){
-		O.kouku_applied=false;
-		二_結果テーブルを表示();
-	}
 	二_自艦隊の表を更新();
 }
 
@@ -659,8 +653,8 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 				chk.addEventListener("click", function (e) {
 					一_表のセルデータ変更(idx, "hidden", e.target.checked);
 					if(tableData.kaizou==="出撃" && tableData.kanmusu==="基地航空隊"){
-						O.kouku_applied=false;
 						二_航空隊出撃ポイント選択を表示();
+						二_結果チャートをリセット();
 						二_結果テーブルを表示();
 					}
 					二_自艦隊の表を更新();
@@ -724,8 +718,10 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 						(function (e, idx, j) {
 							return function () {
 								const kanmusu=一_表のセルデータ取得(idx,"kanmusu");
+								const kaizou_before=一_表のセルデータ取得(idx,"kaizou");
 								一_表のセルデータ変更(idx, "kaizou", j);
-								if(j==="出撃" && kanmusu==="基地航空隊"){
+								if(kanmusu==="基地航空隊" && (j==="出撃" || kaizou_before==="出撃")){
+									二_結果チャートをリセット();
 									二_航空隊出撃ポイント選択を表示();
 								}
 								二_自艦隊の表を更新();
@@ -1045,7 +1041,6 @@ function 二_搭載数変更を生成(t, idx, i) {
 		const kanmusu=一_表のセルデータ取得(idx, "kanmusu");
 		const kaizou=一_表のセルデータ取得(idx, "kaizou");
 		if(kaizou==="出撃" && kanmusu==="基地航空隊"){
-			O.kouku_applied=false;
 			一_敵制空テーブルを生成();
 		}
 		二_自艦隊の表を更新();
@@ -1162,7 +1157,15 @@ function 二_改修を変更(idx, di, s) {
 	二_自艦隊の表を更新();
 }
 function 二_艦娘をはずす(idx) {
+	const kanmusu=一_表のセルデータ取得(idx,"kanmusu");
+	const kaizou=一_表のセルデータ取得(idx,"kaizou");
 	一_艦娘をはずす(idx);
+	if(kaizou==="出撃" && kanmusu==="基地航空隊"){
+		二_航空隊出撃ポイント選択を表示();
+		二_結果チャートをリセット();
+		O.kouku_calc=false;
+		O.kouku_recalc=false;
+	}
 	二_自艦隊の表を更新();
 }
 function 二_装備にドロップされた(e, idx, i) {
@@ -1333,6 +1336,12 @@ function 一_表のセルデータ変更(idx, shu, data, di) {
 			一_表のセルデータ変更(idx, "tousai", 4, di); //変更した装備が偵察機なら4に変更
 		} else {
 			一_表の搭載数をデフォルトに変更(idx, 一_表のセルデータ取得(idx, "kaizou"), di)
+		}
+	}
+	
+	if(d.kaizou==="出撃" && d.kanmusu==="基地航空隊"){
+		if(shu!=="seiku" && shu!=="teiho" && shu!=="shoukei"){
+			O.kouku_recalc=true;
 		}
 	}
 }
@@ -1704,7 +1713,11 @@ function 二_海域選択を表示(e) {
 	$("航空隊選択親").classList.remove("chked");
 	O.kouku=[];
 	O.kouku_set=false;
-	O.kouku_applied=false;
+	O.kouku_calc=false;
+	if(C&&C.c1){
+		C.c1.unload();
+		C.c2.unload();
+	}
 	
 	$("マップ").classList.remove("chked");
 
@@ -1776,7 +1789,8 @@ function 二_海域確定(e) {
 	$("ルート選択親").classList.remove("chked");
 	隠す("敵艦隊選択");
 	$("敵艦隊選択親").classList.remove("chked");
-	O.kouku_applied=false;
+	O.kouku_calc=false;
+	二_結果チャートをリセット();
 	二_航空隊出撃ポイント選択を表示();
 
 	const mapName=マス配置データ対応表[O.hou][O.kai];
@@ -1939,13 +1953,19 @@ function 二_敵艦隊選択を生成(masu) {
 					O.eseikus[O.eseikus.length - 1] = 零_敵制空初期値();
 					$("敵艦隊選択親").classList.add("chked");
 					$("敵艦隊選択親").querySelector("h3").dataset.selected = `敵編成：${零_敵艦隊一行()}`;
-					O.kouku_applied=false;
+					O.kouku_recalc=true;
 					二_結果テーブルを表示();
 				}
 			})("", hs));
 			el.appendChild(li);
 		}
 		return el;
+	}
+}
+const 二_結果チャートをリセット=()=>{
+	if(C&&C.c1){
+		C.c1.unload();
+		C.c2.unload();
 	}
 }
 const 二_航空隊出撃ポイント選択を表示=()=>{
@@ -2005,8 +2025,9 @@ const 二_航空隊出撃ポイント選択を表示=()=>{
 			O.kouku[idx]=i;
 			if(O.kouku.length===num_w && O.kouku.filter(a=>a!==undefined).length===num_w){
 				$("航空隊選択親").classList.add("chked");
-				O.kouku_applied=false;
+				O.kouku_calc=true
 				O.kouku_set=true;
+				O.kouku_recalc=true;
 				二_結果テーブルを表示();
 			}
 			e.target.classList.add("selected");
@@ -2827,22 +2848,21 @@ const 一_敵制空テーブルを生成=()=>{
 			O.eseikus[i].制空値=零_敵最大制空値(r[i]);
 			O.eseikus[i].敵編成=零_敵最大制空値編成(r[i]);
 		}
-		if(O.kouku_set && list[i].length>0){
-			if(O.kouku_applied!==true){ //航空隊シミュする
-				apl=true;
-				const o=一_航空隊シミュ(list[i], O.eseikus[i].敵編成);
-				O.eseikus[i].上位制空値=o.top;
-				O.eseikus[i].制空値分布=o.count;
-				O.eseikus[i].確率分布=o.dist;
-				O.eseikus[i].累積確率=o.cumu;
-				O.eseikus[i].ボーダー制空値=o.set;
-				O.eseikus[i].制空状況=o.status;
-			}
+		if(O.kouku_set && O.kouku_calc && O.kouku_recalc && list[i].length>0){
+			apl=true;
+			const o=一_航空隊シミュ(list[i], O.eseikus[i].敵編成);
+			O.eseikus[i].上位制空値=o.top;
+			O.eseikus[i].制空値分布=o.count;
+			O.eseikus[i].確率分布=o.dist;
+			O.eseikus[i].累積確率=o.cumu;
+			O.eseikus[i].ボーダー制空値=o.set;
+			O.eseikus[i].制空状況=o.status;
 		}
-		
-		
 	}
-	if(apl) O.kouku_applied=true;
+	if(apl){
+		O.kouku_recalc=false;
+		if(O.kouku_show_detail>=0) 二_航空隊詳細を表示(null,O.kouku_show_detail,true);
+	}
 }
 
 
@@ -2937,7 +2957,10 @@ function 二_結果フッタを生成(tableData, ss) {
 			const btn=td42.appendChild(ce("div"));
 			btn.classList.add("選択ボタン","single");
 			btn.appendChild(ct("見る"));
-			btn.addEventListener("click",((i)=>{return (e)=>{二_航空隊詳細を表示(e,i)}})(i),false);
+			btn.addEventListener("click",((i)=>{return (e)=>{
+				二_航空隊詳細を表示(e,i,false);
+				O.kouku_show_detail=i;
+			}})(i),false);
 		}
 
 		if (O.settings.show_border === true) {
@@ -3061,24 +3084,30 @@ function 二_敵制空値変更を生成(i) {
 	})());
 	return el;
 }
-const 二_航空隊詳細を表示=(e,i)=>{
-	隠す("航空隊詳細親");
-	const ps=零_ルート上の戦闘マスを列挙();
-	const title=`${ps[i]}マス制空値詳細 敵: ${零_敵艦隊一行()}`;
-	const el=document.body.appendChild(二_可動ポップアップを生成(title));
-	el.id="航空隊詳細親";
-	el.classList.add("loong");
-	el.style.left = getMousePos(e).x+45 + "px";
-	el.style.top = getMousePos(e).y-310 + "px";
-	const el2=el.childNodes[2];
-	el2.id="航空隊詳細";
-	const el3=el2.appendChild(ce("div"));
-	const hr=el2.appendChild(ce("hr"));
-	const el4=el2.appendChild(ce("div"));
-	
-	
-	
-	const ds=[["確保","優勢","拮抗","劣勢","喪失"]];
+const 二_航空隊詳細を表示=(e, i, reflesh)=>{
+	let el,el2;
+	if(reflesh===false || document.getElementById("航空隊詳細親")===null){
+		隠す("航空隊詳細親");
+		const ps=零_ルート上の戦闘マスを列挙();
+		const title=`${ps[i]}マス制空値詳細 敵: ${零_敵艦隊一行()}`;
+		el=document.body.appendChild(二_可動ポップアップを生成(title,()=>{O.kouku_show_detail=undefined;}));
+		el.id="航空隊詳細親";
+		el.classList.add("loong");
+		el.style.left = getMousePos(e).x+45 + "px";
+		el.style.top = getMousePos(e).y-310 + "px";
+		el2=el.childNodes[2];
+		el2.id="航空隊詳細";
+		el2.appendChild(二_航空隊詳細の中身を生成(i,reflesh));
+	}else{
+		el=$("航空隊詳細親");
+		el2=el.childNodes[2];
+//		while(el2.firstChild) el2.removeChild(el2.firstChild);
+		二_航空隊詳細の中身を生成(i,reflesh);
+	}
+}
+
+const 二_航空隊詳細の中身を生成=(i,reflesh)=>{
+	let ds=[["確保","優勢","拮抗","劣勢","喪失"]];
 	const s=O.eseikus[i].制空状況;
 	for(let i=0; i<s.length; i++){
 		const ary=[];
@@ -3087,23 +3116,6 @@ const 二_航空隊詳細を表示=(e,i)=>{
 		}
 		ds.push(ary);
 	}
-	const chart1=c3.generate({
-		bindto:el3,
-		data:{
-			rows:ds,
-			type:"bar",
-			groups:[["確保","優勢","拮抗","劣勢","喪失"]],
-			colors:{"確保":graph_col[0],"優勢":graph_col[1],"拮抗":graph_col[2],"劣勢":graph_col[3],"喪失":graph_col[4]},
-		},
-		size:{width:390,height:140},
-		axis:{
-			y:{tick:{format:function(a){return 数字をn桁で切り捨て(a*100,2)+"%"}},show:false},
-			x:{tick:{format:function(a){return a+1+"波目"}}}},
-		
-	});
-	
-	
-	
 	
 	const d1=["x"];
 	const d2=["確率分布"];
@@ -3113,31 +3125,63 @@ const 二_航空隊詳細を表示=(e,i)=>{
 		d2.push(数字をn桁で切り捨て(v,4));
 		d3.push(数字をn桁で切り捨て(O.eseikus[i].累積確率.get(k),4));
 	}
-	const chart2=c3.generate({
-		bindto:el4,
-		size:{width:390,height:300},
-		data: {
-			x:"x",
-			columns: [d1,d2,d3],
-			axes:{
-				"確率分布":"y",
-				"累積確率":"y2",
+	
+	if(reflesh){
+		C.c1.load({
+			rows:ds,
+		});
+		C.c2.load({
+			columns:[d1,d2,d3],
+		});
+	}else{
+		const div=ce("div");
+		const el3=div.appendChild(ce("div"));
+		const hr=div.appendChild(ce("hr"));
+		const el4=div.appendChild(ce("div"));
+		C.c1=c3.generate({
+			bindto:el3,
+			data:{
+				rows:ds,
+				type:"bar",
+				groups:[["確保","優勢","拮抗","劣勢","喪失"]],
+				colors:{"確保":graph_col[0],"優勢":graph_col[1],"拮抗":graph_col[2],"劣勢":graph_col[3],"喪失":graph_col[4]},
 			},
-		},
-		axis:{
-			y2:{show:true,tick:{format:function(a){return 数字をn桁で切り捨て(a*100,1)+"%"}}},
-			y:{tick:{format:function(a){return 数字をn桁で切り捨て(a*100,2)+"%"}}},
-			x:{label:"制空値"},
-		},
-		tooltip:{format:{title:function(a){return `制空値:${a}`}}},
-		grid:{y:{lines:[
-			{value:0.9,text:"90%",axis:"y2",position:"start"},
-			{value:0.95,text:"95%",axis:"y2",position:"start"},
-			{value:0.5,text:"50%",axis:"y2"},
-		]}},
-	});
+			size:{width:390,height:140},
+			axis:{
+				y:{tick:{format:function(a){return 数字をn桁で切り捨て(a*100,2)+"%"}},show:false},
+				x:{tick:{format:function(a){return a+1+"波目"}}}},
+		});
+		
+		C.c2=c3.generate({
+			bindto:el4,
+			size:{width:390,height:300},
+			data: {
+				x:"x",
+				columns: [d1,d2,d3],
+				axes:{
+					"確率分布":"y",
+					"累積確率":"y2",
+				},
+			},
+			axis:{
+				y2:{show:true,tick:{format:function(a){return 数字をn桁で切り捨て(a*100,1)+"%"}}},
+				y:{tick:{format:function(a){return 数字をn桁で切り捨て(a*100,2)+"%"}}},
+				x:{label:"制空値"},
+			},
+			tooltip:{format:{title:function(a){return `制空値:${a}`}}},
+			grid:{y:{lines:[
+				{value:0.9,text:"90%",axis:"y2",position:"start"},
+				{value:0.95,text:"95%",axis:"y2",position:"start"},
+				{value:0.5,text:"50%",axis:"y2"},
+			]}},
+		});
+		return div;
+	}
+	
+	
+	
+	
 }
-
 
 
 
@@ -3920,7 +3964,7 @@ function 二_ドラッグアンドドロップリストを表示(ev) {
 	document.body.appendChild(di);
 }
 
-function 二_可動ポップアップを生成(title) {
+function 二_可動ポップアップを生成(title,onclose) {
 	M[title] = {};
 	var el = ce("div");
 	var ti = el.appendChild(ce("div"));
@@ -3935,7 +3979,7 @@ function 二_可動ポップアップを生成(title) {
 	na.classList.add("中身");
 
 	cs.appendChild(ct("▲"));
-	cs.addEventListener("click", function () { el.parentNode.removeChild(el) });
+	cs.addEventListener("click", function () { el.parentNode.removeChild(el);if(onclose) onclose(); });
 	ti.addEventListener("mousedown", function (e) { M[title].c = true; M[title].X = e.layerX; M[title].Y = e.layerY; });
 	ti.addEventListener("mouseup", function () { M[title].c = false; });
 	document.addEventListener("mousemove", function (e) {
