@@ -9,8 +9,8 @@ const eq2 = (a) => { for (let i = 0; i < a.length; i++) { if (a[i][0] != a[i][1]
 const amax = (a) => { let m = -Infinity; for (let i of a) { m = m > i ? m : i } return m; }
 const 隠す = (a) => { if ($(a)) $(a).parentNode.removeChild($(a)); }
 const 非表示 = (a) => { if ($(a)) $(a).style.display = "none" }
-const R=new Map();
-const sqrt=(a)=> R[a]?R[a]:R.set(a, Math.sqrt(a)).get(a);
+const R = new Map();
+const sqrt = (a) => R[a] ? R[a] : R.set(a, Math.sqrt(a)).get(a);
 
 const 二_全部隠すか = (e) => {
 	let ispopup = false;
@@ -46,7 +46,7 @@ const 二_文字ポップアップを表示 = (e) => {
 
 	document.body.appendChild(el);
 }
-const deepcopy=(a)=>{
+const deepcopy = (a) => {
 	if (eq(typeof a, ["number", "string", "undefined", "boolean"])) {
 		return a;
 	} else if (Array.isArray(a)) { //Array
@@ -55,13 +55,13 @@ const deepcopy=(a)=>{
 			ary[i] = deepcopy(a[i]);
 		}
 		return ary;
-	}else if(Object.getPrototypeOf(a)===Map.prototype) { //Map
-		const m=new Map();
-		for(let [k,v] of a){
-			m.set(k,deepcopy(v));
+	} else if (Object.getPrototypeOf(a) === Map.prototype) { //Map
+		const m = new Map();
+		for (let [k, v] of a) {
+			m.set(k, deepcopy(v));
 		}
 		return m;
-	}else{ //Object
+	} else { //Object
 		const o = {};
 		for (let i in a) {
 			o[i] = deepcopy(a[i]);
@@ -122,7 +122,7 @@ function getMousePos(e) { return { x: e.pageX, y: e.pageY, ox: e.offsetX } }
 var K = {};
 var O = {};
 var M = {};
-let C={};
+let C = {};
 O.table = [];
 O.etable = [];
 O.route = [];
@@ -147,7 +147,7 @@ window.addEventListener("DOMContentLoaded", function () {
 		if (localStorage.seikuData !== undefined) {
 			O = JSON.parse(localStorage.seikuData);
 			データ移行(O);
-			O.kouku_show_detail=undefined;
+			O.kouku_show_detail = undefined;
 
 			if (O.filter !== undefined) {
 				二_マップフィルタチェックボックス();
@@ -162,7 +162,7 @@ window.addEventListener("DOMContentLoaded", function () {
 		}
 
 		if (O.settings === undefined) O.settings = {};
-		O.kouku_calc=false,O.kouku_recalc=false;
+		O.kouku_calc = false, O.kouku_recalc = false;
 		set_デフォルト値設定();
 		set_HTML要素操作();
 		二_自艦隊の表を更新();
@@ -199,7 +199,7 @@ window.addEventListener("DOMContentLoaded", function () {
 			装備名 = e.dataTransfer.getData("text/x-name");
 		}
 		if (装備名 !== "" && 装備名 !== "-" && 装備名 !== "艦攻" && 装備名 !== "艦爆") {
-			const s=wiki_表記(装備名);
+			const s = wiki_表記(装備名);
 			window.open(wiki_url(s));
 		}
 	}, false);
@@ -221,7 +221,7 @@ window.addEventListener("DOMContentLoaded", function () {
 		}
 	}, false);
 	const helps = document.getElementsByClassName("popup_help");
-	for(let i=0; i<helps.length; i++){
+	for (let i = 0; i < helps.length; i++) {
 		helps[i].addEventListener("click", 二_文字ポップアップを表示, true);
 	}
 
@@ -246,6 +246,7 @@ window.addEventListener("DOMContentLoaded", function () {
 	setInterval(一_最新バージョンチェック, 60000);
 
 	$("凡例親").appendChild(makeMapSVG("Hanrei", "凡例"));
+	二_マップを初期化(true);
 
 }, false);
 const 二_艦娘を入れ替え = (from, to) => {
@@ -258,12 +259,12 @@ const 二_艦娘を入れ替え = (from, to) => {
 	const temp = deepcopy(O.table[from_i]);
 	O.table[from_i] = deepcopy(O.table[to_i]);
 	O.table[to_i] = deepcopy(temp);
-	
-	const k1=O.table[from_i].data.kanmusu;
-	const k2=O.table[to_i].data.kanmusu;
-	const z1=O.table[from_i].data.kaizou;
-	const z2=O.table[to_i].data.kaizou;
-	if((z1==="出撃" || z2==="出撃")&&(k1==="基地航空隊"||k2==="基地航空隊")){
+
+	const k1 = O.table[from_i].data.kanmusu;
+	const k2 = O.table[to_i].data.kanmusu;
+	const z1 = O.table[from_i].data.kaizou;
+	const z2 = O.table[to_i].data.kaizou;
+	if ((z1 === "出撃" || z2 === "出撃") && (k1 === "基地航空隊" || k2 === "基地航空隊")) {
 		二_航空隊出撃ポイント選択を表示();
 		二_結果チャートをリセット();
 		二_結果テーブルを表示();
@@ -320,12 +321,12 @@ function 二_五十音順艦娘リストを生成(a) {
 	}
 	return 五十音順リスト;
 }
-const 二_艦娘追加を生成=(idx)=>{
+const 二_艦娘追加を生成 = (idx) => {
 	if ($("艦娘追加")) $("艦娘追加").parentNode.removeChild($("艦娘追加"));
-	
+
 	const el = ce("ul");
-	const add=零_艦娘数()<=idx;
-	
+	const add = 零_艦娘数() <= idx;
+
 	if (!add) { //艦娘追加ではない==変更の場合は"はずす"選択肢を追加
 		var ei = ce("li");
 		ei.appendChild(ct("はずす"));
@@ -339,7 +340,7 @@ const 二_艦娘追加を生成=(idx)=>{
 
 	for (var i = 0; i < 艦種.length; i++) {
 		var e1 = ce("li");
-		const 種=艦種[i];
+		const 種 = 艦種[i];
 		e1.appendChild(ct(種));
 		el.appendChild(e1);
 		e1.addEventListener("click", function (e) { O.cl = true; 二_艦娘選択を表示(e, idx, add) });     //一度クリックするとmouseoverで変更しないようにする
@@ -383,22 +384,24 @@ function 二_艦娘選択を生成(e, idx, add) {
 				e2.appendChild(e22)
 				for (var k in 艦娘データ[l[i][j]]["データ"]) {
 					var e3 = ce("span");
-					e3.classList.add("艦娘改造度","選択ボタン")
-					e3.addEventListener("click", ((idx,艦娘名,改造度)=>{return function (e) {
-						if(add){
-							一_艦娘を追加(idx,艦娘名,改造度);
-						}else{
-							一_艦娘を変更(idx,艦娘名,改造度);
+					e3.classList.add("艦娘改造度", "選択ボタン")
+					e3.addEventListener("click", ((idx, 艦娘名, 改造度) => {
+						return function (e) {
+							if (add) {
+								一_艦娘を追加(idx, 艦娘名, 改造度);
+							} else {
+								一_艦娘を変更(idx, 艦娘名, 改造度);
+							}
+							二_艦娘選択ウィンドウを隠す();
+							if (艦娘名 === "基地航空隊" && 改造度 === "出撃") {
+								O.kouku_recalc = true;
+								二_航空隊出撃ポイント選択を表示();
+								二_結果チャートをリセット();
+								二_結果テーブルを表示();
+							}
+							二_自艦隊の表を更新();
 						}
-						二_艦娘選択ウィンドウを隠す();
-						if(艦娘名==="基地航空隊" && 改造度==="出撃"){
-							O.kouku_recalc=true;
-							二_航空隊出撃ポイント選択を表示();
-							二_結果チャートをリセット();
-							二_結果テーブルを表示();
-						}
-						二_自艦隊の表を更新();
-					}})(idx,l[i][j],k));
+					})(idx, l[i][j], k));
 					e3.classList.add("clickable");
 					e3.appendChild(ct(k));
 					e2.appendChild(e3);
@@ -471,9 +474,9 @@ function 二_装備変更を表示(e, idx, di) {
 		});
 		li.classList.add("clickable");
 		li.classList.add(艦戦データ[i].種類, "艦載機");
-		if(零_種類(i)==="艦上爆撃機" && 艦戦データ[i].対空値 >= 4) li.classList.add("対空値有");
-		if(艦戦データ[i].夜間航空機===true) li.classList.add("夜間航空機");
-		
+		if (零_種類(i) === "艦上爆撃機" && 艦戦データ[i].対空値 >= 4) li.classList.add("対空値有");
+		if (艦戦データ[i].夜間航空機 === true) li.classList.add("夜間航空機");
+
 		uls[艦戦データ[i].種類].appendChild(li);
 	}
 
@@ -540,10 +543,10 @@ function 二_全スロットの改修値をいじる(a) {
 	}
 	二_自艦隊の表を更新();
 }
-const 二_装備変更=(e, idx, di)=>{
+const 二_装備変更 = (e, idx, di) => {
 	var t = e.target.dataset.value;
-	const kanmusu=一_表のセルデータ取得(idx, "kanmusu");
-	const kaizou=一_表のセルデータ取得(idx, "kaizou");
+	const kanmusu = 一_表のセルデータ取得(idx, "kanmusu");
+	const kaizou = 一_表のセルデータ取得(idx, "kaizou");
 	一_表のセルデータ変更(idx, "soubi", t, di);
 	if (kanmusu === "基地航空隊" && eq(零_種類(一_表のセルデータ取得(idx, "soubi", di)), ["艦上偵察機", "水上偵察機", "大型飛行艇", "陸上偵察機"])) {
 		一_表のセルデータ変更(idx, "tousai", 4, di); //偵察機を装備したときは搭載を4に
@@ -553,22 +556,22 @@ const 二_装備変更=(e, idx, di)=>{
 	二_自艦隊の表を更新();
 }
 
-const 二_自艦隊の空行を生成=(idx)=>{
-	const tb=ce("tbody");
-	const tr=tb.appendChild(ce("tr"));
-	const td1=tr.appendChild(ce("th"));
-	const td2=tr.appendChild(ce("td"));
-	
-	td1.colSpan="2";
-	td2.colSpan="7";
-	td2.classList.add("empty","c");
-	
-	const btn=td1.appendChild(ce("span"));
+const 二_自艦隊の空行を生成 = (idx) => {
+	const tb = ce("tbody");
+	const tr = tb.appendChild(ce("tr"));
+	const td1 = tr.appendChild(ce("th"));
+	const td2 = tr.appendChild(ce("td"));
+
+	td1.colSpan = "2";
+	td2.colSpan = "7";
+	td2.classList.add("empty", "c");
+
+	const btn = td1.appendChild(ce("span"));
 	btn.appendChild(ct("艦娘/航空隊を追加"));
-	btn.classList.add("ポップアップ起動ボタン","選択ボタン","single","big");
+	btn.classList.add("ポップアップ起動ボタン", "選択ボタン", "single", "big");
 	btn.addEventListener("click", function (e) { 二_艦娘追加を表示(e, idx) });
-	
-	
+
+
 	return tb;
 }
 function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 搭載数 装備 熟練度 等
@@ -614,7 +617,7 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 			e.rowSpan = rows;
 			var b = e.appendChild(ce("span"));
 			b.appendChild(ct("変更"));
-			b.classList.add("選択ボタン", "ポップアップ起動ボタン","single");
+			b.classList.add("選択ボタン", "ポップアップ起動ボタン", "single");
 			b.addEventListener("click", function (e) { 二_艦娘追加を表示(e, idx) });
 
 			//D&D設定
@@ -652,7 +655,7 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 				chk.checked = (一_表のセルデータ取得(idx, "hidden") === true) ? "checked" : "";
 				chk.addEventListener("click", function (e) {
 					一_表のセルデータ変更(idx, "hidden", e.target.checked);
-					if(tableData.kaizou==="出撃" && tableData.kanmusu==="基地航空隊"){
+					if (tableData.kaizou === "出撃" && tableData.kanmusu === "基地航空隊") {
 						二_航空隊出撃ポイント選択を表示();
 						二_結果チャートをリセット();
 						二_結果テーブルを表示();
@@ -698,7 +701,7 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 				s.target = "_blank";
 				var kn = 一_艦娘改造含み名を生成(tableData.kanmusu, tableData.kaizou);
 				if (零_艦娘データ取得(tableData.kanmusu)["データ"][tableData.kaizou]["Wikiリンク"]) {
-					const kn2=零_艦娘データ取得(tableData.kanmusu)["データ"][tableData.kaizou]["Wikiリンク"];
+					const kn2 = 零_艦娘データ取得(tableData.kanmusu)["データ"][tableData.kaizou]["Wikiリンク"];
 					s.href = wiki_url(kn2);
 				} else {
 					s.href = wiki_url(kn);
@@ -717,10 +720,10 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 					li.addEventListener("click",
 						(function (e, idx, j) {
 							return function () {
-								const kanmusu=一_表のセルデータ取得(idx,"kanmusu");
-								const kaizou_before=一_表のセルデータ取得(idx,"kaizou");
+								const kanmusu = 一_表のセルデータ取得(idx, "kanmusu");
+								const kaizou_before = 一_表のセルデータ取得(idx, "kaizou");
 								一_表のセルデータ変更(idx, "kaizou", j);
-								if(kanmusu==="基地航空隊" && (j==="出撃" || kaizou_before==="出撃")){
+								if (kanmusu === "基地航空隊" && (j === "出撃" || kaizou_before === "出撃")) {
 									二_結果チャートをリセット();
 									二_航空隊出撃ポイント選択を表示();
 								}
@@ -752,11 +755,11 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 		var esoubi = 二_自艦隊のセルを生成("soubi", tableData.soubi[i], rows);
 		if (tableData.soubi[i] === void 0) tableData.soubi[i] = "-";
 		var 種類 = 零_種類(tableData.soubi[i]);
-		const 装備名=tableData.soubi[i];
+		const 装備名 = tableData.soubi[i];
 		if (艦種 && 零_装備できるか(艦種, tableData.kanmusu, tableData.kaizou, 種類, 装備名) === false) esoubi.classList.add("装備できない");
 		esoubi.classList.add(種類, "ポップアップ起動ボタン");
-		if(種類==="艦上爆撃機" && 艦戦データ[tableData.soubi[i]].対空値 >= 4) esoubi.classList.add("対空値有");
-		if(艦戦データ[tableData.soubi[i]].夜間航空機===true) esoubi.classList.add("夜間航空機");
+		if (種類 === "艦上爆撃機" && 艦戦データ[tableData.soubi[i]].対空値 >= 4) esoubi.classList.add("対空値有");
+		if (艦戦データ[tableData.soubi[i]].夜間航空機 === true) esoubi.classList.add("夜間航空機");
 		esoubi.addEventListener("click",
 			(function (e, idx, i) {
 				return (function (e) {
@@ -868,7 +871,7 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 				shoukei = 数字をn桁で切り捨て(shoukei * teihoMax, 0);
 
 			}
-			if (tableData.kanmusu === "基地航空隊" && tableData.kaizou==="出撃") {
+			if (tableData.kanmusu === "基地航空隊" && tableData.kaizou === "出撃") {
 				var ar = [];
 				for (var j = 0; j < rows; j++) {
 					if (eq(零_種類(tableData.soubi[j]), ["陸上偵察機"])) {
@@ -879,7 +882,6 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 					teihoMax = Math.max(teihoMax, 零_偵察機補正(ar[j], "出撃"));
 				}
 				shoukei = 数字をn桁で切り捨て(shoukei * teihoMax, 0);
-
 			}
 			一_表のセルデータ変更(idx, "shoukei", shoukei);
 			etrs[i].appendChild(二_自艦隊のセルを生成("shoukei", shoukei, rows));
@@ -934,35 +936,35 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 					var obj = {};
 					obj.tag = "a";
 					obj.str = kank;
-					obj.url=wiki_url(wiki_表記("装備一覧(種類別)"))+"#Attacker";
+					obj.url = wiki_url(wiki_表記("装備一覧(種類別)")) + "#Attacker";
 					data.push(obj);
 				}
 				if (kanb) {
 					var obj = {};
 					obj.tag = "a";
 					obj.str = kanb;
-					obj.url=wiki_url(wiki_表記("装備一覧(種類別)"))+"#Bomber";
+					obj.url = wiki_url(wiki_表記("装備一覧(種類別)")) + "#Bomber";
 					data.push(obj);
 				}
 			}//航空隊終わり
 			if (tableData.kanmusu === "基地航空隊" && tableData.kaizou === "防空") { //
 
 			}
-			let 艦種="";
-			const 艦娘データ=零_艦娘データ取得(tableData.kanmusu);
-			if(艦娘データ!==undefined) 艦種=艦娘データ["データ"][tableData.kaizou]["艦種"];
-			if(eq(艦種,["正規空母","装甲空母","軽空母"])){ //攻撃力表示
-				let houg=零_艦娘データ取得(tableData.kanmusu)["データ"][tableData.kaizou].素火力;
-				let raig=0;
-				let baku=0;
-				for(let j=0; j<rows; j++){
-					const s=tableData.soubi[j];
-					houg+=零_装備火力値(s);
-					raig+=零_装備雷装値(s);
-					baku+=零_装備爆装値(s);
-					if(零_種類(s)==="艦上攻撃機") raig+=tableData.kaishu[j]*0.2;
+			let 艦種 = "";
+			const 艦娘データ = 零_艦娘データ取得(tableData.kanmusu);
+			if (艦娘データ !== undefined) 艦種 = 艦娘データ["データ"][tableData.kaizou]["艦種"];
+			if (eq(艦種, ["正規空母", "装甲空母", "軽空母"])) { //攻撃力表示
+				let houg = 零_艦娘データ取得(tableData.kanmusu)["データ"][tableData.kaizou].素火力;
+				let raig = 0;
+				let baku = 0;
+				for (let j = 0; j < rows; j++) {
+					const s = tableData.soubi[j];
+					houg += 零_装備火力値(s);
+					raig += 零_装備雷装値(s);
+					baku += 零_装備爆装値(s);
+					if (零_種類(s) === "艦上攻撃機") raig += tableData.kaishu[j] * 0.2;
 				}
-				const atk=Math.floor( (houg + raig + 5 + Math.floor(baku*1.3))*1.5 ) +55;
+				const atk = Math.floor((houg + raig + 5 + Math.floor(baku * 1.3)) * 1.5) + 55;
 				data.push(`攻撃力:${atk}`);
 			}
 
@@ -1020,7 +1022,7 @@ function 二_自艦隊のセルを生成(shu, data, rows) {
 function 二_自艦隊に行を追加(tableData, idx) {
 	$("自艦隊").appendChild(二_自艦隊の行を生成(tableData, idx));
 }
-const 二_自艦隊に空行を追加=(idx)=>{
+const 二_自艦隊に空行を追加 = (idx) => {
 	$("自艦隊").appendChild(二_自艦隊の空行を生成(idx));
 }
 function 二_搭載数変更を表示(e, idx, i) {
@@ -1038,9 +1040,9 @@ function 二_搭載数変更を生成(t, idx, i) {
 	fo.addEventListener("submit", function (e) {
 		e.preventDefault();
 		一_表のセルデータ変更(idx, "tousai", parseInt($("搭載数変更_input").value), i);
-		const kanmusu=一_表のセルデータ取得(idx, "kanmusu");
-		const kaizou=一_表のセルデータ取得(idx, "kaizou");
-		if(kaizou==="出撃" && kanmusu==="基地航空隊"){
+		const kanmusu = 一_表のセルデータ取得(idx, "kanmusu");
+		const kaizou = 一_表のセルデータ取得(idx, "kaizou");
+		if (kaizou === "出撃" && kanmusu === "基地航空隊") {
 			一_敵制空テーブルを生成();
 		}
 		二_自艦隊の表を更新();
@@ -1099,7 +1101,7 @@ function 二_自艦隊の表を更新() {
 			二_自艦隊に行を追加(table[i].data, i);
 		}
 		二_自艦隊に空行を追加(table.length);
-		
+
 		二_合計制空値を表示();
 	} catch (e) {
 		二_エラー処理(e);
@@ -1110,35 +1112,35 @@ function 二_合計制空値を表示() {
 	var o = 零_自艦隊合計制空値();
 	$("艦娘合計制空値").textContent = o.艦娘;
 	$("基地航空隊合計制空値").textContent = o.航空隊;
-	const t=o.対重爆制空値;
-	if(t!==0){
-		$("基地航空隊ロケット戦闘機込制空値").textContent=`対重爆: ${t}`;
-	}else{
-		$("基地航空隊ロケット戦闘機込制空値").textContent=``;
+	const t = o.対重爆制空値;
+	if (t !== 0) {
+		$("基地航空隊ロケット戦闘機込制空値").textContent = `対重爆: ${t}`;
+	} else {
+		$("基地航空隊ロケット戦闘機込制空値").textContent = ``;
 	}
 }
 function 零_自艦隊合計制空値() {
 	var table = O.table;
 	var 艦娘制空 = 0;
 	var 航空隊制空 = 0;
-	let ロケット戦闘機数=0;
+	let ロケット戦闘機数 = 0;
 	for (var i = 0; i < table.length; i++) {
 		if (一_表のセルデータ取得(i, "hidden")) continue;
 		if (table[i].data.kanmusu !== "基地航空隊") {
 			艦娘制空 += 一_表のセルデータ取得(i, "shoukei");
 		} else if (table[i].data.kanmusu === "基地航空隊" && table[i].data.kaizou === "防空") {
 			航空隊制空 += 一_表のセルデータ取得(i, "shoukei");
-			const スロット数= 零_艦娘スロット数("基地航空隊", "防空");
-			for(let j=0; j<スロット数; j++){
-				const 装備名=一_表のセルデータ取得(i, "soubi", j);
-				const tf=零_ロケット戦闘機か(装備名);
-				if(tf) ロケット戦闘機数++;
+			const スロット数 = 零_艦娘スロット数("基地航空隊", "防空");
+			for (let j = 0; j < スロット数; j++) {
+				const 装備名 = 一_表のセルデータ取得(i, "soubi", j);
+				const tf = 零_ロケット戦闘機か(装備名);
+				if (tf) ロケット戦闘機数++;
 			}
 		}
 	}
-	const 対重爆倍率=((n)=>{switch(n){case 0:return 0.5;case 1:return 0.8;case 2:return 1.1;default:return 1.2}})(ロケット戦闘機数);
-	const 対重爆制空値=Math.floor(航空隊制空*対重爆倍率); //切り捨てかどうか要検証
-	return { "艦娘": 艦娘制空, "航空隊": 航空隊制空 , "対重爆制空値":対重爆制空値};
+	const 対重爆倍率 = ((n) => { switch (n) { case 0: return 0.5; case 1: return 0.8; case 2: return 1.1; default: return 1.2 } })(ロケット戦闘機数);
+	const 対重爆制空値 = Math.floor(航空隊制空 * 対重爆倍率); //切り捨てかどうか要検証
+	return { "艦娘": 艦娘制空, "航空隊": 航空隊制空, "対重爆制空値": 対重爆制空値 };
 }
 function 二_熟練度を一段階変更(idx, di, pm) {
 	var n = 一_表のセルデータ取得(idx, "jukuren", di);
@@ -1157,14 +1159,14 @@ function 二_改修を変更(idx, di, s) {
 	二_自艦隊の表を更新();
 }
 function 二_艦娘をはずす(idx) {
-	const kanmusu=一_表のセルデータ取得(idx,"kanmusu");
-	const kaizou=一_表のセルデータ取得(idx,"kaizou");
+	const kanmusu = 一_表のセルデータ取得(idx, "kanmusu");
+	const kaizou = 一_表のセルデータ取得(idx, "kaizou");
 	一_艦娘をはずす(idx);
-	if(kaizou==="出撃" && kanmusu==="基地航空隊"){
+	if (kaizou === "出撃" && kanmusu === "基地航空隊") {
 		二_航空隊出撃ポイント選択を表示();
 		二_結果チャートをリセット();
-		O.kouku_calc=false;
-		O.kouku_recalc=false;
+		O.kouku_calc = false;
+		O.kouku_recalc = false;
 	}
 	二_自艦隊の表を更新();
 }
@@ -1239,9 +1241,9 @@ function 一_自艦隊の制空値を計算(idx, di) {
 	var seiku = 零_制空値を計算(soubi, tousai, jukuren, kaishu, kanmusu, kaizou);
 	return seiku;
 }
-const 一_艦娘デフォルトデータ=()=>{
+const 一_艦娘デフォルトデータ = () => {
 	return {
-		data:{
+		data: {
 			kanmusu: "",
 			kaizou: "",
 			tousai: [0, 0, 0, 0, 0],
@@ -1256,7 +1258,7 @@ const 一_艦娘デフォルトデータ=()=>{
 		},
 	};
 }
-const 一_艦娘を変更=(idx,艦娘名,改造度)=>{
+const 一_艦娘を変更 = (idx, 艦娘名, 改造度) => {
 	const 搭載数 = 零_艦娘データ取得(艦娘名)["データ"][改造度]["スロット"];
 	const rows = 零_艦娘スロット数(艦娘名, 改造度);
 	一_表のセルデータ変更(idx, "kanmusu", 艦娘名);
@@ -1267,7 +1269,7 @@ const 一_艦娘を変更=(idx,艦娘名,改造度)=>{
 		一_表のセルデータ変更(idx, "soubi", 旧装備, i);
 	}
 }
-const 一_艦娘を追加=(idx,艦娘名,改造度)=>{
+const 一_艦娘を追加 = (idx, 艦娘名, 改造度) => {
 	O.table.push(一_艦娘デフォルトデータ());
 	const 搭載数 = 零_艦娘データ取得(艦娘名)["データ"][改造度]["スロット"];
 	const rows = 零_艦娘スロット数(艦娘名, 改造度);
@@ -1338,10 +1340,10 @@ function 一_表のセルデータ変更(idx, shu, data, di) {
 			一_表の搭載数をデフォルトに変更(idx, 一_表のセルデータ取得(idx, "kaizou"), di)
 		}
 	}
-	
-	if(d.kaizou==="出撃" && d.kanmusu==="基地航空隊"){
-		if(shu!=="seiku" && shu!=="teiho" && shu!=="shoukei"){
-			O.kouku_recalc=true;
+
+	if (d.kaizou === "出撃" && d.kanmusu === "基地航空隊") {
+		if (shu !== "seiku" && shu !== "teiho" && shu !== "shoukei") {
+			O.kouku_recalc = true;
 		}
 	}
 }
@@ -1374,11 +1376,11 @@ function 零_艦娘数() {
 	}
 	return c;
 }
-const 零_航空隊出撃部隊数=()=>{
-	const t=O.table;
-	let c=0;
-	for(let i of t){
-		if(i.data.kanmusu==="基地航空隊" && i.data.kaizou==="出撃" && i.data.hidden===false) c++;
+const 零_航空隊出撃部隊数 = () => {
+	const t = O.table;
+	let c = 0;
+	for (let i of t) {
+		if (i.data.kanmusu === "基地航空隊" && i.data.kaizou === "出撃" && i.data.hidden === false) c++;
 	}
 	return c;
 }
@@ -1406,7 +1408,7 @@ function 零_制空値を計算(soubi, tousai, jukuren, kaishu, kanmusu, kaizou)
 		taiku += 0.2 * kaishu;
 	} else if (eq(零_種類(soubi), ["局地戦闘機", "陸軍戦闘機"])) {
 		taiku += 0.2 * kaishu;
-	}else if(零_種類(soubi)==="陸上攻撃機"){
+	} else if (零_種類(soubi) === "陸上攻撃機") {
 		taiku += 0.5 * sqrt(kaishu);
 	}
 	var geigeki = 零_迎撃値(soubi);
@@ -1420,17 +1422,17 @@ function 零_制空値を計算(soubi, tousai, jukuren, kaishu, kanmusu, kaizou)
 
 	return Math.floor(s1 + s2);
 }
-const 零_搭載数制空値=(搭載数, 装備id, 偵察flag)=>{ //艦隊まとめて計算
-	let s=0;
-	for(let i=0; i<搭載数.length; i++){
-		for(let j=0; j<搭載数[i].length; j++){
-			const f1=零_航空機または偵察機か(零_敵装備カテゴリ(装備id[i][j]));
-			const f2=零_航空機か(零_敵装備カテゴリ(装備id[i][j]));
-			if(偵察flag===true  && f1===false) continue;
-			if(偵察flag===false && f2===false) continue;
-			const 装備対空=零_敵対空値(装備id[i][j]);
-			const 機数=搭載数[i][j];
-			s+=Math.floor(装備対空*sqrt(機数));
+const 零_搭載数制空値 = (搭載数, 装備id, 偵察flag) => { //艦隊まとめて計算
+	let s = 0;
+	for (let i = 0; i < 搭載数.length; i++) {
+		for (let j = 0; j < 搭載数[i].length; j++) {
+			const f1 = 零_航空機または偵察機か(零_敵装備カテゴリ(装備id[i][j]));
+			const f2 = 零_航空機か(零_敵装備カテゴリ(装備id[i][j]));
+			if (偵察flag === true && f1 === false) continue;
+			if (偵察flag === false && f2 === false) continue;
+			const 装備対空 = 零_敵対空値(装備id[i][j]);
+			const 機数 = 搭載数[i][j];
+			s += Math.floor(装備対空 * sqrt(機数));
 		}
 	}
 	return s;
@@ -1486,20 +1488,20 @@ function 零_種類(s) {
 	if (艦戦データ[s] === undefined) throw new Error("不明な装備(" + s + ")");
 	return 艦戦データ[s].種類;
 }
-const 零_装備火力値=(s)=>{
-	if(艦戦データ[s]===undefined) throw new Error(`不明な装備(${s})`);
-	const a=艦戦データ[s].火力;
-	return a?a:0;
+const 零_装備火力値 = (s) => {
+	if (艦戦データ[s] === undefined) throw new Error(`不明な装備(${s})`);
+	const a = 艦戦データ[s].火力;
+	return a ? a : 0;
 }
-const 零_装備雷装値=(s)=>{
-	if(艦戦データ[s]===undefined) throw new Error(`不明な装備(${s})`);
-	const a=艦戦データ[s].雷装;
-	return a?a:0;
+const 零_装備雷装値 = (s) => {
+	if (艦戦データ[s] === undefined) throw new Error(`不明な装備(${s})`);
+	const a = 艦戦データ[s].雷装;
+	return a ? a : 0;
 }
-const 零_装備爆装値=(s)=>{
-	if(艦戦データ[s]===undefined) throw new Error(`不明な装備(${s})`);
-	const a=艦戦データ[s].爆装;
-	return a?a:0;
+const 零_装備爆装値 = (s) => {
+	if (艦戦データ[s] === undefined) throw new Error(`不明な装備(${s})`);
+	const a = 艦戦データ[s].爆装;
+	return a ? a : 0;
 }
 function 零_熟練ボーナス(j, s) {
 
@@ -1548,13 +1550,13 @@ function 零_偵察機補正(装備, mode) { //防空時の偵察機による制
 			if (索敵値 == 8) return 1.25; //該当装備無しのため数値は暫定
 			if (索敵値 >= 9) return 1.3;
 		} else if (種類 === "陸上偵察機") {
-//			if(索敵値<=7) return 1.x; //該当機なし
+			//			if(索敵値<=7) return 1.x; //該当機なし
 			if (索敵値 == 8) return 1.18;
 			if (索敵値 >= 9) return 1.24; //要検証：二式陸上偵察機(熟練)
 		}
 	} else if (mode === "出撃") {
 		if (種類 === "陸上偵察機") {
-//			if(索敵値<=7) return 1.x; //該当機なし
+			//			if(索敵値<=7) return 1.x; //該当機なし
 			if (索敵値 == 8) return 1.15;
 			if (索敵値 >= 9) return 1.18;
 		}
@@ -1562,30 +1564,30 @@ function 零_偵察機補正(装備, mode) { //防空時の偵察機による制
 	return 1;
 }
 
-const 零_敵対空値=(i)=>{
-	const d=深海棲艦装備idデータ[i];
-	if(d===undefined) return 0;
+const 零_敵対空値 = (i) => {
+	const d = 深海棲艦装備idデータ[i];
+	if (d === undefined) return 0;
 	return d.aa;
 }
-const 零_航空機または偵察機か=(cat)=>{
-	const 航空機=[6,7,8,11,45,56,57,58];
-	const 航空機偵察機=[9,10,41,47,48,49,94].concat(航空機);
+const 零_航空機または偵察機か = (cat) => {
+	const 航空機 = [6, 7, 8, 11, 45, 56, 57, 58];
+	const 航空機偵察機 = [9, 10, 41, 47, 48, 49, 94].concat(航空機);
 	return 航空機偵察機.includes(cat);
 }
-const 零_航空機か=(cat)=>{
-	const 航空機=[6,7,8,11,45,56,57,58];
+const 零_航空機か = (cat) => {
+	const 航空機 = [6, 7, 8, 11, 45, 56, 57, 58];
 	return 航空機.includes(cat);
 }
-const 零_敵装備カテゴリ=(id)=>{
-	const d=深海棲艦装備idデータ[id];
-	if(d===undefined) return 0;
+const 零_敵装備カテゴリ = (id) => {
+	const d = 深海棲艦装備idデータ[id];
+	if (d === undefined) return 0;
 	return d.cat;
 }
-const 零_敵装備=(i)=>{
-	const id=零_n2i(i);
-	const d=深海棲艦idデータ[id];
-	if(!d) return [];
-	if(!d.eq) return [];
+const 零_敵装備 = (i) => {
+	const id = 零_n2i(i);
+	const d = 深海棲艦idデータ[id];
+	if (!d) return [];
+	if (!d.eq) return [];
 	return d.eq;
 }
 
@@ -1680,7 +1682,7 @@ function 二_海域wikiリンクを生成(hou) {
 		var a2 = span.appendChild(ce("a"));
 
 		a1.href = wiki_url(hou.replace(/《.+》/g, ""));
-		a2.href = wiki_url(hou.replace(/《.+》/g, "")+"/拡張作戦");
+		a2.href = wiki_url(hou.replace(/《.+》/g, "") + "/拡張作戦");
 		a1.appendChild(ct("wiki"));
 		a2.appendChild(ct("拡張"));
 
@@ -1690,9 +1692,9 @@ function 二_海域wikiリンクを生成(hou) {
 	} else {
 		var a = span.appendChild(ce("a"));
 		if (isDai1ki && !isEvent) {
-			a.href= wiki_url("第一期/"+hou.replace(/《.+》|\(旧\)/g, ""));
+			a.href = wiki_url("第一期/" + hou.replace(/《.+》|\(旧\)/g, ""));
 		} else {
-			a.href= wiki_url(hou.replace(/《.+》/g, ""));
+			a.href = wiki_url(hou.replace(/《.+》/g, ""));
 		}
 		a.appendChild(ct("wiki"));
 		a.target = "_blank";
@@ -1703,7 +1705,7 @@ function 二_海域wikiリンクを生成(hou) {
 }
 function 二_海域選択を表示(e) {
 	隠す("海域選択リスト");
-	二_マップを隠す(true);
+	二_マップを初期化(true);
 	隠す("ルート選択");
 	隠す("ルート抽出");
 	$("ルート選択親").classList.remove("chked");
@@ -1711,14 +1713,14 @@ function 二_海域選択を表示(e) {
 	$("敵艦隊選択親").classList.remove("chked");
 	隠す("航空隊選択");
 	$("航空隊選択親").classList.remove("chked");
-	O.kouku=[];
-	O.kouku_set=false;
-	O.kouku_calc=false;
-	if(C&&C.c1){
+	O.kouku = [];
+	O.kouku_set = false;
+	O.kouku_calc = false;
+	if (C && C.c1) {
 		C.c1.unload();
 		C.c2.unload();
 	}
-	
+
 	$("マップ").classList.remove("chked");
 
 	var el = 二_海域選択を生成(e);
@@ -1750,7 +1752,7 @@ function 二_海域選択を生成(e) {
 				}
 			}
 		}
-		if (document.body.dataset.fes.indexOf("iwashi")>=0) { //鰯祭り開催中、ドロップポイントにマークを付ける
+		if (document.body.dataset.fes.indexOf("iwashi") >= 0) { //鰯祭り開催中、ドロップポイントにマークを付ける
 			const 鰯p = fes_point.iwashi;
 			const 秋刀魚p = fes_point.sanma;
 			for (var f in 鰯p) {
@@ -1782,32 +1784,32 @@ function 二_海域選択を生成(e) {
 	return el;
 }
 function 二_海域確定(e) {
-	二_マップを隠す(false);
+	二_マップを初期化(false);
 	隠す("ルート選択");
 	$("マップ").classList.remove("chked");
 	隠す("ルート抽出");
 	$("ルート選択親").classList.remove("chked");
 	隠す("敵艦隊選択");
 	$("敵艦隊選択親").classList.remove("chked");
-	O.kouku_calc=false;
+	O.kouku_calc = false;
 	二_結果チャートをリセット();
 	二_航空隊出撃ポイント選択を表示();
 
-	const mapName=マス配置データ対応表[O.hou][O.kai];
-	const data=mapData[mapName].data;
-	let x,y;
-	if(data) x=data.x;
-	if(data) y=data.y;
+	const mapName = マス配置データ対応表[O.hou][O.kai];
+	const data = mapData[mapName].data;
+	let x, y;
+	if (data) x = data.x;
+	if (data) y = data.y;
 	$("マップ").appendChild(makeMapSVG(mapName, "目的地選択", document.body.dataset.fes, x, y)); //map.jsへ投げる
 }
-function 二_マップを隠す(appendBlank) {
+function 二_マップを初期化(appendBlank) {
 	var m = $("マップ");
 	while (m.querySelector("svg") !== null) {
 		m.removeChild(m.querySelector("svg"));
 	}
-	if(appendBlank){
-		const d=$("空のマップ")?$("空のマップ"):ce("svg");
-		d.id="空のマップ";
+	if (appendBlank) {
+		const d = $("空のマップ") ? $("空のマップ") : ce("svg");
+		d.id = "空のマップ";
 		m.appendChild(d);
 	}
 }
@@ -1831,37 +1833,39 @@ function 二_ルート選択を表示(t) {
 
 	var o = target.parentNode;
 	var texts = ルートを列挙する(mn, [[マス目から文字を特定する(target)]])
-	
-	if(texts.length>12){
-		const sp=$("ルート選択親").appendChild(ce("span"));
-		sp.id="ルート抽出";
+
+	if (texts.length > 12) {
+		const sp = $("ルート選択親").appendChild(ce("span"));
+		sp.id = "ルート抽出";
 		sp.appendChild(ct("ルートを抽出: "));
-		const input=sp.appendChild(ce("input"));
-		input.id="ルート抽出_input"
-		input.addEventListener("input",((texts)=>{return ()=>{
-			let v=$("ルート抽出_input").value;
-			v=v.toUpperCase();
-			let matchs=[];
-			for(let i of texts){
-				const str=i.join("").toUpperCase();
-				const idx=str.indexOf(v);
-				if(idx>-1) matchs.push(i);
+		const input = sp.appendChild(ce("input"));
+		input.id = "ルート抽出_input"
+		input.addEventListener("input", ((texts) => {
+			return () => {
+				let v = $("ルート抽出_input").value;
+				v = v.toUpperCase();
+				let matchs = [];
+				for (let i of texts) {
+					const str = i.join("").toUpperCase();
+					const idx = str.indexOf(v);
+					if (idx > -1) matchs.push(i);
+				}
+				let result = texts;
+				if (matchs.length >= 1) result = matchs;
+				隠す("ルート選択");
+				二_ルート一覧を表示(result);
+				$("ルート抽出_件数").textContent = `${matchs.length}件`;
 			}
-			let result=texts;
-			if(matchs.length>=1) result=matchs;
-			隠す("ルート選択");
-			二_ルート一覧を表示(result);
-			$("ルート抽出_件数").textContent=`${matchs.length}件`;
-		}})(texts),false);
-		const res=sp.appendChild(ce("span"));
-		res.id="ルート抽出_件数";
-		res.textContent=`${texts.length}件`;
+		})(texts), false);
+		const res = sp.appendChild(ce("span"));
+		res.id = "ルート抽出_件数";
+		res.textContent = `${texts.length}件`;
 	}
-	
-	
+
+
 	二_ルート一覧を表示(texts);
 }
-const 二_ルート一覧を表示=(texts)=>{
+const 二_ルート一覧を表示 = (texts) => {
 	var el = document.createElement("div");
 	el.id = "ルート選択";
 	var len = texts.length;
@@ -1935,12 +1939,12 @@ function 二_敵艦隊選択を生成(masu) {
 			var li = ce("li");
 			var hs = data[masu][i];
 			var sp = ce("span");
-			var so = 零_敵合計制空値(hs,false);
+			var so = 零_敵合計制空値(hs, false);
 			sp.appendChild(ct(`制空値${so}|`))
 			li.appendChild(sp);
 			for (var j = 0; j < hs.length; j++) {
 				var ss = 零_i2n(hs[j]);
-				if(ss==="-") continue;
+				if (ss === "-") continue;
 				var sp = ce("span");
 				sp.className = "深海棲艦名";
 				sp.appendChild(ct(ss));
@@ -1949,11 +1953,11 @@ function 二_敵艦隊選択を生成(masu) {
 			li.addEventListener("click", (function (e, hs) {
 				return function () {
 					二_深海棲艦を全員はずす();
-					hs.forEach(a=>{二_深海棲艦を追加(零_n2i(a))});
+					hs.forEach(a => { 二_深海棲艦を追加(零_n2i(a)) });
 					O.eseikus[O.eseikus.length - 1] = 零_敵制空初期値();
 					$("敵艦隊選択親").classList.add("chked");
 					$("敵艦隊選択親").querySelector("h3").dataset.selected = `敵編成：${零_敵艦隊一行()}`;
-					O.kouku_recalc=true;
+					O.kouku_recalc = true;
 					二_結果テーブルを表示();
 				}
 			})("", hs));
@@ -1962,76 +1966,78 @@ function 二_敵艦隊選択を生成(masu) {
 		return el;
 	}
 }
-const 二_結果チャートをリセット=()=>{
-	if(C&&C.c1){
+const 二_結果チャートをリセット = () => {
+	if (C && C.c1) {
 		C.c1.unload();
 		C.c2.unload();
 	}
 }
-const 二_航空隊出撃ポイント選択を表示=()=>{
+const 二_航空隊出撃ポイント選択を表示 = () => {
 	隠す("航空隊選択");
-	O.kouku_set=false;
+	O.kouku_set = false;
 	$("航空隊選択親").classList.remove("chked");
-	if(零_航空隊出撃部隊数()===0){
-		$("航空隊選択親").hidden=true;
-	}else{
-		$("航空隊選択親").hidden=false;
-		const el=二_航空隊出撃ポイント選択を生成();
-		el.id="航空隊選択";
+	if (零_航空隊出撃部隊数() === 0) {
+		$("航空隊選択親").hidden = true;
+	} else {
+		$("航空隊選択親").hidden = false;
+		const el = 二_航空隊出撃ポイント選択を生成();
+		el.id = "航空隊選択";
 		$("航空隊選択親").appendChild(el);
 	}
 }
-二_航空隊出撃ポイント選択を生成=()=>{
-	O.kouku=[];
-	const wave=[];
-	for(let i=0; i<O.table.length; i++){
-		const d=O.table[i];
-		if(d.data.kanmusu==="基地航空隊" && d.data.kaizou==="出撃" && d.data.hidden===false){
+二_航空隊出撃ポイント選択を生成 = () => {
+	O.kouku = [];
+	const wave = [];
+	for (let i = 0; i < O.table.length; i++) {
+		const d = O.table[i];
+		if (d.data.kanmusu === "基地航空隊" && d.data.kaizou === "出撃" && d.data.hidden === false) {
 			wave.push(i);
 		}
 	}
-	
-	const table=ce("table");
-	for(let i=0; i<wave.length; i++){
-		const tr1=table.appendChild(ce("tr"));
-		const th1=tr1.appendChild(ce("td"));
-		const td1=tr1.appendChild(ce("td"));
-		
-		th1.appendChild(ct(`${i+1}-1`));
-		td1.appendChild(二_航空隊出撃マスを生成(i*2, wave.length*2));
-		
-		
-		const tr2=table.appendChild(ce("tr"));
-		const th2=tr2.appendChild(ce("td"));
-		const td2=tr2.appendChild(ce("td"));
-		
-		th2.appendChild(ct(`${i+1}-2`));
-		td2.appendChild(二_航空隊出撃マスを生成(i*2+1, wave.length*2));
+
+	const table = ce("table");
+	for (let i = 0; i < wave.length; i++) {
+		const tr1 = table.appendChild(ce("tr"));
+		const th1 = tr1.appendChild(ce("td"));
+		const td1 = tr1.appendChild(ce("td"));
+
+		th1.appendChild(ct(`${i + 1}-1`));
+		td1.appendChild(二_航空隊出撃マスを生成(i * 2, wave.length * 2));
+
+
+		const tr2 = table.appendChild(ce("tr"));
+		const th2 = tr2.appendChild(ce("td"));
+		const td2 = tr2.appendChild(ce("td"));
+
+		th2.appendChild(ct(`${i + 1}-2`));
+		td2.appendChild(二_航空隊出撃マスを生成(i * 2 + 1, wave.length * 2));
 	}
 	return table;
 }
-二_航空隊出撃マスを生成=(idx, num_w)=>{
+二_航空隊出撃マスを生成 = (idx, num_w) => {
 	$("航空隊選択親").classList.remove("chked");
-	const div=ce("div");
-	div.id=`航空隊出撃マス候補群_${idx}`;
-	if(O.hou===undefined || O.kai===undefined) return div;
-	const mas=零_マップの戦闘マスを列挙(O.hou,O.kai);
-	for(let i of mas){
-		const btn=div.appendChild(ce("span"));
-		btn.classList.add("航空隊出撃マス","選択ボタン");
+	const div = ce("div");
+	div.id = `航空隊出撃マス候補群_${idx}`;
+	if (O.hou === undefined || O.kai === undefined) return div;
+	const mas = 零_マップの戦闘マスを列挙(O.hou, O.kai);
+	for (let i of mas) {
+		const btn = div.appendChild(ce("span"));
+		btn.classList.add("航空隊出撃マス", "選択ボタン");
 		btn.appendChild(ct(i));
-		btn.addEventListener("click",((idx,i,num_w)=>{return (e)=>{
-			document.querySelectorAll(`#航空隊出撃マス候補群_${idx} .航空隊出撃マス`).forEach(a=>a.classList.remove("selected"));
-			O.kouku[idx]=i;
-			if(O.kouku.length===num_w && O.kouku.filter(a=>a!==undefined).length===num_w){
-				$("航空隊選択親").classList.add("chked");
-				O.kouku_calc=true
-				O.kouku_set=true;
-				O.kouku_recalc=true;
-				二_結果テーブルを表示();
+		btn.addEventListener("click", ((idx, i, num_w) => {
+			return (e) => {
+				document.querySelectorAll(`#航空隊出撃マス候補群_${idx} .航空隊出撃マス`).forEach(a => a.classList.remove("selected"));
+				O.kouku[idx] = i;
+				if (O.kouku.length === num_w && O.kouku.filter(a => a !== undefined).length === num_w) {
+					$("航空隊選択親").classList.add("chked");
+					O.kouku_calc = true
+					O.kouku_set = true;
+					O.kouku_recalc = true;
+					二_結果テーブルを表示();
+				}
+				e.target.classList.add("selected");
 			}
-			e.target.classList.add("selected");
-		}})(idx,i,num_w),false);
+		})(idx, i, num_w), false);
 	}
 	return div;
 }
@@ -2048,7 +2054,7 @@ function 二_深海棲艦を追加(a) {
 		}
 	} else {
 		O.eseikus[O.eseikus.length - 1] = 零_敵制空初期値(); //結果テーブル最終列をリセット
-		const i=零_n2i(a);
+		const i = 零_n2i(a);
 		一_深海棲艦を追加(i);
 		二_深海棲艦に行を追加(i, O.etable.length);
 		二_深海棲艦表を更新();
@@ -2094,16 +2100,18 @@ function 二_深海棲艦をはずす(idx) {
 function 二_深海棲艦追加を生成() {
 	var el = ce("ul");
 	el.classList.add("深海棲艦追加");
-	for(let i in 深海棲艦idデータ){
-		const li=ce("li");
-		const sp=ce("span");
-		const str=`　(制空値: ${零_敵制空値(i)})`;
+	for (let i in 深海棲艦idデータ) {
+		const li = ce("li");
+		const sp = ce("span");
+		const str = `　(制空値: ${零_敵制空値(i)})`;
 		sp.appendChild(ct(str));
-		
-		li.addEventListener("click",((eid)=>{return ()=>{
-			二_深海棲艦を追加(eid);
-			二_結果テーブルを表示();
-		}})(i),false);
+
+		li.addEventListener("click", ((eid) => {
+			return () => {
+				二_深海棲艦を追加(eid);
+				二_結果テーブルを表示();
+			}
+		})(i), false);
 		li.classList.add("clickable");
 		li.appendChild(ct(零_i2n(i)));
 		li.appendChild(sp);
@@ -2118,7 +2126,7 @@ function 二_深海棲艦表を更新() {
 	for (var i = 0; i < d.length; i++) {
 		二_深海棲艦に行を追加(d[i], i);
 	}
-	O.eseiku = 零_敵合計制空値(d,false);
+	O.eseiku = 零_敵合計制空値(d, false);
 
 	二_深海棲艦表のフッタを更新();
 }
@@ -2157,7 +2165,7 @@ function 一_海域を選択(e) {
 	O.kai = e.target.textContent;
 }
 function 一_敵合計制空値等を計算() {
-	const s = 零_敵合計制空値(O.etable,false);
+	const s = 零_敵合計制空値(O.etable, false);
 	return 零_制空状況境界値を計算(s);
 }
 function 零_制空状況境界値を計算(制空値) { //下限を算出
@@ -2178,7 +2186,7 @@ function 零_制空状況境界値を計算(制空値) { //下限を算出
 		確保: 確保
 	};
 }
-function 零_敵合計制空値(ary, l=false) {
+function 零_敵合計制空値(ary, l = false) {
 	var s = 0;
 	for (var i = 0; i < ary.length; i++) {
 		if (ary[i] == "") continue;
@@ -2187,35 +2195,35 @@ function 零_敵合計制空値(ary, l=false) {
 	if (i == 0) f = true;
 	return s;
 }
-const 零_敵制空値=(a, l=false)=>{
-	const i=零_n2i(a); //aが名前かidか分からないのでidに統一
-	const s=深海棲艦idデータ[i];
-	if(s===undefined) return 0;
-	if(l && s.apl) return s.apl;
+const 零_敵制空値 = (a, l = false) => {
+	const i = 零_n2i(a); //aが名前かidか分からないのでidに統一
+	const s = 深海棲艦idデータ[i];
+	if (s === undefined) return 0;
+	if (l && s.apl) return s.apl;
 	return s.ap;
 }
-const 零_敵搭載数=(i)=>{
-	const id=零_n2i(i);
-	const a=深海棲艦idデータ[id];
-	if(!a) return [];
-	if(!a.ac) return [];
+const 零_敵搭載数 = (i) => {
+	const id = 零_n2i(i);
+	const a = 深海棲艦idデータ[id];
+	if (!a) return [];
+	if (!a.ac) return [];
 	return deepcopy(a.ac);
 }
 
-const 零_i2n=(i)=>{
-	if(""+i!==""+Number(i)) return i; //iがidではない場合そのまま返す
-	if(深海棲艦idデータ[i]) return 深海棲艦idデータ[i].name;
+const 零_i2n = (i) => {
+	if ("" + i !== "" + Number(i)) return i; //iがidではない場合そのまま返す
+	if (深海棲艦idデータ[i]) return 深海棲艦idデータ[i].name;
 	return "-";
 }
-const 零_n2i=(n)=>{
-	if(""+n===""+Number(n)) return n; //nがidの場合そのまま返す
-	for(let i in 深海棲艦idデータ){
-		if(n===深海棲艦idデータ[i].name) return i;
+const 零_n2i = (n) => {
+	if ("" + n === "" + Number(n)) return n; //nがidの場合そのまま返す
+	for (let i in 深海棲艦idデータ) {
+		if (n === 深海棲艦idデータ[i].name) return i;
 	}
 	return 0;
 }
 
-const 零_制空判定=(f, e)=>{
+const 零_制空判定 = (f, e) => {
 	if (e === 0) {
 		if (f > 0) {
 			return "確保";
@@ -2239,7 +2247,7 @@ const 零_制空判定=(f, e)=>{
 }
 
 
-const 零_喪失数計算=(機数, 制空状況, 形式)=>{
+const 零_喪失数計算 = (機数, 制空状況, 形式) => {
 	const o = {
 		確保: [7, 15],
 		優勢: [20, 45],
@@ -2260,24 +2268,24 @@ const 零_喪失数計算=(機数, 制空状況, 形式)=>{
 			return c / (o[制空状況][1] - o[制空状況][0] + 1);
 	}
 }
-const 零_敵喪失数計算=(機数, 制空状況, 形式)=>{
-	const m={
-		確保:10,
-		優勢:8,
-		拮抗:6,
-		劣勢:4,
-		喪失:1,
+const 零_敵喪失数計算 = (機数, 制空状況, 形式) => {
+	const m = {
+		確保: 10,
+		優勢: 8,
+		拮抗: 6,
+		劣勢: 4,
+		喪失: 1,
 	}; //※制空状況は自艦隊から見て
-	const r=m[制空状況];
-	switch(形式){
+	const r = m[制空状況];
+	switch (形式) {
 		case "最小":
 			return 0;
 		case "最大":
-			return Math.floor(r*機数/10);
+			return Math.floor(r * 機数 / 10);
 		case "乱数":
-			const r1=Math.floor(Math.random()*(r+1));
-			const r2=Math.floor(Math.random()*(r+1));
-			return Math.floor(機数*(35*r1+65*r2)/1000);
+			const r1 = Math.floor(Math.random() * (r + 1));
+			const r2 = Math.floor(Math.random() * (r + 1));
+			return Math.floor(機数 * (35 * r1 + 65 * r2) / 1000);
 	}
 }
 
@@ -2313,29 +2321,29 @@ function 二_防空結果テーブルを生成() {
 	var 敵艦隊s = 海域データ[O.hou].データ[O.kai]["基"];
 	var 敵艦隊の種類数 = 敵艦隊s.length;
 	const 対通常防空値 = 零_自艦隊合計制空値().航空隊
-	const 対重爆防空値=零_自艦隊合計制空値().対重爆制空値;
-	var th_str = ["航空隊(防空)制空値","(対重爆)", "敵編成", "劣勢", "拮抗", "優勢", "確保", "敵制空値", "制空争い結果"];
-	const 重爆空襲か=[];
-	for(let j=0; j<敵艦隊の種類数; j++){
-		重爆空襲か[j]=零_重爆込み空襲か(敵艦隊s[j]);
-		if(O.hou==="進撃！第二次作戦「南方作戦」《乙》" && O.kai==="ソロモン諸島沖"){ //南方作戦E-6乙の空襲はロケット戦闘機補正がかかるらしい
-			重爆空襲か[j]=true;
+	const 対重爆防空値 = 零_自艦隊合計制空値().対重爆制空値;
+	var th_str = ["航空隊(防空)制空値", "(対重爆)", "敵編成", "劣勢", "拮抗", "優勢", "確保", "敵制空値", "制空争い結果"];
+	const 重爆空襲か = [];
+	for (let j = 0; j < 敵艦隊の種類数; j++) {
+		重爆空襲か[j] = 零_重爆込み空襲か(敵艦隊s[j]);
+		if (O.hou === "進撃！第二次作戦「南方作戦」《乙》" && O.kai === "ソロモン諸島沖") { //南方作戦E-6乙の空襲はロケット戦闘機補正がかかるらしい
+			重爆空襲か[j] = true;
 		}
 	}
-	
+
 	for (var i = 0; i < 9; i++) {
 		var tr = table.appendChild(ce("tr"));
-		if (i == 0 || i===1) { //防空制空値・対重爆防空制空値
+		if (i == 0 || i === 1) { //防空制空値・対重爆防空制空値
 			var th = tr.appendChild(ce("td"));
 			th.appendChild(ct(th_str[i]));
 			th.classList.add("左見出し");
-			for(j=0; j<敵艦隊の種類数; j++){
+			for (j = 0; j < 敵艦隊の種類数; j++) {
 				var td = tr.appendChild(ce("td"));
-				let 表示内容="-";
-				if(i===0){
-					if(重爆空襲か[j]===false) 表示内容=対通常防空値;
-				}else{
-					if(重爆空襲か[j]===true) 表示内容=対重爆防空値;
+				let 表示内容 = "-";
+				if (i === 0) {
+					if (重爆空襲か[j] === false) 表示内容 = 対通常防空値;
+				} else {
+					if (重爆空襲か[j] === true) 表示内容 = 対重爆防空値;
 				}
 				td.appendChild(ct(表示内容));
 				td.classList.add("num", "center");
@@ -2349,8 +2357,8 @@ function 二_防空結果テーブルを生成() {
 					th.classList.add("左見出し");
 				} else {
 					var td = tr.appendChild(ce("td"));
-					var o = 零_敵合計制空値(敵艦隊s[j - 1],false);
-					const 防空値=重爆空襲か[j-1]?対重爆防空値:対通常防空値;
+					var o = 零_敵合計制空値(敵艦隊s[j - 1], false);
+					const 防空値 = 重爆空襲か[j - 1] ? 対重爆防空値 : 対通常防空値;
 					var 制空争い結果 = 零_制空判定(防空値, o);
 					switch (i) {
 						case 2: //敵編成
@@ -2706,8 +2714,8 @@ function 二_結果ボディを生成(tableData, idx, ss) { //tbodyを1つ==1人
 		var sb = 一_表のセルデータ取得(idx, "soubi", i);
 		td.appendChild(ct(sb));
 		td.classList.add(零_種類(sb));
-		if (零_種類(sb)==="艦上爆撃機" && 艦戦データ[sb].対空値 >= 4) td.classList.add("対空値有");
-		if(艦戦データ[sb].夜間航空機===true) td.classList.add("夜間航空機")
+		if (零_種類(sb) === "艦上爆撃機" && 艦戦データ[sb].対空値 >= 4) td.classList.add("対空値有");
+		if (艦戦データ[sb].夜間航空機 === true) td.classList.add("夜間航空機")
 		if (sb !== "-") {// 装備>熟練度, 装備>改修
 			var m = td.appendChild(ce("span"));
 			var jk = 一_表のセルデータ取得(idx, "jukuren", i);
@@ -2819,49 +2827,49 @@ function 一_結果ボディを生成(ss) {
 			}
 			tableData.制空値[j] = 数字をn桁で切り捨て(tableData.制空値[j], 0);
 		}
-		let temp=0;
-		if(j<ss){
-			temp=零_使用制空値(O.eseikus[j]);
+		let temp = 0;
+		if (j < ss) {
+			temp = 零_使用制空値(O.eseikus[j]);
 			tableData.制空状況[j] = 零_制空判定(tableData.制空値[j], temp);
 		}
 	}
 	tableData.艦娘 = 艦娘;
 	return tableData;
 }
-const 一_敵制空テーブルを生成=()=>{
-	const r=零_ルート上の戦闘マスを列挙();
-	const k=O.kouku;
-	const ss=r.length;
-	const list=new Array(ss);
-	let apl=false;
-	for(let i=0; i<ss; i++){
-		list[i]=[];
-		for(let j=0; j<k.length; j++){
-			if(r[i]===k[j]) list[i].push(j); //i戦目にj番目の航空隊が来る
+const 一_敵制空テーブルを生成 = () => {
+	const r = 零_ルート上の戦闘マスを列挙();
+	const k = O.kouku;
+	const ss = r.length;
+	const list = new Array(ss);
+	let apl = false;
+	for (let i = 0; i < ss; i++) {
+		list[i] = [];
+		for (let j = 0; j < k.length; j++) {
+			if (r[i] === k[j]) list[i].push(j); //i戦目にj番目の航空隊が来る
 		}
-		
-		if(O.eseikus[i]===undefined) O.eseikus[i]={};
-		if(i===ss-1){ //目的地
-			O.eseikus[i].制空値=O.eseiku;
-			O.eseikus[i].敵編成=deepcopy(O.etable);
-		}else{ //道中
-			O.eseikus[i].制空値=零_敵最大制空値(r[i]);
-			O.eseikus[i].敵編成=零_敵最大制空値編成(r[i]);
+
+		if (O.eseikus[i] === undefined) O.eseikus[i] = {};
+		if (i === ss - 1) { //目的地
+			O.eseikus[i].制空値 = O.eseiku;
+			O.eseikus[i].敵編成 = deepcopy(O.etable);
+		} else { //道中
+			O.eseikus[i].制空値 = 零_敵最大制空値(r[i]);
+			O.eseikus[i].敵編成 = 零_敵最大制空値編成(r[i]);
 		}
-		if(O.kouku_set && O.kouku_calc && O.kouku_recalc && list[i].length>0){
-			apl=true;
-			const o=一_航空隊シミュ(list[i], O.eseikus[i].敵編成);
-			O.eseikus[i].上位制空値=o.top;
-			O.eseikus[i].制空値分布=o.count;
-			O.eseikus[i].確率分布=o.dist;
-			O.eseikus[i].累積確率=o.cumu;
-			O.eseikus[i].ボーダー制空値=o.set;
-			O.eseikus[i].制空状況=o.status;
+		if (O.kouku_set && O.kouku_calc && O.kouku_recalc && list[i].length > 0) {
+			apl = true;
+			const o = 一_航空隊シミュ(list[i], O.eseikus[i].敵編成);
+			O.eseikus[i].上位制空値 = o.top;
+			O.eseikus[i].制空値分布 = o.count;
+			O.eseikus[i].確率分布 = o.dist;
+			O.eseikus[i].累積確率 = o.cumu;
+			O.eseikus[i].ボーダー制空値 = o.set;
+			O.eseikus[i].制空状況 = o.status;
 		}
 	}
-	if(apl){
-		O.kouku_recalc=false;
-		if(O.kouku_show_detail>=0) 二_航空隊詳細を表示(null,O.kouku_show_detail,true);
+	if (apl) {
+		O.kouku_recalc = false;
+		if (O.kouku_show_detail >= 0) 二_航空隊詳細を表示(null, O.kouku_show_detail, true);
 	}
 }
 
@@ -2892,16 +2900,16 @@ function 二_結果フッタを生成(tableData, ss) {
 	td3.appendChild(ct("敵艦隊制空値→"));
 	td3.colSpan = 2;
 	td3.className = "左見出し";
-	
-	const tr4=ce("tr");
-	const td4=tr4.appendChild(ce("td"));
+
+	const tr4 = ce("tr");
+	const td4 = tr4.appendChild(ce("td"));
 	td4.appendChild(ct("航空隊詳細→"));
-	td4.colSpan=2;
-	td4.className="左見出し";
-	let show_kouku=false;
-	for(let i of ps){
-		if(O.kouku.includes(i)){
-			show_kouku=true;
+	td4.colSpan = 2;
+	td4.className = "左見出し";
+	let show_kouku = false;
+	for (let i of ps) {
+		if (O.kouku.includes(i)) {
+			show_kouku = true;
 			break;
 		}
 	}
@@ -2950,17 +2958,19 @@ function 二_結果フッタを生成(tableData, ss) {
 			td3.appendChild(ct("-"));
 			td3.classList.remove("clickable");
 		}
-		
+
 		//航空隊詳細
-		const td42=tr4.appendChild(ce("td"));
-		if(show_kouku && O.kouku.includes(ps[i])){
-			const btn=td42.appendChild(ce("div"));
-			btn.classList.add("選択ボタン","single");
+		const td42 = tr4.appendChild(ce("td"));
+		if (show_kouku && O.kouku.includes(ps[i])) {
+			const btn = td42.appendChild(ce("div"));
+			btn.classList.add("選択ボタン", "single");
 			btn.appendChild(ct("見る"));
-			btn.addEventListener("click",((i)=>{return (e)=>{
-				二_航空隊詳細を表示(e,i,false);
-				O.kouku_show_detail=i;
-			}})(i),false);
+			btn.addEventListener("click", ((i) => {
+				return (e) => {
+					二_航空隊詳細を表示(e, i, false);
+					O.kouku_show_detail = i;
+				}
+			})(i), false);
 		}
 
 		if (O.settings.show_border === true) {
@@ -3031,7 +3041,7 @@ function 二_結果フッタを生成(tableData, ss) {
 	}
 
 	tf.appendChild(tr3); //敵艦隊制空値
-	if(show_kouku) tf.appendChild(tr4); //航空隊詳細
+	if (show_kouku) tf.appendChild(tr4); //航空隊詳細
 	tf.appendChild(tr);  //制空争い結果
 
 	return tf;
@@ -3061,8 +3071,8 @@ function 二_敵制空値変更を生成(i) {
 	fo.addEventListener("submit", function (e) {
 		e.preventDefault();
 		O.eseikus[i].ユーザ設定値 = Math.max(0, parseInt($("敵制空値変更_input").value));
-		if(O.eseikus[i].制空値===O.eseikus[i].ユーザ設定値) O.eseikus[i].ユーザ設定値=undefined;
-		
+		if (O.eseikus[i].制空値 === O.eseikus[i].ユーザ設定値) O.eseikus[i].ユーザ設定値 = undefined;
+
 		非表示("敵制空値変更");
 		二_結果テーブルを表示();
 	})
@@ -3084,103 +3094,110 @@ function 二_敵制空値変更を生成(i) {
 	})());
 	return el;
 }
-const 二_航空隊詳細を表示=(e, i, reflesh)=>{
-	let el,el2;
-	if(reflesh===false || document.getElementById("航空隊詳細親")===null){
+const 二_航空隊詳細を表示 = (e, i, reflesh) => {
+	let el, el2;
+	if (reflesh === false || document.getElementById("航空隊詳細親") === null) {
 		隠す("航空隊詳細親");
-		const ps=零_ルート上の戦闘マスを列挙();
-		const title=`${ps[i]}マス制空値詳細 敵: ${零_敵艦隊一行()}`;
-		el=document.body.appendChild(二_可動ポップアップを生成(title,()=>{O.kouku_show_detail=undefined;}));
-		el.id="航空隊詳細親";
+		const ps = 零_ルート上の戦闘マスを列挙();
+		const title = `${ps[i]}マス制空値詳細 敵: ${零_敵艦隊一行()}`;
+		el = document.body.appendChild(二_可動ポップアップを生成(title, () => { O.kouku_show_detail = undefined; }));
+		el.id = "航空隊詳細親";
 		el.classList.add("loong");
-		el.style.left = getMousePos(e).x+45 + "px";
-		el.style.top = getMousePos(e).y-310 + "px";
-		el2=el.childNodes[2];
-		el2.id="航空隊詳細";
-		el2.appendChild(二_航空隊詳細の中身を生成(i,reflesh));
-	}else{
-		el=$("航空隊詳細親");
-		el2=el.childNodes[2];
-//		while(el2.firstChild) el2.removeChild(el2.firstChild);
-		二_航空隊詳細の中身を生成(i,reflesh);
+		el.style.left = getMousePos(e).x + 45 + "px";
+		el.style.top = getMousePos(e).y - 310 + "px";
+		el2 = el.childNodes[2];
+		el2.id = "航空隊詳細";
+		el2.appendChild(二_航空隊詳細の中身を生成(i, reflesh));
+	} else {
+		el = $("航空隊詳細親");
+		el2 = el.childNodes[2];
+		//		while(el2.firstChild) el2.removeChild(el2.firstChild);
+		二_航空隊詳細の中身を生成(i, reflesh);
 	}
 }
 
-const 二_航空隊詳細の中身を生成=(i,reflesh)=>{
-	let ds=[["確保","優勢","拮抗","劣勢","喪失"]];
-	const s=O.eseikus[i].制空状況;
-	for(let i=0; i<s.length; i++){
-		const ary=[];
-		for(let [k,v] of s[i]){
+const 二_航空隊詳細の中身を生成 = (i, reflesh) => {
+	let ds = [["確保", "優勢", "拮抗", "劣勢", "喪失"]];
+	const s = O.eseikus[i].制空状況;
+	for (let i = 0; i < s.length; i++) {
+		const ary = [];
+		for (let [k, v] of s[i]) {
 			ary.push(v);
 		}
 		ds.push(ary);
 	}
-	
-	const d1=["x"];
-	const d2=["確率分布"];
-	const d3=["累積確率"];
-	for(let [k,v] of O.eseikus[i].確率分布){
+
+	const d1 = ["x"];
+	const d2 = ["確率分布"];
+	const d3 = ["累積確率"];
+	for (let [k, v] of O.eseikus[i].確率分布) {
 		d1.push(k);
-		d2.push(数字をn桁で切り捨て(v,4));
-		d3.push(数字をn桁で切り捨て(O.eseikus[i].累積確率.get(k),4));
+		d2.push(数字をn桁で切り捨て(v, 4));
+		d3.push(数字をn桁で切り捨て(O.eseikus[i].累積確率.get(k), 4));
 	}
-	
-	if(reflesh){
+
+	if (reflesh) {
 		C.c1.load({
-			rows:ds,
+			rows: ds,
 		});
 		C.c2.load({
-			columns:[d1,d2,d3],
+			columns: [d1, d2, d3],
 		});
-	}else{
-		const div=ce("div");
-		const el3=div.appendChild(ce("div"));
-		const hr=div.appendChild(ce("hr"));
-		const el4=div.appendChild(ce("div"));
-		C.c1=c3.generate({
-			bindto:el3,
-			data:{
-				rows:ds,
-				type:"bar",
-				groups:[["確保","優勢","拮抗","劣勢","喪失"]],
-				colors:{"確保":graph_col[0],"優勢":graph_col[1],"拮抗":graph_col[2],"劣勢":graph_col[3],"喪失":graph_col[4]},
-			},
-			size:{width:390,height:140},
-			axis:{
-				y:{tick:{format:function(a){return 数字をn桁で切り捨て(a*100,2)+"%"}},show:false},
-				x:{tick:{format:function(a){return a+1+"波目"}}}},
-		});
-		
-		C.c2=c3.generate({
-			bindto:el4,
-			size:{width:390,height:300},
+	} else {
+		const div = ce("div");
+		const el3 = div.appendChild(ce("div"));
+		const hr = div.appendChild(ce("hr"));
+		const el4 = div.appendChild(ce("div"));
+		C.c1 = c3.generate({
+			bindto: el3,
 			data: {
-				x:"x",
-				columns: [d1,d2,d3],
-				axes:{
-					"確率分布":"y",
-					"累積確率":"y2",
+				rows: ds,
+				type: "bar",
+				groups: [["確保", "優勢", "拮抗", "劣勢", "喪失"]],
+				colors: { "確保": graph_col[0], "優勢": graph_col[1], "拮抗": graph_col[2], "劣勢": graph_col[3], "喪失": graph_col[4] },
+			},
+			size: { width: 390, height: 140 },
+			axis: {
+				y: { tick: { format: function (a) { return 数字をn桁で切り捨て(a * 100, 2) + "%" } }, show: false },
+				x: { tick: { format: function (a) { return a + 1 + "波目" } } }
+			},
+		});
+
+		C.c2 = c3.generate({
+			bindto: el4,
+			size: { width: 390, height: 300 },
+			data: {
+				x: "x",
+				columns: [d1, d2, d3],
+				axes: {
+					"累積確率": "y2",
+					"確率分布": "y",
 				},
+				hide: ["確率分布"],
 			},
-			axis:{
-				y2:{show:true,tick:{format:function(a){return 数字をn桁で切り捨て(a*100,1)+"%"}}},
-				y:{tick:{format:function(a){return 数字をn桁で切り捨て(a*100,2)+"%"}}},
-				x:{label:"制空値"},
+			axis: {
+				y2: { show: true, tick: { format: function (a) { return 数字をn桁で切り捨て(a * 100, 1) + "%" } } },
+				y: { tick: { format: function (a) { return 数字をn桁で切り捨て(a * 100, 2) + "%" } } },
+				x: { label: "制空値" },
 			},
-			tooltip:{format:{title:function(a){return `制空値:${a}`}}},
-			grid:{y:{lines:[
-				{value:0.9,text:"90%",axis:"y2",position:"start"},
-				{value:0.95,text:"95%",axis:"y2",position:"start"},
-				{value:0.5,text:"50%",axis:"y2"},
-			]}},
+			tooltip: { format: { title: function (a) { return `制空値:${a}` } } },
+			grid: {
+				y: {
+					lines: [
+						{ value: 0.9, text: "90%", axis: "y2", position: "start" },
+						{ value: 0.95, text: "95%", axis: "y2", position: "start" },
+						{ value: 0.5, text: "50%", axis: "y2" },
+					]
+				}
+			},
+			point: { show: false },
 		});
 		return div;
 	}
-	
-	
-	
-	
+
+
+
+
 }
 
 
@@ -3208,7 +3225,7 @@ function 二_エラー処理(e) {
 	window.scrollTo(0, 0);
 	$("エラー").className = "";
 	$("エラー文").textContent = String(e + "\n@" + e.lineNumber);
-//	throw  new Error(e);
+	//	throw  new Error(e);
 	console.log("error:", e);
 	console.log("stack:", e.stack);
 }
@@ -3225,136 +3242,136 @@ function 二_結果一行を表示() {
 	el.appendChild(ct(str));
 }
 
-const 一_航空隊シミュ=(航空隊番号, 敵艦隊)=>{
-	const シミュ回数=Number(O.settings.num_simulate);
-console.time(`航空隊シミュ(${シミュ回数}回)`)
-	const 確率ボーダー=[0.5, 0.9, 0.95, 0.99];
-	const 設定確率ボーダー=数字をn桁で切り捨て(Number(O.settings.cumulative_threshold)/100, 2);
-	const 波数=航空隊番号.length;
-	const 航空隊制空値=航空隊番号.map(a=>零_航空隊制空値(a));
-	
-	let s=[];
-	let ss=[];
-	for(let i=0; i<波数; i++) ss[i]=new Map([["確保",0],["優勢",0],["拮抗",0],["劣勢",0],["喪失",0]]);
-	let 敵装備=[];
-	let 初回敵搭載数=[];
-	for(let i of 敵艦隊){
+const 一_航空隊シミュ = (航空隊番号, 敵艦隊) => {
+	const シミュ回数 = Number(O.settings.num_simulate);
+	console.time(`航空隊シミュ(${シミュ回数}回)`)
+	const 確率ボーダー = [0.5, 0.9, 0.95, 0.99];
+	const 設定確率ボーダー = 数字をn桁で切り捨て(Number(O.settings.cumulative_threshold) / 100, 2);
+	const 波数 = 航空隊番号.length;
+	const 航空隊制空値 = 航空隊番号.map(a => 零_航空隊制空値(a));
+
+	let s = [];
+	let ss = [];
+	for (let i = 0; i < 波数; i++) ss[i] = new Map([["確保", 0], ["優勢", 0], ["拮抗", 0], ["劣勢", 0], ["喪失", 0]]);
+	let 敵装備 = [];
+	let 初回敵搭載数 = [];
+	for (let i of 敵艦隊) {
 		初回敵搭載数.push(零_敵搭載数(i));
 		敵装備.push(零_敵装備(i));
 	}
-	const 初回敵制空値=零_搭載数制空値(初回敵搭載数, 敵装備, true);
-	const 初回制空状況=零_制空判定(航空隊制空値[0], 初回敵制空値);
-	let 制空状況固定フラグ=new Array(波数);
-	let 最悪制空状況, 最小制空値, 最良制空状況=new Array(波数);
-	
-	for(let N=0; N<シミュ回数; N++){
-		let 敵搭載数=deepcopy(初回敵搭載数);
-		let 最小搭載数=deepcopy(敵搭載数);
+	const 初回敵制空値 = 零_搭載数制空値(初回敵搭載数, 敵装備, true);
+	const 初回制空状況 = 零_制空判定(航空隊制空値[0], 初回敵制空値);
+	let 制空状況固定フラグ = new Array(波数);
+	let 最悪制空状況, 最小制空値, 最良制空状況 = new Array(波数);
+
+	for (let N = 0; N < シミュ回数; N++) {
+		let 敵搭載数 = deepcopy(初回敵搭載数);
+		let 最小搭載数 = deepcopy(敵搭載数);
 		let 制空状況;
-		for(let i=0; i<波数; i++){
+		for (let i = 0; i < 波数; i++) {
 			//-----前回の機数から制空値を計算して制空状況を求める----
-			if(i===0){
-				制空状況=初回制空状況;
-			}else if(制空状況固定フラグ[i]!==undefined){ //2波目以降　それまでのぶつけ方によって制空状況が変わらない場合
-				制空状況=制空状況固定フラグ[i];
-			}else{ //2波目以降・ぶつけ方によって制空状況が変わる場合
-				const 敵制空値=零_搭載数制空値(敵搭載数, 敵装備, true);
-				制空状況=零_制空判定(航空隊制空値[i], 敵制空値);
+			if (i === 0) {
+				制空状況 = 初回制空状況;
+			} else if (制空状況固定フラグ[i] !== undefined) { //2波目以降　それまでのぶつけ方によって制空状況が変わらない場合
+				制空状況 = 制空状況固定フラグ[i];
+			} else { //2波目以降・ぶつけ方によって制空状況が変わる場合
+				const 敵制空値 = 零_搭載数制空値(敵搭載数, 敵装備, true);
+				制空状況 = 零_制空判定(航空隊制空値[i], 敵制空値);
 			}
-			
+
 			//-----上で制空状況を得たので敵機を減らす-----
-			for(let j=0; j<敵搭載数.length; j++){
-				for(let k=0; k<敵搭載数[j].length; k++){
-					const t=敵搭載数[j][k]
-					敵搭載数[j][k]=t-零_敵喪失数計算(t, 制空状況, "乱数");
+			for (let j = 0; j < 敵搭載数.length; j++) {
+				for (let k = 0; k < 敵搭載数[j].length; k++) {
+					const t = 敵搭載数[j][k]
+					敵搭載数[j][k] = t - 零_敵喪失数計算(t, 制空状況, "乱数");
 				}
 			}
-			
+
 			//-----i波目の制空状況が固定かどうか調べる-----
-			if(N===0 && i<波数){
-				最小制空値=零_搭載数制空値(最小搭載数, 敵装備, true);
-				最悪制空状況=零_制空判定(航空隊制空値[i], 初回敵制空値);
-				最良制空状況[i]=零_制空判定(航空隊制空値[i], 最小制空値);
-				if(最良制空状況[i]===最悪制空状況){
-					制空状況固定フラグ[i]=最悪制空状況;
+			if (N === 0 && i < 波数) {
+				最小制空値 = 零_搭載数制空値(最小搭載数, 敵装備, true);
+				最悪制空状況 = 零_制空判定(航空隊制空値[i], 初回敵制空値);
+				最良制空状況[i] = 零_制空判定(航空隊制空値[i], 最小制空値);
+				if (最良制空状況[i] === 最悪制空状況) {
+					制空状況固定フラグ[i] = 最悪制空状況;
 				}
-				for(let j=0; j<敵搭載数.length; j++){
-					for(let k=0; k<敵搭載数[j].length; k++){
-						const t=最小搭載数[j][k]
-						最小搭載数[j][k]=t-零_敵喪失数計算(t, 最良制空状況[i], "最大");
+				for (let j = 0; j < 敵搭載数.length; j++) {
+					for (let k = 0; k < 敵搭載数[j].length; k++) {
+						const t = 最小搭載数[j][k]
+						最小搭載数[j][k] = t - 零_敵喪失数計算(t, 最良制空状況[i], "最大");
 					}
 				}
 			}
-			ss[i].set(制空状況,ss[i].get(制空状況)+1);
+			ss[i].set(制空状況, ss[i].get(制空状況) + 1);
 		}
-		const 全波終了後敵制空値=零_搭載数制空値(敵搭載数, 敵装備, false);
+		const 全波終了後敵制空値 = 零_搭載数制空値(敵搭載数, 敵装備, false);
 		s.push(全波終了後敵制空値);
 	}
-	
-	let max=0;
-	let min=Infinity;
-	for(let i=0; i<s.length; i++){
-		max=Math.max(max,s[i]);
-		min=Math.min(min,s[i]);
+
+	let max = 0;
+	let min = Infinity;
+	for (let i = 0; i < s.length; i++) {
+		max = Math.max(max, s[i]);
+		min = Math.min(min, s[i]);
 	}
-	const 発生回数=new Map();
-	const 確率分布=new Map();
-	const 累積確率=new Map();
-	let 累積=0;
-	let 上位制空値={};
+	const 発生回数 = new Map();
+	const 確率分布 = new Map();
+	const 累積確率 = new Map();
+	let 累積 = 0;
+	let 上位制空値 = {};
 	let ボーダー制空値;
-	for(let i=min; i<=max; i++) 発生回数.set(i,0);
-	for(let i of s) 発生回数.set(i,発生回数.get(i)+1);
-	for(let [k,v] of 発生回数) 確率分布.set(k, 数字をn桁で切り捨て(v/シミュ回数,4));
-	for(let [k,v] of 確率分布){
-		累積+=v;
-		if(累積>=設定確率ボーダー && ボーダー制空値===undefined) ボーダー制空値=k;
-		for(let i of 確率ボーダー){
-			if(累積>=i && 上位制空値[i]===undefined){
-				上位制空値[i]=k;
+	for (let i = min; i <= max; i++) 発生回数.set(i, 0);
+	for (let i of s) 発生回数.set(i, 発生回数.get(i) + 1);
+	for (let [k, v] of 発生回数) 確率分布.set(k, 数字をn桁で切り捨て(v / シミュ回数, 4));
+	for (let [k, v] of 確率分布) {
+		累積 += v;
+		if (累積 >= 設定確率ボーダー && ボーダー制空値 === undefined) ボーダー制空値 = k;
+		for (let i of 確率ボーダー) {
+			if (累積 >= i && 上位制空値[i] === undefined) {
+				上位制空値[i] = k;
 			}
 		}
-		累積確率.set(k,数字をn桁で切り捨て(累積,4));
+		累積確率.set(k, 数字をn桁で切り捨て(累積, 4));
 	}
-	for(let i of ss){
-		for(let [k,v] of i){
-			i.set(k, v/シミュ回数);
+	for (let i of ss) {
+		for (let [k, v] of i) {
+			i.set(k, v / シミュ回数);
 		}
 	}
-console.timeEnd(`航空隊シミュ(${シミュ回数}回)`)
+	console.timeEnd(`航空隊シミュ(${シミュ回数}回)`)
 	return {
-		max:max,
-		min:min,
-		set:ボーダー制空値,
-		top:上位制空値,
-		n:シミュ回数,
-		dist:確率分布,
-		cumu:累積確率,
-		count:発生回数,
-		status:ss,
+		max: max,
+		min: min,
+		set: ボーダー制空値,
+		top: 上位制空値,
+		n: シミュ回数,
+		dist: 確率分布,
+		cumu: 累積確率,
+		count: 発生回数,
+		status: ss,
 	};
 }
 
-const 零_使用制空値=(o)=>{
-	if(o.ユーザ設定値) return o.ユーザ設定値;
-	if(o.ボーダー制空値) return o.ボーダー制空値;
+const 零_使用制空値 = (o) => {
+	if (o.ユーザ設定値) return o.ユーザ設定値;
+	if (o.ボーダー制空値) return o.ボーダー制空値;
 	return o.制空値;
 }
-const 零_航空隊制空値=(番号)=>{
-	const 番目=Math.floor(番号/2);
-	let cnt=0;
-	for(let i of O.table){
-		const d=i.data;
-		if(d.hidden) continue;
-		if(d.kanmusu!=="基地航空隊") continue;
-		if(d.kaizou!=="出撃") continue;
-		if(cnt===番目) return d.shoukei;
+const 零_航空隊制空値 = (番号) => {
+	const 番目 = Math.floor(番号 / 2);
+	let cnt = 0;
+	for (let i of O.table) {
+		const d = i.data;
+		if (d.hidden) continue;
+		if (d.kanmusu !== "基地航空隊") continue;
+		if (d.kaizou !== "出撃") continue;
+		if (cnt === 番目) return d.shoukei;
 		cnt++;
 	}
 }
-const 零_敵艦隊一行=()=>{
-	const a=O.etable.map(a=>零_i2n(a)).filter(a=>a!=="-"); //名前が"-"でないものだけ抽出
-	if(a.length>0) return a.reduce((a,b)=>{return a+","+b});
+const 零_敵艦隊一行 = () => {
+	const a = O.etable.map(a => 零_i2n(a)).filter(a => a !== "-"); //名前が"-"でないものだけ抽出
+	if (a.length > 0) return a.reduce((a, b) => { return a + "," + b });
 	return "未設定";
 }
 function 零_マップ文字簡略化(a) {
@@ -3396,37 +3413,37 @@ function 一_結果搭載マトリックスを取得(idx, di, x) {
 function 一_戦闘数を取得() {
 	return 零_ルート上の戦闘マスを列挙().length;
 }
-const 二_航空隊後敵制空値を生成=(o)=>{
-	const el=ce("ul");
+const 二_航空隊後敵制空値を生成 = (o) => {
+	const el = ce("ul");
 	el.classList.add("航空隊後敵制空値")
-	if(o.ユーザ設定値!==undefined){
-		const li=el.appendChild(ce("li"));
+	if (o.ユーザ設定値 !== undefined) {
+		const li = el.appendChild(ce("li"));
 		li.appendChild(ct(`${o.ユーザ設定値}(設定値)`));
 		li.classList.add("採用制空値");
-	}else{
-		if(o.ボーダー制空値){
-			const li=el.appendChild(ce("li"));
+	} else {
+		if (o.ボーダー制空値) {
+			const li = el.appendChild(ce("li"));
 			li.appendChild(ct(`${o.ボーダー制空値}(${O.settings.cumulative_threshold}%)`));
 			li.classList.add("採用制空値");
 		}
 	}
-	
-	
-	if(o.上位制空値){
-		for(let i in o.上位制空値){
-			if(i*100===parseInt(O.settings.cumulative_threshold)) continue;
-			const li=el.appendChild(ce("li"));
-			li.appendChild(ct(`${o.上位制空値[i]}(${i*100}%)`));
+
+
+	if (o.上位制空値) {
+		for (let i in o.上位制空値) {
+			if (i * 100 === parseInt(O.settings.cumulative_threshold)) continue;
+			const li = el.appendChild(ce("li"));
+			li.appendChild(ct(`${o.上位制空値[i]}(${i * 100}%)`));
 			li.classList.add("非採用制空値");
 		}
-		const li=el.appendChild(ce("li"));
+		const li = el.appendChild(ce("li"));
 		li.appendChild(ct(`${o.制空値}(元)`));
 		li.classList.add("非採用制空値");
-	}else{
-		let str="";
-		if(o.ユーザ設定値!==undefined) str="(元)";
-		const li=el.appendChild(ce("li"));
-		li.appendChild(ct(o.制空値+str));
+	} else {
+		let str = "";
+		if (o.ユーザ設定値 !== undefined) str = "(元)";
+		const li = el.appendChild(ce("li"));
+		li.appendChild(ct(o.制空値 + str));
 		li.classList.add("採用制空値");
 	}
 	return el;
@@ -3514,10 +3531,10 @@ function 二_マップフィルタ適用() {
 	O.filter = filter;
 	零_ローカルストレージ保存(O, "O")
 }
-const 零_ルート上の戦闘マスを列挙=()=>{
+const 零_ルート上の戦闘マスを列挙 = () => {
 	const r = O.route;
 	const n = [];
-	const md=mapData[マス配置データ対応表[O.hou][O.kai]];
+	const md = mapData[マス配置データ対応表[O.hou][O.kai]];
 	for (let i of r) {
 		if (零_航空戦があるか(O.hou, O.kai, i)) {
 			n.push(i);
@@ -3548,22 +3565,22 @@ function 零_基地空襲があるか(hou, kai) {
 		return false;
 	}
 }
-const 零_敵最大制空値=(p)=>{
+const 零_敵最大制空値 = (p) => {
 	const m = 海域データ[O.hou]["データ"][O.kai][p];
 	if (m === undefined) return 0;
 	let s = 0;
-	for (let i=0; i<m.length; i++) {
-		s=Math.max(s, 零_敵合計制空値(m[i],false));
+	for (let i = 0; i < m.length; i++) {
+		s = Math.max(s, 零_敵合計制空値(m[i], false));
 	}
 	return s;
 }
-const 零_敵最大制空値編成=(p)=>{
+const 零_敵最大制空値編成 = (p) => {
 	const m = 海域データ[O.hou]["データ"][O.kai][p];
-	let s=0,n=0;
+	let s = 0, n = 0;
 	if (m === undefined) return [];
-	for(let i=0; i<m.length; i++){
-		if(s<零_敵合計制空値(m[i],false)){
-			n=i;
+	for (let i = 0; i < m.length; i++) {
+		if (s < 零_敵合計制空値(m[i], false)) {
+			n = i;
 		}
 	}
 	return m[n];
@@ -3610,12 +3627,12 @@ function 零_装備できるか(艦種, 艦名, 改造, 種類, 装備名) {
 		case "水上爆撃機":
 			if (eq(艦種, ["水上機母艦", "航空巡洋艦", "航空戦艦", "補給艦", "潜水空母"])) return true;
 			if (eq(艦名, ["Littorio", "Roma", "Zara", "Pola", "金剛"])) return true;
-			if(艦名==="Richelieu" && 装備名==="Laté 298B") return true;
+			if (艦名 === "Richelieu" && 装備名 === "Laté 298B") return true;
 			if (艦種 === "軽巡洋艦") return true;
 			break;
 		case "水上戦闘機":
 			if (eq(艦種, ["水上機母艦", "航空巡洋艦", "航空戦艦", "潜水空母", "潜水母艦", "補給艦"])) return true;
-			if (艦種 === "戦艦" && 艦名!=="金剛" && 艦名!=="Richelieu") return true;
+			if (艦種 === "戦艦" && 艦名 !== "金剛" && 艦名 !== "Richelieu") return true;
 			if (艦種 === "重巡洋艦") return true;
 			if (艦名 === "由良") return true;
 			if (艦名 === "多摩") return true;
@@ -3628,36 +3645,36 @@ function 零_装備できるか(艦種, 艦名, 改造, 種類, 装備名) {
 	}
 	return false;
 }
-const 零_装備できるものがあるか=(艦種,艦名,改造,種類)=>{
-	for(i in 艦戦データ){
-		if(艦戦データ[i].種類!==種類) continue;
-		if(零_装備できるか(艦種,艦名,改造,種類,i)) return true;
+const 零_装備できるものがあるか = (艦種, 艦名, 改造, 種類) => {
+	for (i in 艦戦データ) {
+		if (艦戦データ[i].種類 !== 種類) continue;
+		if (零_装備できるか(艦種, 艦名, 改造, 種類, i)) return true;
 	}
 	return false;
 }
-const 零_ロケット戦闘機か=(装備名)=>{
-	if(艦戦データ[装備名] && 艦戦データ[装備名].ロケット) return true;
+const 零_ロケット戦闘機か = (装備名) => {
+	if (艦戦データ[装備名] && 艦戦データ[装備名].ロケット) return true;
 	return false;
 }
-const 零_重爆込み空襲か=(敵編成)=>{
-	for(let i of 敵編成){
-		if(零_重爆持ちか(i)) return true;
+const 零_重爆込み空襲か = (敵編成) => {
+	for (let i of 敵編成) {
+		if (零_重爆持ちか(i)) return true;
 	}
-	
+
 	return false;
 }
-const 零_重爆持ちか=(敵id)=>{
-	if(深海棲艦idデータ[敵id] && 深海棲艦idデータ[敵id].jubaku) return true;
+const 零_重爆持ちか = (敵id) => {
+	if (深海棲艦idデータ[敵id] && 深海棲艦idデータ[敵id].jubaku) return true;
 	return false;
 }
-const 零_マップの戦闘マスを列挙=(h,k)=>{
-	let ary=[];
-	let o=mapData[マス配置データ対応表[h][k]];
-	for(let i in o){
-		const type=o[i].type;
-		if(eq(i,["-","=","1","2","3","基","data"])) continue;
-		if(eq(type,["出撃","基地","うずしお","気のせい","能動分岐","泊地修理","夜戦","敵レーダー射撃","帰投地点","資源","航空偵察","揚陸地点"])) continue;
-		
+const 零_マップの戦闘マスを列挙 = (h, k) => {
+	let ary = [];
+	let o = mapData[マス配置データ対応表[h][k]];
+	for (let i in o) {
+		const type = o[i].type;
+		if (eq(i, ["-", "=", "1", "2", "3", "基", "data"])) continue;
+		if (eq(type, ["出撃", "基地", "うずしお", "気のせい", "能動分岐", "泊地修理", "夜戦", "敵レーダー射撃", "帰投地点", "資源", "航空偵察", "揚陸地点"])) continue;
+
 		ary.push(i);
 	}
 	ary.sort();
@@ -3939,8 +3956,8 @@ function 二_ドラッグアンドドロップリストを表示(ev) {
 		li.appendChild(ct(i));
 		li.dataset.value = i; //装備名
 		li.classList.add(艦戦データ[i].種類, "艦載機");
-		if (零_種類(i)==="艦上爆撃機" && 艦戦データ[i].対空値 >= 4) li.classList.add("対空値有");
-		if (艦戦データ[i].夜間航空機===true) li.classList.add("夜間航空機");
+		if (零_種類(i) === "艦上爆撃機" && 艦戦データ[i].対空値 >= 4) li.classList.add("対空値有");
+		if (艦戦データ[i].夜間航空機 === true) li.classList.add("夜間航空機");
 		li.draggable = true;
 		li.addEventListener("dragstart", (function (i) {
 			return function (e) {
@@ -3964,7 +3981,7 @@ function 二_ドラッグアンドドロップリストを表示(ev) {
 	document.body.appendChild(di);
 }
 
-function 二_可動ポップアップを生成(title,onclose) {
+function 二_可動ポップアップを生成(title, onclose) {
 	M[title] = {};
 	var el = ce("div");
 	var ti = el.appendChild(ce("div"));
@@ -3979,7 +3996,7 @@ function 二_可動ポップアップを生成(title,onclose) {
 	na.classList.add("中身");
 
 	cs.appendChild(ct("▲"));
-	cs.addEventListener("click", function () { el.parentNode.removeChild(el);if(onclose) onclose(); });
+	cs.addEventListener("click", function () { el.parentNode.removeChild(el); if (onclose) onclose(); });
 	ti.addEventListener("mousedown", function (e) { M[title].c = true; M[title].X = e.layerX; M[title].Y = e.layerY; });
 	ti.addEventListener("mouseup", function () { M[title].c = false; });
 	document.addEventListener("mousemove", function (e) {
@@ -4075,15 +4092,15 @@ function 二_ナビゲーション(a) {
 	}, 300);
 }
 
-const 零_敵制空初期値=()=>{
-	const o={
-		制空値:0,
-		航空隊用制空値:0,
-		上位制空値:0,
-		制空値分布:new Map(),
-		艦隊:[],
-		暫定:true,
-		ユーザ設定値:undefined,
+const 零_敵制空初期値 = () => {
+	const o = {
+		制空値: 0,
+		航空隊用制空値: 0,
+		上位制空値: 0,
+		制空値分布: new Map(),
+		艦隊: [],
+		暫定: true,
+		ユーザ設定値: undefined,
 	};
 	return o;
 }
@@ -4092,7 +4109,7 @@ function 零_テーブル搭載数(td, i) {
 }
 
 function 一_最新バージョンチェック() {
-	if(location.href.match(/dque.github.io/)===null) return;
+	if (location.href.match(/dque.github.io/) === null) return;
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState === 4) {
@@ -4106,15 +4123,15 @@ function 一_最新バージョンチェック() {
 		}
 	}
 	xhr.open("GET", "https://dque.github.io/seiku/data_version.js", true);
-	xhr.setRequestHeader("Pragma","no-cache");
-	xhr.setRequestHeader("Cache-Control","no-cache");
+	xhr.setRequestHeader("Pragma", "no-cache");
+	xhr.setRequestHeader("Cache-Control", "no-cache");
 	xhr.send();
 };
 function 一_バージョンチェック(s) {
 	if (s !== data_version) {
 		var a = s.match(/(\d+)-(\d+)/)
 		var b = String(data_version).match(/(\d+)-(\d+)/);
-		if (a[1] > b[1] || (a[1]===b[1] && a[2] > b[2])) {
+		if (a[1] > b[1] || (a[1] === b[1] && a[2] > b[2])) {
 			//新しいバージョンがある
 			$("version_check").classList.add("old");
 		}
