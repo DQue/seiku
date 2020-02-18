@@ -41,41 +41,11 @@ h3{
 	font-size:14px;
 	margin:0;
 }
-h3.opener{
-
-	display:block;
-	margin:0 0 -1px;
-}
-h3.opener:hover{
-	
-}
-h3.opener.closed{
-
-}
-h3.opener.closed:hover{
-
-}
-h3.opener + *{
-	border:1px dotted #9ab;
-	padding:4px 8px;
-	background:rgba(190,190,228,0.15);
-	
-	border-width:0 0 1px 1px;
-	border-width:0 0 0px 1px;
-}
-h3.opener + *.hide{
-	background:#f9f9f9;
-	padding:0 8px 0;
-	border-width:0 0 1px 0px;
-}
-h3.opener.closed:hover + *.hide{
-	border-bottom-color:#f00;
-}
 h4{
 	font-weight:normal;
 	font-size:14px;
 	margin:0;
-	padding:8px 0 0;
+	padding:8px 0 0 18px;
 }
 a:link{
 	text-decoration:none;
@@ -677,13 +647,14 @@ section{
 .opener{
 	background:inherit;
 	cursor:pointer;
+	position: relative;
 	
 }
 h2.opener{
 	display:inline-block;
 	height:20px;
 	margin:0;
-	padding:2px 8px 2px 8px;
+	padding:2px 8px 2px 20px;
 	font-size:18px;
 	position:relative;
 	top:-25px;
@@ -720,28 +691,63 @@ h2.opener.closed{
 	top:0;
 	left:0;
 }
-.opener:before{
-	content:"▲";
-	display:inline-block;
-	width:20px;
-	height:20px;
-	line-height:20px;
-	font-size:12px;
-	vertical-align:bottom;
-	margin-right:8px;
-	text-align:center;
+.opener::before{
+	content:'';
 	
-	font-family:monospace;
-	font-weight:normal;
+	display:block;
+	width: 0;
+	height: 0;
+	line-height:0;
+	border-style: solid;
+	border-width:0 5px calc(5px*1.732) 5px;
+	border-color:transparent transparent #000  transparent;
+	
+	position:absolute;
+	left:6px;
+	top:6px;
+	transform-origin: 0 calc(5px/2*1.732);
+	transition: transform 0.45s cubic-bezier(0.5, 1, 0.5, 0);
 }
 .opener:hover{
 }
 .opener:hover:before{
-	color:red;
+	border-color:transparent transparent #f00  transparent;
 }
 .opener.closed:before{
-	content:"▼";
+	transform-origin: 0 calc(5px/2*1.732);
+	transform: translateY(-6px) rotateX(180deg);
 }
+h3.opener{
+	display:block;
+	position: relative;
+	margin:0 0 -1px;
+	padding-left:28px;
+}
+h3.opener::before, h4.opener::before, h5.opener::before{
+	position:absolute;
+	top:8px;
+}
+h4.opener::before{
+	top:14px;
+}
+h3.opener + *{
+	border:1px dotted #9ab;
+	padding:4px 8px;
+	background:rgba(190,190,228,0.15);
+	
+	border-width:0 0 1px 1px;
+	border-width:0 0 0px 1px;
+}
+h3.opener + *.hide{
+	background:#f9f9f9;
+	padding:0 8px 0;
+	border-width:0 0 1px 0px;
+}
+h3.opener.closed:hover + *.hide{
+	border-bottom-color:#f00;
+}
+
+
 .inner{
 	height:auto;
 	max-height:1500px;

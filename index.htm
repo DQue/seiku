@@ -57,6 +57,7 @@
 
 
 	<section id="エラー" class="hide">
+		<h2>エラー</h2>
 		<p>処理中にエラーが発生しました。キャッシュをクリアしてページの更新を行ってください。
 			キャッシュクリア後にエラーが発生する場合、<button onclick="二_ローカルストレージデータをリセットする()">このボタン</button>をクリックしてデータを初期化してください。
 			それでもダメな場合、ブラウザ側の操作でローカルストレージを初期化してください。
@@ -230,20 +231,20 @@
 							<tr>
 								<th colspan="2">艦娘
 									<span id="remove_kanmusu" data-help="艦娘をここにドラッグ＆ドロップするとはずします。"
-										class="popup_help btn_in_table ポップアップ起動ボタン"><img src="./imgs/remove.png"></span>
+										class="popup_help btn_in_table ポップアップ起動ボタン"><img src="./imgs/remove.png" alt="艦娘はずす"></span>
 								</th>
 								<th>搭載数</th>
 								<th>装備
 									<span id="remove_equip" data-help="装備をここにドラッグ＆ドロップするとはずします。"
 										class="popup_help  btn_in_table ポップアップ起動ボタン"><img
-											src="./imgs/remove.png"></span>
+											src="./imgs/remove.png" alt="装備はずす"></span>
 									<span id="search_equip"
 										data-help="装備をここにドラッグ＆ドロップすると、「艦隊これくしょん -艦これ- 攻略Wiki」の装備ページが開きます。正式名称とWikiの名称が異なっている装備の一部は今のところ非対応。"
 										class="popup_help  btn_in_table ポップアップ起動ボタン"><img
-											src="./imgs/search.png"></span>
+											src="./imgs/search.png" alt="Wiki"></span>
 									<span id="open_equip_list"
 										data-help="このボタンをクリックで装備のリストを開きます。リストから装備欄にドラッグアンドドロップで装備をセットできます。"
-										class="ポップアップ起動ボタン  btn_in_table"><img src="./imgs/equip_list.png"></span>
+										class="ポップアップ起動ボタン  btn_in_table"><img src="./imgs/equip_list.png" alt="装備リスト"></span>
 								</th>
 								<th>熟練度</th>
 								<th>改修</th>
@@ -253,12 +254,12 @@
 						</thead>
 						<tfoot>
 							<tr>
-								<td colspan="6">艦娘の合計制空値</th>
+								<td colspan="6">艦娘の合計制空値</td>
 								<td colspan="2" id="艦娘合計制空値" class="num empty l">0</td>
 								<td class="empty"></td>
 							</tr>
 							<tr>
-								<td colspan="6">基地航空隊(防空)の合計制空値</th>
+								<td colspan="6">基地航空隊(防空)の合計制空値</td>
 								<td colspan="2" class="num empty l"><span id="基地航空隊合計制空値" >0</span><br><span id="基地航空隊ロケット戦闘機込制空値"></span></td>
 								<td class="empty"></td>
 							</tr>
@@ -446,11 +447,10 @@
 				<p><label><input type="checkbox" id="平均で計算">撃墜数を最大ではなく平均で計算する</label></p>
 				<p><label><input type="checkbox" id="搭載1で計算">2戦目以降、艦戦・水戦以外を搭載数1扱いで計算する</label><span class="kome"
 						data-help="道中の敵の対空砲火を多めに見積もりたい場合にチェックを入れてください">[?]</span></p>
-				<p><label><input type="checkbox" checked="true"
-							id="熟練度120で計算">艦戦・水戦・局戦・陸戦の熟練度が>>のとき、内部熟練度を100ではなく120で計算する</label><span class="kome"
+				<p><label><input type="checkbox" checked id="熟練度120で計算">艦戦・水戦・局戦・陸戦の熟練度が>>のとき、内部熟練度を100ではなく120で計算する</label><span class="kome"
 						data-help="熟練度&gt;&gt;になったばかりの艦戦・水戦・局戦・陸戦を使用する場合はチェックを外してください">[?]</span></p>
-				<p><label><input type="checkbox" checked="true" id="装備無し搭載数を表示">制空争いに関与しないスロットの搭載数も表示する</label></p>
-				<p><label><input type="checkbox" checked="true" id="制空境界グラフを表示する">劣勢・拮抗・優勢・確保に必要な制空値をグラフで表示する</label>
+				<p><label><input type="checkbox" checked id="装備無し搭載数を表示">制空争いに関与しないスロットの搭載数も表示する</label></p>
+				<p><label><input type="checkbox" checked id="制空境界グラフを表示する">劣勢・拮抗・優勢・確保に必要な制空値をグラフで表示する</label>
 				</p>
 				<p><label><input type="checkbox" id="制空境界値を表示する">劣勢・拮抗・優勢・確保に必要な制空値を数値で表示する</label></p>
 				<p><label><input type="checkbox" id="空襲結果を表示する">空襲に対する防空結果表を表示する</label></p>
@@ -956,7 +956,7 @@
 				<dd class="kancolle beg_of_month">「瑞雲(六三四空)」「瑞雲12型」の装備データを追加</dd>
 				<dt>2014-02-26～</dt>
 				<dd class="kancolle beg_of_month">#5-4「サーモン海域」のマップデータを追加</dd>
-				<dt itemprop="datePublished" datetime="2014-02-18+9">2014-02-18</dt>
+				<dt><time itemprop="datePublished" datetime="2014-02-18+9">2014-02-18</time></dt>
 				<dd>作成</dd>
 			</dl>
 		</div>
