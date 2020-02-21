@@ -4072,7 +4072,15 @@ function 二_埋めるを生成() {
 	})());
 	return el;
 };
-
+const 二_戦闘行動半径表示 = (x, y, cr) => {
+	隠す("戦闘行動半径表示");
+	if (!x) return;
+	const el = document.body.appendChild(ce("div"));
+	el.id = "戦闘行動半径表示";
+	el.appendChild(ct(`戦闘行動半径：${cr}`));
+	el.style.left = `${x + 8}px`;
+	el.style.top = `${y + 16}px`;
+}
 function 二_ナビゲーション(a) {
 	var h = $(a);
 	var d = 兄弟要素を取得(h, "弟");

@@ -1122,12 +1122,39 @@ td.jukuren,td.kaishu{
 	font-size:80%;
 	padding-left:6px;
 }
+#戦闘行動半径表示{
+	display:block;
+	width:9em;
+	height:1em;
+	position:absolute;
+	top:0;
+	left:0;
+	padding:4px;
+	
+	background:rgba(0,0,0,0.8);
+	color:white;
+	border:none;
+	border-radius:0 5px 5px 5px ;
+}
+#戦闘行動半径表示::after{
+	content:"";
+	position:absolute;
+	top:-12px;
+	left:0;
+	width:0;
+	height:0;
+	border:4px solid transparent;
+	border-width:12px 0 0 6px;
+	border-left-color:rgba(0,0,0,0.8);
+}
+
+
 
 #ルート選択親, #敵艦隊選択親, #航空隊選択親{
 	display:inline-block;
 	vertical-align:top;
 	border:2px solid #026;
-	min-height:272px;
+	min-height:276px;
 	margin-bottom:2px;
 }
 #ルート選択親{
@@ -1162,7 +1189,8 @@ td.jukuren,td.kaishu{
 /*ルート選択*/
 #ルート選択{
 	text-align:left;
-	line-height:25px;
+	line-height:24px;
+	vertical-align: text-bottom;
 }
 #ルート選択>div{
 	float:left;
