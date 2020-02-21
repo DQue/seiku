@@ -1834,7 +1834,7 @@ function 二_ルート選択を表示(t) {
 	var o = target.parentNode;
 	var texts = ルートを列挙する(mn, [[マス目から文字を特定する(target)]])
 
-	if (texts.length > 12) {
+	if (texts.length > 10) {
 		const sp = $("ルート選択親").appendChild(ce("span"));
 		sp.id = "ルート抽出";
 		sp.appendChild(ct("ルートを抽出: "));
@@ -1871,13 +1871,10 @@ const 二_ルート一覧を表示 = (texts) => {
 	var len = texts.length;
 	var sorted = texts.sort();
 	var route_row = ((len) => {
-		if (len <= 12) return 12;
-		if (len % 12 === 0) return 12;
-		if (len % 10 === 0) return 10;
-		if (len % 8 === 0) return 8;
-		if (len % 10 < len % 12 && len % 8 < len % 12) return 12;
-		if (len % 8 < len % 10) return 10;
-		return 8;
+		for (let i = 9; i >= 6; i--) {
+			if (len % i > 5) return i;
+		}
+		return len > 10 ? 9 : 10;
 	})(len);
 
 	for (var i = 0; i < len / route_row; i++) {
