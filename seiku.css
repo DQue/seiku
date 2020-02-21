@@ -1154,6 +1154,7 @@ td.jukuren,td.kaishu{
 #ルート選択親, #敵艦隊選択親, #航空隊選択親{
 	display:inline-block;
 	vertical-align:top;
+	border:1px solid #026;
 	outline: 1px solid #026;
 	min-height:276px;
 	margin-bottom:2px;
