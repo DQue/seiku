@@ -119,6 +119,7 @@ function 兄弟要素を取得(自分, 兄弟) {
 	return e;
 }
 function getMousePos(e) { return { x: e.pageX, y: e.pageY, ox: e.offsetX } }
+getElementPos = (e, m) => { const p = getMousePos(m); return { x: e.pageX - p.x, y: e.pageY - p.y } }
 var K = {};
 var O = {};
 var M = {};

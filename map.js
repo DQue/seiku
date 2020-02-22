@@ -452,8 +452,11 @@ function makeMapSVG(mn, mapType, fes, x, y) {
 			c.addEventListener("mouseover", ((i) => {
 				return (e) => {
 					let cr = i.cr;
+					const t = e.target;
 					if (cr) {
-						const x = getMousePos(e).x, y = getMousePos(e).y;
+						const rect = t.getBoundingClientRect();
+						const x = rect.left + window.scrollX + otherData["circle-r"];
+						const y = rect.top + window.scrollY + otherData["circle-r"];
 						二_戦闘行動半径表示(x, y, cr);
 						$("マップ").querySelector("h3").dataset.cr = `戦闘行動半径：${cr}`;
 					}
@@ -462,7 +465,7 @@ function makeMapSVG(mn, mapType, fes, x, y) {
 			c.addEventListener("mouseout", ((i) => {
 				return (e) => {
 					$("マップ").querySelector("h3").dataset.cr = ``;
-					二_戦闘行動半径表示();
+					二_戦闘行動半径表示(); //隠す
 				}
 			})(md[i]), false);
 		} else if (c && mapType === "ルート選択") {
