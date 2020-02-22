@@ -455,8 +455,9 @@ function makeMapSVG(mn, mapType, fes, x, y) {
 					const t = e.target;
 					if (cr) {
 						const rect = t.getBoundingClientRect();
-						const x = rect.left + window.scrollX + otherData["circle-r"];
-						const y = rect.top + window.scrollY + otherData["circle-r"];
+						let x = rect.left + window.scrollX + otherData["circle-r"];
+						let y = rect.top + window.scrollY + otherData["circle-r"];
+						if (i.type === "ボス" || i.type === "ボス_夜to昼") { x += 4, y += 8 };
 						二_戦闘行動半径表示(x, y, cr);
 						$("マップ").querySelector("h3").dataset.cr = `戦闘行動半径：${cr}`;
 					}
