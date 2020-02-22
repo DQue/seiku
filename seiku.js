@@ -4079,8 +4079,8 @@ const 二_戦闘行動半径表示 = (x, y, cr) => {
 	const el = document.body.appendChild(ce("div"));
 	el.id = "戦闘行動半径表示";
 	el.appendChild(ct(`戦闘行動半径：${cr}`));
-	el.style.left = `${x + 8}px`;
-	el.style.top = `${y + 16}px`;
+	el.style.left = `${x}px`;
+	el.style.top = `${y}px`;
 }
 function 二_ナビゲーション(a) {
 	var h = $(a);
