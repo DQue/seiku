@@ -1983,7 +1983,7 @@ const 二_航空隊出撃ポイント選択を表示 = () => {
 		$("航空隊選択親").appendChild(el);
 	}
 }
-二_航空隊出撃ポイント選択を生成 = () => {
+const 二_航空隊出撃ポイント選択を生成 = () => {
 	O.kouku = [];
 	const wave = [];
 	for (let i = 0; i < O.table.length; i++) {
@@ -2012,7 +2012,7 @@ const 二_航空隊出撃ポイント選択を表示 = () => {
 	}
 	return table;
 }
-二_航空隊出撃マスを生成 = (idx, num_w) => {
+const 二_航空隊出撃マスを生成 = (idx, num_w) => {
 	$("航空隊選択親").classList.remove("chked");
 	const div = ce("div");
 	div.id = `航空隊出撃マス候補群_${idx}`;
@@ -2021,6 +2021,8 @@ const 二_航空隊出撃ポイント選択を表示 = () => {
 	for (let i of mas) {
 		const btn = div.appendChild(ce("span"));
 		btn.classList.add("航空隊出撃マス", "選択ボタン");
+		//戦闘行動半径不足ならここでclass追加（あとでやる）（CSSもあとでやる）
+		//		if()
 		btn.appendChild(ct(i));
 		btn.addEventListener("click", ((idx, i, num_w) => {
 			return (e) => {
