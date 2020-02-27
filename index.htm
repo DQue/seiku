@@ -7,8 +7,8 @@
 	<title>制空争いシミュレータカッコカリ</title>
 	<link rel="stylesheet" href="seiku.css?8">
 	<link rel="stylesheet" href="map.css">
-	<script>if(location.href.match(/dque.github.io/)){document.write(`<`+`script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-48162218-1', 'auto',{'allowLinker':true});ga('require','linker');ga('linker:autoLink',['81.la']);ga('send', 'pageview');<`+`/script>`)};</script>
-	
+	<script>if (location.href.match(/dque.github.io/)) { document.write(`<` + `script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-48162218-1', 'auto',{'allowLinker':true});ga('require','linker');ga('linker:autoLink',['81.la']);ga('send', 'pageview');<` + `/script>`) };</script>
+
 	<script src="data.js?10"></script>
 	<script src="efleetdata.js?6"></script>
 	<script src="mapdata.js?5"></script>
@@ -16,7 +16,7 @@
 	<script src="eedata.js?1"></script>
 	<script src="seiku_fes.js?6"></script>
 	<script src="data_migration.js?2"></script>
-	
+
 	<script src="data_version.js"></script>
 	<script src="seiku.js?9"></script>
 	<script src="euc.js?1"></script>
@@ -24,7 +24,7 @@
 	<script src="toggle.js?1"></script>
 	<script src="settings.js?2"></script>
 	<script src="wiki.js?1"></script>
-	
+
 	<script src="https://d3js.org/d3.v5.min.js"></script>
 	<script src="c3.min.js"></script>
 	<link rel="stylesheet" href="c3.min.css">
@@ -37,7 +37,7 @@
 	<meta name="twitter:image" content="https://dque.github.io/seiku/imgs/seiku_card_19071.png">
 </head>
 
-<body data-fes="">
+<body data-fes="hishimochi">
 	<header>
 		<div class="kata">
 			<p class="tweet"><a href="https://twitter.com/share" class="twitter-share-button"
@@ -106,7 +106,7 @@
 					</li>
 				</ol>
 			</div>
-			
+
 			<h3 class="opener closed">防空の計算方法</h3>
 			<div class="inner hide">
 				<ol>
@@ -166,13 +166,14 @@
 					<li>海域名の上に情報収集中と書かれている場合は情報（マップ・敵編成・敵制空値）の追加が遅れている可能性があります</li>
 					<li>本来、敵制空値が0の状況で航空戦が発生した場合は味方の制空値が0でも制空権確保となります。また、索敵失敗などの要因で航空戦が発生しなかった場合は互いの制空値に関わらず制空権は状態となり、一方で航空機の被撃墜は発生しません。そのような細かい挙動をこのシミュレータでは正確に再現していません
 					</li>
-					<li><del>深海棲艦の制空値が未確定の場合、制空値に「?」が付きます。甲作戦の敵はそれっぽい値が入っていることが多く、乙・丙・丁作戦の敵は甲作戦と同じ値が入っているか0になっていることが多いです</del></li>
+					<li><del>深海棲艦の制空値が未確定の場合、制空値に「?」が付きます。甲作戦の敵はそれっぽい値が入っていることが多く、乙・丙・丁作戦の敵は甲作戦と同じ値が入っているか0になっていることが多いです</del>
+					</li>
 					<li>艦娘に偵察機や飛行艇を装備できないのは仕様です（制空争いに関わらないため）</li>
 					<li>▲結果 のボーキ消費は制空争い分のみの期待値であり、多くの場合は実際のボーキ消費量と一致しません</li>
 					<li>データはブラウザのローカルストレージに保存されます。保存を拒否した場合、別の端末やブラウザを使用した場合、ブラウザのデータを削除した場合などはデータの引き継ぎができません</li>
 					<li>▲編成 の表内に表示される攻撃力は、通常艦隊・本隊・単縦陣・同航戦・無損傷・砲撃戦・対水上時のキャップ前攻撃力です。
-					    装備ボーナスによる火力上昇は今のところ考慮されません。「艦爆」は爆装10、「艦攻」は雷装13として計算します。
-					    偵察機等の火力は考慮されません。</li>
+						装備ボーナスによる火力上昇は今のところ考慮されません。「艦爆」は爆装10、「艦攻」は雷装13として計算します。
+						偵察機等の火力は考慮されません。</li>
 					<li>▲結果 の敵制空値を手動入力した場合、航空隊による制空削りは計算されずに入力した値がそのまま使用されます</li>
 					<li>航空隊の出撃ポイントを2箇所設定することで分散出撃時の計算は可能ですが、2箇所目の計算時も航空隊の機数は最大で計算されます</li>
 					<li>基地航空隊が敵を撃破することによるその後の航空隊・本隊の制空権への影響は考慮されません</li>
@@ -231,20 +232,22 @@
 							<tr>
 								<th colspan="2">艦娘
 									<span id="remove_kanmusu" data-help="艦娘をここにドラッグ＆ドロップするとはずします。"
-										class="popup_help btn_in_table ポップアップ起動ボタン"><img src="./imgs/remove.png" alt="艦娘はずす"></span>
+										class="popup_help btn_in_table ポップアップ起動ボタン"><img src="./imgs/remove.png"
+											alt="艦娘はずす"></span>
 								</th>
 								<th>搭載数</th>
 								<th>装備
 									<span id="remove_equip" data-help="装備をここにドラッグ＆ドロップするとはずします。"
-										class="popup_help  btn_in_table ポップアップ起動ボタン"><img
-											src="./imgs/remove.png" alt="装備はずす"></span>
+										class="popup_help  btn_in_table ポップアップ起動ボタン"><img src="./imgs/remove.png"
+											alt="装備はずす"></span>
 									<span id="search_equip"
 										data-help="装備をここにドラッグ＆ドロップすると、「艦隊これくしょん -艦これ- 攻略Wiki」の装備ページが開きます。正式名称とWikiの名称が異なっている装備の一部は今のところ非対応。"
-										class="popup_help  btn_in_table ポップアップ起動ボタン"><img
-											src="./imgs/search.png" alt="Wiki"></span>
+										class="popup_help  btn_in_table ポップアップ起動ボタン"><img src="./imgs/search.png"
+											alt="Wiki"></span>
 									<span id="open_equip_list"
 										data-help="このボタンをクリックで装備のリストを開きます。リストから装備欄にドラッグアンドドロップで装備をセットできます。"
-										class="ポップアップ起動ボタン  btn_in_table"><img src="./imgs/equip_list.png" alt="装備リスト"></span>
+										class="ポップアップ起動ボタン  btn_in_table"><img src="./imgs/equip_list.png"
+											alt="装備リスト"></span>
 								</th>
 								<th>熟練度</th>
 								<th>改修</th>
@@ -260,7 +263,8 @@
 							</tr>
 							<tr>
 								<td colspan="6">基地航空隊(防空)の合計制空値</td>
-								<td colspan="2" class="num empty l"><span id="基地航空隊合計制空値" >0</span><br><span id="基地航空隊ロケット戦闘機込制空値"></span></td>
+								<td colspan="2" class="num empty l"><span id="基地航空隊合計制空値">0</span><br><span
+										id="基地航空隊ロケット戦闘機込制空値"></span></td>
 								<td class="empty"></td>
 							</tr>
 						</tfoot>
@@ -339,7 +343,8 @@
 					<label><input type="checkbox" class="マップフィルタ選択" data-group="難易度グループ" data-filter="乙">乙</label>
 					<label><input type="checkbox" class="マップフィルタ選択" data-group="難易度グループ" data-filter="丙">丙</label>
 					<label><input type="checkbox" class="マップフィルタ選択" data-group="難易度グループ" data-filter="丁">丁</label>
-					<label><input type="checkbox" class="マップフィルタ選択" data-group="難易度グループ" data-filter="難易度なし" checked="checked">その他
+					<label><input type="checkbox" class="マップフィルタ選択" data-group="難易度グループ" data-filter="難易度なし"
+							checked="checked">その他
 						<span class="kome" data-help="通常海域や昔の期間限定海域など、甲乙丙丁の区分が無い海域">[?]</span></label>
 				</span>
 				<span>
@@ -447,7 +452,8 @@
 				<p><label><input type="checkbox" id="平均で計算">撃墜数を最大ではなく平均で計算する</label></p>
 				<p><label><input type="checkbox" id="搭載1で計算">2戦目以降、艦戦・水戦以外を搭載数1扱いで計算する</label><span class="kome"
 						data-help="道中の敵の対空砲火を多めに見積もりたい場合にチェックを入れてください">[?]</span></p>
-				<p><label><input type="checkbox" checked id="熟練度120で計算">艦戦・水戦・局戦・陸戦の熟練度が>>のとき、内部熟練度を100ではなく120で計算する</label><span class="kome"
+				<p><label><input type="checkbox" checked
+							id="熟練度120で計算">艦戦・水戦・局戦・陸戦の熟練度が>>のとき、内部熟練度を100ではなく120で計算する</label><span class="kome"
 						data-help="熟練度&gt;&gt;になったばかりの艦戦・水戦・局戦・陸戦を使用する場合はチェックを外してください">[?]</span></p>
 				<p><label><input type="checkbox" checked id="装備無し搭載数を表示">制空争いに関与しないスロットの搭載数も表示する</label></p>
 				<p><label><input type="checkbox" checked id="制空境界グラフを表示する">劣勢・拮抗・優勢・確保に必要な制空値をグラフで表示する</label>
@@ -455,13 +461,14 @@
 				<p><label><input type="checkbox" id="制空境界値を表示する">劣勢・拮抗・優勢・確保に必要な制空値を数値で表示する</label></p>
 				<p><label><input type="checkbox" id="空襲結果を表示する">空襲に対する防空結果表を表示する</label></p>
 			</div>
-			
+
 			<h3>基地航空隊シミュレーション関連</h3>
 			<div>
 				<p>シミュレート回数 <input type="number" value="10000" min="1000" max="1000000" step="1000" id="シミュレート回数">
-				<span class="kome" data-help="回数が多ければ多いほど計算に時間がかかりますが精度が向上します">[?]</span></p>
+					<span class="kome" data-help="回数が多ければ多いほど計算に時間がかかりますが精度が向上します">[?]</span></p>
 				<p>上位<input type="number" value="90" min="1" max="99" step="1" id="累積確率ボーダー">%の制空値を使用する
-				<span class="kome" data-help="敵艦隊に基地航空隊を送ると敵制空値が確率的に分布します。自艦隊との制空争いにおいてどの値を採用するかを設定します">[?]</span></p>
+					<span class="kome" data-help="敵艦隊に基地航空隊を送ると敵制空値が確率的に分布します。自艦隊との制空争いにおいてどの値を採用するかを設定します">[?]</span>
+				</p>
 			</div>
 		</div>
 	</section>
@@ -470,7 +477,8 @@
 		<h2 class="opener closed" id="sec_更新履歴">更新履歴</h2>
 		<div class="inner hide">
 			<dl id="his" itemscope itemtype="http://schema.org/SoftwareApplication">
-				<dt><time itemprop="dateModified" datetime="2020-02-20+0900" content="2020-02-20+0900">2020-02-20</time></dt>
+				<dt><time itemprop="dateModified" datetime="2020-02-20+0900" content="2020-02-20+0900">2020-02-20</time>
+				</dt>
 				<dd>戦闘行動半径の表示を追加（二期6-5のみ）</dd>
 				<dt>2020-02-03</dt>
 				<dd class="beg_of_month">航空隊の情報を変更した際に自動で再計算する機能を追加</dd>
@@ -497,7 +505,8 @@
 						<title>赤と青の勾玉模様</title>
 						<circle cx="15" cy="15" r="13" class="マス目 昼戦" />
 						<circle cx="15" cy="15" r="9" class="払暁戦の塗り下" />
-						<path d="M 0,0 L -1.8,1.8 L -9,0 A 9,9,0,1,0,9,0 L 1.8,-1.8 L 0,0" transform="translate(15,15) rotate(-10)" class="払暁戦の塗り上" />
+						<path d="M 0,0 L -1.8,1.8 L -9,0 A 9,9,0,1,0,9,0 L 1.8,-1.8 L 0,0"
+							transform="translate(15,15) rotate(-10)" class="払暁戦の塗り上" />
 					</svg>
 					に変更</dd>
 				<dt>2019-11-25</dt>
@@ -527,7 +536,8 @@
 				<dd class="kancolle">「流星改(一航戦)」「流星改(一航戦/熟練)」の装備データを追加</dd>
 				<dt>2019-05-21～</dt>
 				<dd class="kancolle">「赤城改二」「赤城改二戊」の艦娘データを追加</dd>
-				<dd class="kancolle">「烈風改」「烈風改(三五二空/熟練)」「烈風改(試製艦載型)」「烈風改二」<!--「烈風改二(一航戦/熟練)」-->「烈風改二戊型」「烈風改二戊型(一航戦/熟練)」の装備データを追加</dd>
+				<dd class="kancolle">「烈風改」「烈風改(三五二空/熟練)」「烈風改(試製艦載型)」「烈風改二」
+					<!--「烈風改二(一航戦/熟練)」-->「烈風改二戊型」「烈風改二戊型(一航戦/熟練)」の装備データを追加</dd>
 				<dd class="kancolle">「北方棲妹」「北方棲妹-壊」の深海棲艦データを追加</dd>
 				<dd class="kancolle beg_of_month">期間限定海域：発動！友軍救援「第二次ハワイ作戦」の海域データを追加</dd>
 				<dt>2019-04-22</dt>
@@ -686,7 +696,7 @@
 				<dt>2017-02-23</dt>
 				<dd>基地航空隊の制空値調整用に「制空値1のやつ」「制空値2のやつ」「制空値4のやつ」の深海棲艦データを追加</dd>
 				<dt>2017-02-20
-</dt>
+				</dt>
 				<dd>初回訪問時に▲使い方 を自動で展開するように変更</dd>
 				<dt>2017-02-11～</dt>
 				<dd class="kancolle">期間限定海域「偵察戦力緊急展開！「光」作戦」の海域データを追加</dd>
@@ -968,7 +978,8 @@
 	<section>
 		<h2 class="opener" id="sec_その他">その他</h2>
 		<div class="inner small">
-			<p>一時的に設置サーバを変更しています。URLがhttp://81.81.la/u/kancolle/seiku.htmからhttps://dque.github.io/seiku/に変わっています。データの引き継ぎは自動ではできません。艦隊→ツール→データインポート・エクスポート(β)で可能ですが、自己責任でお願いします（ノーサポート）。</p>
+			<p>一時的に設置サーバを変更しています。URLがhttp://81.81.la/u/kancolle/seiku.htmからhttps://dque.github.io/seiku/に変わっています。データの引き継ぎは自動ではできません。艦隊→ツール→データインポート・エクスポート(β)で可能ですが、自己責任でお願いします（ノーサポート）。
+			</p>
 			<p>
 				表示がおかしい・数値がおかしいなどの不具合が発生した時はブラウザのキャッシュクリアを試してください。
 				不具合が直らない場合は<button onclick="二_ローカルストレージデータをリセットする()">このボタン</button>をクリックしてデータを初期化してください。
@@ -982,7 +993,7 @@
 			<p>動作はWindows版Mozilla Firefox, Google Chromeでのみ確認しています。スマートフォン版ブラウザやInternet Explorer、Microsoft
 				Edge等では機能の一部または全てが正常に動作しない可能性があります</p>
 			<p>Webページ表示領域の横幅は最低450px　950px以上で快適</p>
-<!--			<p class="fes_img_source">画像：いらすとや
+			<!--			<p class="fes_img_source">画像：いらすとや
 				<a href="https://www.irasutoya.com/2016/04/blog-post_53.html">(1)</a>
 				<a href="https://www.irasutoya.com/2016/04/blog-post_61.html">(2)</a>
 				<a href="https://www.irasutoya.com/2015/05/blog-post_519.html">(3)</a>
@@ -1053,9 +1064,9 @@
 									Wikia</a></dd>
 							<dt>高高度爆撃機・ロケット戦闘機</dt>
 							<dd>Twitter
-							<a href="https://twitter.com/Croshadow_/status/1168169501285699584">(1)</a>
-							<a href="https://twitter.com/syoukuretin/status/1168171596302798848">(2)</a>
-							<a href="https://twitter.com/Miyako_kc_tw/status/1170059047409610752">(3)</a>
+								<a href="https://twitter.com/Croshadow_/status/1168169501285699584">(1)</a>
+								<a href="https://twitter.com/syoukuretin/status/1168171596302798848">(2)</a>
+								<a href="https://twitter.com/Miyako_kc_tw/status/1170059047409610752">(3)</a>
 							</dd>
 							<dt>熟練度</dt>
 							<dd><a href="http://wikiwiki.jp/kancolle/?%B4%CF%BA%DC%B5%A1%BD%CF%CE%FD%C5%D9#Effect">艦載機熟練度
@@ -1068,7 +1079,9 @@
 									-艦これ- 攻略 Wiki*</a></dd>
 							<dd><a href="http://ja.kancolle.wikia.com/wiki/%E6%94%B9%E4%BF%AE%E5%8A%B9%E6%9E%9C">改修効果 |
 									艦これ検証Wiki | Fandom powered by Wikia</a></dd>
-							<dd><a href="https://twitter.com/trollkin_ball/status/1144714377024532480">Trollkinさんのツイート</a></dd>
+							<dd><a
+									href="https://twitter.com/trollkin_ball/status/1144714377024532480">Trollkinさんのツイート</a>
+							</dd>
 							<dd>ショウさんのツイート
 								<a href="https://twitter.com/syoukuretin/status/1212504067177476096">(1)</a>
 								<a href="https://twitter.com/syoukuretin/status/1212517054865035265">(2)</a>
@@ -1101,7 +1114,9 @@
 							<dd><a href="https://wikiwiki.jp/kancolle/戦闘について">戦闘について - 艦隊これくしょん -艦これ- 攻略 Wiki*</a></dd>
 							<dt>装備カテゴリ</dt>
 							<dd>七四式電子観測儀の
-							<a href="https://github.com/andanteyk/ElectronicObserver/blob/develop/ElectronicObserver/Other/Information/apilist.txt">Githubリポジトリ内データ</a> Copyright (c) 2014 Andante</dd>
+								<a
+									href="https://github.com/andanteyk/ElectronicObserver/blob/develop/ElectronicObserver/Other/Information/apilist.txt">Githubリポジトリ内データ</a>
+								Copyright (c) 2014 Andante</dd>
 						</dl>
 					</li>
 

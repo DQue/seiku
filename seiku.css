@@ -394,6 +394,7 @@ header{
 	margin:0;
 	padding:0;
 	width:100%;
+	height:32px;
 	border-bottom:1px solid #344;
 	background:#f9f9f9;
 	box-shadow:0 2px 4px #ddd;
@@ -401,26 +402,29 @@ header{
 }
 header h1{
 	font-size:18px;
-	padding:12px 18px;
-	margin:0;
-	background-color:inherit;
+	line-height:32px;
+	padding:0 3em 0 4px;
+	margin:auto;
+	height:32px;
+	background-image:none;
 	display:inline-block;
+	background: linear-gradient(90deg, #f9f9f9 0%, #f9f9f9  78%,rgba(249,249,249,0)  100%);
 }
 
 header .kata{
 	position:absolute;
-	right:6px;
+	right:4px;
 	top:12px;
 	
 	display:block;
-	top:0;
+	top:4px;
 	right:0;
-	padding:12px 6px;
-	height:20px;
+	padding:auto;
+	height:24px;
 	width:100px;
 	text-align:right;
-	background-color:inherit;
-	
+	background-color:transparent;
+	background-image:none;
 }
 header .tweet, header #version_check{
 	display:inline-block;
@@ -603,10 +607,12 @@ body[data-fes*="iwashi"]  .mapSVG{
 
 /*菱餅*/
 body[data-fes*="hishimochi"]  header{
-	background-image:url(./hinamatsuri_hishimochi_3.png);
+	background-image:url(./imgs/hinamatsuri_hishimochi.png);
 	background-repeat:repeat-x;
-	background-position:50% center;
+	background-position:50% right;
 }
+
+/*三越*/
 body[data-fes*="mitsukoshi"]  header{
 	background-image:url(./imgs/mitsukoshi.png);
 	background-repeat:repeat-x;
