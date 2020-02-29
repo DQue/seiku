@@ -1165,15 +1165,13 @@ td.jukuren,td.kaishu{
 	border:1px solid #026;
 	outline: 1px solid #026;
 	min-height:276px;
-	margin-bottom:2px;
+	margin:0 2px 2px 2px;
 }
 #ルート選択親{
 	min-width:144px;
-	margin-right:4px;
 }
 #敵艦隊選択親{
 	min-width:244px;
-	margin-right:4px;
 }
 #航空隊選択親 table, #航空隊選択親 tr, #航空隊選択親 td, #航空隊選択親 th{
 	border:none;
