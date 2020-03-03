@@ -4075,12 +4075,12 @@ function 二_埋めるを生成() {
 	})());
 	return el;
 };
-const 二_戦闘行動半径表示 = (x, y, cr) => {
+const 二_戦闘行動半径表示 = (x, y, cr, name) => {
 	隠す("戦闘行動半径表示");
 	if (!x) return;
 	const el = document.body.appendChild(ce("div"));
 	el.id = "戦闘行動半径表示";
-	el.appendChild(ct(`戦闘行動半径：${cr}`));
+	el.appendChild(ct(`【${name}】戦闘行動半径：${cr} `));
 	el.style.left = `${x}px`;
 	el.style.top = `${y}px`;
 }

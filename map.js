@@ -449,20 +449,21 @@ function makeMapSVG(mn, mapType, fes, x, y) {
 					二_航空隊出撃ポイント選択を表示();
 				}
 			})(i), false);
-			c.addEventListener("mouseover", ((i) => {
+			c.addEventListener("mouseover", ((m, i) => {
 				return (e) => {
-					let cr = i.cr;
+					let cr = m.cr;
+					let type = m.type;
 					const t = e.target;
 					if (cr) {
 						const rect = t.getBoundingClientRect();
 						let x = rect.left + window.scrollX + otherData["circle-r"];
 						let y = rect.top + window.scrollY + otherData["circle-r"];
-						if (i.type === "ボス" || i.type === "ボス_夜to昼") { x += 4, y += 8 };
-						二_戦闘行動半径表示(x, y, cr);
+						if (type === "ボス" || type === "ボス_夜to昼") { x += 4, y += 8 };
+						二_戦闘行動半径表示(x, y, cr, i);
 						$("マップ").querySelector("h3").dataset.cr = `戦闘行動半径：${cr}`;
 					}
 				}
-			})(md[i]), false);
+			})(md[i], i), false);
 			c.addEventListener("mouseout", ((i) => {
 				return (e) => {
 					$("マップ").querySelector("h3").dataset.cr = ``;
