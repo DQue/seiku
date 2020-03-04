@@ -2865,6 +2865,7 @@ const 一_敵制空テーブルを生成 = () => {
 			O.eseikus[i].累積確率 = o.cumu;
 			O.eseikus[i].ボーダー制空値 = o.set;
 			O.eseikus[i].制空状況 = o.status;
+			O.eseikus[i].航空隊用制空値 = o.apl;
 		}
 	}
 	if (apl) {
@@ -3208,7 +3209,7 @@ const 二_航空隊詳細の中身を生成 = (i, reflesh) => {
 const 二_航空隊関連情報を生成 = (i) => {
 	const div = ce("div");
 	const el1 = div.appendChild(ce("div"));
-	const o = 零_制空状況境界値を計算(零_使用制空値(O.eseikus[i]));
+	const o = 零_制空状況境界値を計算(O.eseikus[i].航空隊用制空値);
 	const str = `1波目必要制空値:劣勢${o.劣勢} 拮抗${o.拮抗} 優勢${o.優勢} 確保${o.確保}`;
 	el1.appendChild(ct(str));
 
@@ -3367,6 +3368,7 @@ const 一_航空隊シミュ = (航空隊番号, 敵艦隊) => {
 		cumu: 累積確率,
 		count: 発生回数,
 		status: ss,
+		apl: 初回敵制空値,
 	};
 }
 
