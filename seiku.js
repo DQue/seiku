@@ -2869,7 +2869,13 @@ const 一_敵制空テーブルを生成 = () => {
 	}
 	if (apl) {
 		O.kouku_recalc = false;
-		if (O.kouku_show_detail >= 0) 二_航空隊詳細を表示(null, O.kouku_show_detail, true);
+		if (O.kouku_show_detail >= 0) {
+			if (O.eseikus[O.kouku_show_detail].制空状況 === undefined) {
+				隠す("航空隊詳細親");
+			} else {
+				二_航空隊詳細を表示(null, O.kouku_show_detail, true);
+			}
+		}
 	}
 }
 
@@ -3099,19 +3105,20 @@ const 二_航空隊詳細を表示 = (e, i, reflesh) => {
 	if (reflesh === false || document.getElementById("航空隊詳細親") === null) {
 		隠す("航空隊詳細親");
 		const ps = 零_ルート上の戦闘マスを列挙();
-		const title = `${ps[i]}マス制空値詳細 敵: ${零_敵艦隊一行()}`;
+		const title = `${ps[i]}マス航空隊詳細 敵:${零_敵艦隊一行()}`;
 		el = document.body.appendChild(二_可動ポップアップを生成(title, () => { O.kouku_show_detail = undefined; }));
 		el.id = "航空隊詳細親";
 		el.classList.add("loong");
-		el.style.left = getMousePos(e).x + 45 + "px";
-		el.style.top = getMousePos(e).y - 310 + "px";
+		x = getMousePos(e).x;
+		y = getMousePos(e).y;
+		el.style.left = x + 45 + "px";
+		el.style.top = y - 310 + "px";
 		el2 = el.childNodes[2];
 		el2.id = "航空隊詳細";
 		el2.appendChild(二_航空隊詳細の中身を生成(i, reflesh));
 	} else {
 		el = $("航空隊詳細親");
 		el2 = el.childNodes[2];
-		//		while(el2.firstChild) el2.removeChild(el2.firstChild);
 		二_航空隊詳細の中身を生成(i, reflesh);
 	}
 }
@@ -3145,8 +3152,11 @@ const 二_航空隊詳細の中身を生成 = (i, reflesh) => {
 		});
 	} else {
 		const div = ce("div");
+		const elinfo = div.appendChild(ce("div"));
+		elinfo.classList.add("航空隊関連情報");
+		elinfo.appendChild(二_航空隊関連情報を生成(i));
 		const el3 = div.appendChild(ce("div"));
-		const hr = div.appendChild(ce("hr"));
+		div.appendChild(ce("hr"));
 		const el4 = div.appendChild(ce("div"));
 		C.c1 = c3.generate({
 			bindto: el3,
@@ -3156,7 +3166,7 @@ const 二_航空隊詳細の中身を生成 = (i, reflesh) => {
 				groups: [["確保", "優勢", "拮抗", "劣勢", "喪失"]],
 				colors: { "確保": graph_col[0], "優勢": graph_col[1], "拮抗": graph_col[2], "劣勢": graph_col[3], "喪失": graph_col[4] },
 			},
-			size: { width: 390, height: 140 },
+			size: { width: 390, height: 130 },
 			axis: {
 				y: { tick: { format: function (a) { return 数字をn桁で切り捨て(a * 100, 2) + "%" } }, show: false },
 				x: { tick: { format: function (a) { return a + 1 + "波目" } } }
@@ -3165,7 +3175,7 @@ const 二_航空隊詳細の中身を生成 = (i, reflesh) => {
 
 		C.c2 = c3.generate({
 			bindto: el4,
-			size: { width: 390, height: 300 },
+			size: { width: 390, height: 290 },
 			data: {
 				x: "x",
 				columns: [d1, d2, d3],
@@ -3194,10 +3204,18 @@ const 二_航空隊詳細の中身を生成 = (i, reflesh) => {
 		});
 		return div;
 	}
+}
+const 二_航空隊関連情報を生成 = (i) => {
+	const div = ce("div");
+	const el1 = div.appendChild(ce("div"));
+	const o = 零_制空状況境界値を計算(零_使用制空値(O.eseikus[i]));
+	const str = `1波目必要制空値:劣勢${o.劣勢} 拮抗${o.拮抗} 優勢${o.優勢} 確保${o.確保}`;
+	el1.appendChild(ct(str));
 
+	//	const el2 = div.appendChild(ce("div"));
+	//	el2.appendChild(ct("敵：" + 零_敵艦隊一行()));
 
-
-
+	return div;
 }
 
 

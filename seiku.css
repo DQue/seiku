@@ -1328,7 +1328,10 @@ td.jukuren,td.kaishu{
 .設定項目 div{
 	margin-left:2em;
 }
-
+.航空隊関連情報{
+	max-height:20px;
+	overflow-y:auto;
+}
 
 
 
