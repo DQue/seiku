@@ -2186,20 +2186,20 @@ function 零_制空状況境界値を計算(制空値) { //下限を算出
 		確保: 確保
 	};
 }
-function 零_敵合計制空値(ary, l = false) {
+function 零_敵合計制空値(ary, land = false) {
 	var s = 0;
 	for (var i = 0; i < ary.length; i++) {
 		if (ary[i] == "") continue;
-		s += 零_敵制空値(ary[i], l);
+		s += 零_敵制空値(ary[i], land);
 	}
 	if (i == 0) f = true;
 	return s;
 }
-const 零_敵制空値 = (a, l = false) => {
+const 零_敵制空値 = (a, land = false) => {
 	const i = 零_n2i(a); //aが名前かidか分からないのでidに統一
 	const s = 深海棲艦idデータ[i];
 	if (s === undefined) return 0;
-	if (l && s.apl) return s.apl;
+	if (land && s.apl) return s.apl;
 	return s.ap;
 }
 const 零_敵搭載数 = (i) => {
@@ -3374,7 +3374,7 @@ const 一_航空隊シミュ = (航空隊番号, 敵艦隊) => {
 
 const 零_使用制空値 = (o) => {
 	if (o.ユーザ設定値) return o.ユーザ設定値;
-	if (o.ボーダー制空値) return o.ボーダー制空値;
+	if (O.kouku_set && o.ボーダー制空値) return o.ボーダー制空値;
 	return o.制空値;
 }
 const 零_航空隊制空値 = (番号) => {
@@ -3441,7 +3441,7 @@ const 二_航空隊後敵制空値を生成 = (o) => {
 		li.appendChild(ct(`${o.ユーザ設定値}(設定値)`));
 		li.classList.add("採用制空値");
 	} else {
-		if (o.ボーダー制空値) {
+		if (O.kouku_set && o.ボーダー制空値) {
 			const li = el.appendChild(ce("li"));
 			li.appendChild(ct(`${o.ボーダー制空値}(${O.settings.cumulative_threshold}%)`));
 			li.classList.add("採用制空値");
@@ -3449,7 +3449,7 @@ const 二_航空隊後敵制空値を生成 = (o) => {
 	}
 
 
-	if (o.上位制空値) {
+	if (O.kouku_set && o.上位制空値) {
 		for (let i in o.上位制空値) {
 			if (i * 100 === parseInt(O.settings.cumulative_threshold)) continue;
 			const li = el.appendChild(ce("li"));
