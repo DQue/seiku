@@ -1044,7 +1044,7 @@ function 二_搭載数変更を生成(t, idx, i) {
 		const kanmusu = 一_表のセルデータ取得(idx, "kanmusu");
 		const kaizou = 一_表のセルデータ取得(idx, "kaizou");
 		if (kaizou === "出撃" && kanmusu === "基地航空隊") {
-			一_敵制空テーブルを生成();
+			O.kouku_recalc = true;
 		}
 		二_自艦隊の表を更新();
 		非表示("搭載数変更");
@@ -2859,6 +2859,7 @@ const 一_敵制空テーブルを生成 = () => {
 		if (O.kouku_set && O.kouku_calc && O.kouku_recalc && list[i].length > 0) {
 			apl = true;
 			const o = 一_航空隊シミュ(list[i], O.eseikus[i].敵編成);
+			DEBUG = o
 			O.eseikus[i].上位制空値 = o.top;
 			O.eseikus[i].制空値分布 = o.count;
 			O.eseikus[i].確率分布 = o.dist;
@@ -3369,6 +3370,7 @@ const 一_航空隊シミュ = (航空隊番号, 敵艦隊) => {
 		count: 発生回数,
 		status: ss,
 		apl: 初回敵制空値,
+		test1: 航空隊制空値,
 	};
 }
 
