@@ -2056,19 +2056,20 @@ function 二_深海棲艦を追加(a) {
 		O.eseikus[O.eseikus.length - 1] = 零_敵制空初期値(); //結果テーブル最終列をリセット
 		const i = 零_n2i(a);
 		一_深海棲艦を追加(i);
-		二_深海棲艦に行を追加(i, O.etable.length);
+		二_深海棲艦表に行を追加(i, O.etable.length);
 		二_深海棲艦表を更新();
 	}
 }
-function 二_深海棲艦に行を追加(a, idx) {
-	if (a == "") return;
-	var tb = ce("tbody");
-	var tr = ce("tr");
-	var c0 = ce("td");
-	var c1 = ce("td");
-	var c2 = ce("td");
+const 二_深海棲艦表に行を追加 = (a, idx) => {
+	if (a === "") return;
+	const tb = ce("tbody");
+	const tr = ce("tr");
+	const c0 = ce("td");
+	const c1 = ce("td");
+	const c2 = ce("td");
+	const c3 = ce("td");
 
-	var b = ce("button");
+	const b = ce("button");
 	b.appendChild(ct("はずす"));
 	b.addEventListener("click", function () {
 		二_深海棲艦をはずす(idx);
@@ -2080,8 +2081,12 @@ function 二_深海棲艦に行を追加(a, idx) {
 	tr.appendChild(c1);
 	c2.appendChild(ct(零_敵制空値(a)));
 
+	c3.appendChild(ct(零_敵制空値(a, true)));
+
 	c2.className = "num"
+	c3.className = "num"
 	tr.appendChild(c2);
+	tr.appendChild(c3);
 	tb.appendChild(tr);
 	$("深海棲艦一覧").appendChild(tb);
 }
@@ -2124,21 +2129,29 @@ function 二_深海棲艦表を更新() {
 	二_深海棲艦表を初期化();
 	var d = O.etable;
 	for (var i = 0; i < d.length; i++) {
-		二_深海棲艦に行を追加(d[i], i);
+		二_深海棲艦表に行を追加(d[i], i);
 	}
 	O.eseiku = 零_敵合計制空値(d, false);
 
 	二_深海棲艦表のフッタを更新();
 }
 function 二_深海棲艦表のフッタを更新() {
-	const gs = 一_敵合計制空値等を計算();
-	const f = gs.不明;
+	const s1 = 零_敵合計制空値(O.etable, false);
+	const s2 = 零_敵合計制空値(O.etable, true);
+	const o1 = 零_制空状況境界値を計算(s1);
+	const o2 = 零_制空状況境界値を計算(s2);
 
-	$("敵艦隊合計制空値").textContent = gs.制空値;
-	$("敵艦隊_制空権確保").textContent = gs.確保
-	$("敵艦隊_航空優勢").textContent = gs.優勢
-	$("敵艦隊_航空拮抗").textContent = gs.拮抗
-	$("敵艦隊_航空劣勢").textContent = gs.劣勢
+	$("敵艦隊合計制空値").textContent = o1.制空値;
+	$("敵艦隊_制空権確保").textContent = o1.確保
+	$("敵艦隊_航空優勢").textContent = o1.優勢
+	$("敵艦隊_航空拮抗").textContent = o1.拮抗
+	$("敵艦隊_航空劣勢").textContent = o1.劣勢
+
+	$("敵艦隊合計航空隊制空値").textContent = o2.制空値;
+	$("敵艦隊_航空隊_制空権確保").textContent = o2.確保
+	$("敵艦隊_航空隊_航空優勢").textContent = o2.優勢
+	$("敵艦隊_航空隊_航空拮抗").textContent = o2.拮抗
+	$("敵艦隊_航空隊_航空劣勢").textContent = o2.劣勢
 }
 function 二_深海棲艦表を初期化() {
 	var table = $("深海棲艦一覧");
@@ -2164,10 +2177,7 @@ function 一_海域方面を選択(e) {
 function 一_海域を選択(e) {
 	O.kai = e.target.textContent;
 }
-function 一_敵合計制空値等を計算() {
-	const s = 零_敵合計制空値(O.etable, false);
-	return 零_制空状況境界値を計算(s);
-}
+
 function 零_制空状況境界値を計算(制空値) { //下限を算出
 	let 劣勢, 拮抗, 優勢, 確保;
 	if (制空値 === 0) {

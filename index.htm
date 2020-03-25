@@ -377,28 +377,34 @@
 						<tr>
 							<th colspan="2">深海棲艦</th>
 							<th>制空値</th>
+							<th>偵察機込み</th>
 						</tr>
 					</thead>
 					<tfoot>
 						<tr>
 							<td colspan="2">合計制空値</td>
 							<td id="敵艦隊合計制空値" class="num">0</td>
+							<td id="敵艦隊合計航空隊制空値" class="num">0</td>
 						</tr>
 						<tr>
 							<td colspan="2">航空劣勢</td>
 							<td id="敵艦隊_航空劣勢" class="num">0</td>
+							<td id="敵艦隊_航空隊_航空劣勢" class="num">0</td>
 						</tr>
 						<tr>
 							<td colspan="2">制空権拮抗</td>
 							<td id="敵艦隊_航空拮抗" class="num">0</td>
+							<td id="敵艦隊_航空隊_航空拮抗" class="num">0</td>
 						</tr>
 						<tr>
 							<td colspan="2">航空優勢</td>
 							<td id="敵艦隊_航空優勢" class="num">0</td>
+							<td id="敵艦隊_航空隊_航空優勢" class="num">0</td>
 						</tr>
 						<tr>
 							<td colspan="2">制空権確保</td>
 							<td id="敵艦隊_制空権確保" class="num">0</td>
+							<td id="敵艦隊_航空隊_制空権確保" class="num">0</td>
 						</tr>
 					</tfoot>
 				</table>
@@ -479,8 +485,10 @@
 			<p>より細かい更新履歴は<a href="https://github.com/DQue/seiku/commits/master"
 					target="_blank">GitHubのCommit</a>で確認できます(2019年10月25日以降)</p>
 			<dl id="his" itemscope itemtype="http://schema.org/SoftwareApplication">
-				<dt><time itemprop="dateModified" datetime="2020-03-03+0900"
-						content="2020-03-03+0900">2020-03-03～</time></dt>
+				<dt><time itemprop="dateModified" datetime="2020-03-26+0900" content="2020-03-26+0900">2020-03-26</time>
+				</dt>
+				<dd>敵艦隊詳細表に偵察機込みの制空値を表示するように</dd>
+				<dt>2020-03-03～</dt>
 				<dd class="kancolle">期間限定海域「桃の節句！沖に立つ波」の海域データ追加</dd>
 				<dd class="kancolle">「集積地棲姫II」「集積地棲姫II-壊」の深海棲艦データを追加</dd>
 				<dt>2020-02-20</dt>
@@ -1026,7 +1034,6 @@
 	・航路を選んだ時の色変更を矢印にも適用できる
 ・ページ再読込時にルートと可能なら敵編成を選択状態にする
 ・制空値を持たない敵を非表示に（特にマスの対艦隊制空値が0の場合）
-・敵艦隊詳細でツ級: 0(対航空隊: 1)みたいにする
 
 ▲結果 関連
 ・防空時の敵機撃墜率
