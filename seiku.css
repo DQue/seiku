@@ -1340,8 +1340,7 @@ td.jukuren,td.kaishu{
 	margin-right:12px;
 }
 #his dd{
-	padding-left:2em;
-	text-indent:-1em;
+	padding-left:1em;
 	margin:0 auto 0 0;
 	width:95%;
 }
@@ -1349,18 +1348,14 @@ td.jukuren,td.kaishu{
 	vertical-align:middle;
 }
 #his dd:before{
-	content:"★";
+	content:"・";
 	display:inline-block;
-	width:1em;
-	height:100%;
-	text-indent:0;
-	font-size:12px;
-	vertical-align:middle;
-	color:#f90;
+	width:18px;
+	height:18px;
 }
 #his dd.kancolle:before{
-	content:"●";
-	color:#0af;
+	content:" ";
+	background:url(./imgs/log_kc.png) no-repeat 50% 50%;
 }
 #his dd.beg_of_month{
 	padding-bottom:.6em;
