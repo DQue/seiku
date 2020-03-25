@@ -421,6 +421,60 @@ function 二_艦娘選択を表示(e, idx, add) {
 	el.style.top = getMousePos(e).y - 20 + "px"
 	document.body.appendChild(el);
 }
+
+const 二_空襲ダイアログを表示 = (e, idx) => {
+	隠す("空襲ダイアログ");
+	const m = getMousePos(e);
+	const el = ce("div");
+	el.id = "空襲ダイアログ";
+	el.classList.add("選択ポップアップ");
+	el.style.left = getMousePos(e).x + "px";
+	el.style.top = getMousePos(e).y + "px";
+
+	const b1 = el.appendChild(ce("span"));
+	b1.classList.add("選択ボタン");
+	b1.appendChild(ct("空襲する"));
+
+	const b2 = el.appendChild(ce("span"));
+	b2.classList.add("選択ボタン");
+	b2.appendChild(ct("搭載数を戻す"));
+
+	b1.addEventListener("click", ((idx) => {
+		return () => {
+			一_空襲を発生させる(idx);
+			隠す("空襲ダイアログ");
+			二_自艦隊の表を更新();
+		}
+	})(idx), false);
+	b2.addEventListener("click", ((idx) => {
+		return () => {
+			const a = 一_表のセルデータ取得(idx, "kaizou");
+			一_表の搭載数をデフォルトに変更(idx, a);
+			隠す("空襲ダイアログ");
+			二_自艦隊の表を更新();
+		}
+	})(idx), false);
+	document.body.appendChild(el);
+}
+const 一_空襲を発生させる = (idx) => {
+	let num = 4;
+	const k = 一_表のセルデータ取得(idx, "kaizou");
+	const r = 零_艦娘スロット数("基地航空隊", k);
+	for (let i = 0; i < r; i++) {
+		const s = 一_表のセルデータ取得(idx, "soubi", i);
+		if (s === "-") continue; //装備がない場合はスキップ
+		const t = 一_表のセルデータ取得(idx, "tousai", i);
+		const c = Math.min(num, t - 1);
+		一_表のセルデータ変更(idx, "tousai", t - c, i);
+		num -= c;
+		if (num <= 0) break;
+	}
+}
+
+
+
+
+
 function 二_装備変更を表示(e, idx, di) {
 	var el = document.body.appendChild(ce("div"));
 	var kan = 一_表のセルデータ取得(idx, "kanmusu");
@@ -486,7 +540,6 @@ function 二_装備変更を表示(e, idx, di) {
 	el.classList.add("選択ポップアップ", "long");
 	el.style.left = getMousePos(e).x + "px";
 	el.style.top = getMousePos(e).y + "px";
-
 }
 
 function 二_全員の装備をいじる(a, aki) {
@@ -647,7 +700,16 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 			}
 
 			if (tableData.kanmusu !== "") {
-				//第2艦隊扱い・一時的に隠す
+
+				if (tableData.kanmusu === "基地航空隊") {
+					const div = e.appendChild(ce("div"));
+
+					const b = div.appendChild(ce("span"));
+					b.appendChild(ct("空襲"));
+					b.classList.add("選択ボタン", "ポップアップ起動ボタン");
+					b.addEventListener("click", function (e) { 二_空襲ダイアログを表示(e, idx) });
+				}
+
 				var div = e.appendChild(ce("div"));
 				var lbl = div.appendChild(ce("label"));
 				var chk = lbl.appendChild(ce("input"));
