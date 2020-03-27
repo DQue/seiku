@@ -382,8 +382,19 @@ td.empty.c{
 }
 
 
-
-
+.装備選択テーブル{
+	width:100%;
+	margin:0;
+}
+.装備選択テーブル, .装備選択テーブル tr, .装備選択テーブル td{
+	border:none;
+}
+.装備選択テーブル .num, .装備選択テーブル .header{
+	width:32px;
+}
+.装備選択テーブル tr:hover:not(:active){
+	background:#eee;
+}
 
 
 

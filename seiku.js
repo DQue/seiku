@@ -4001,15 +4001,25 @@ function 二_ドラッグアンドドロップリストを表示(ev) {
 	di.classList.add("loong");
 	var na = di.childNodes[2];
 
-	var uls = {};
+	var tbls = {};
 	var ul1 = na.appendChild(ce("ul"));
 	ul1.classList.add("選択リスト", "種別");
-	var ul2 = na.appendChild(ce("ul"));
-	ul2.classList.add("選択リスト", "項目", "艦載機リスト");
+	var div2 = na.appendChild(ce("div"));
+	div2.classList.add("選択リスト", "項目", "艦載機リスト");
 
 	//	var he=ul2.appendChild(ce("li"));
 	//	he.appendChild(ct("対空値(出撃時)　|　対空値(防空時)　|　装備名"));
 	//	he.classList.add("装備選択表ヘッダ");
+
+	tbls.header = ce("table");
+	tbls.header.classList.add("装備選択テーブル");
+	const htr = tbls.header.appendChild(ce("tr"));
+	["対空", "防空", "装備名", "半径"].forEach(a => {
+		const td = htr.appendChild(ce("td"));
+		if (a !== "装備名") td.classList.add("header");
+		td.appendChild(ct(a));
+	})
+	div2.appendChild(tbls.header);
 
 	for (var i = 0; i < 装備種.length; i++) {
 		var li1 = ul1.appendChild(ce("li"));
@@ -4019,48 +4029,60 @@ function 二_ドラッグアンドドロップリストを表示(ev) {
 		} else {
 			li1.appendChild(ct(装備種[i]));
 		}
-		var li2 = ul2.appendChild(ce("li"));
+		var li2 = div2.appendChild(ce("li"));
 		li2.classList.add("項目", 装備種[i]);
-		uls[装備種[i]] = ce("ul");
-		li2.appendChild(uls[装備種[i]]);
+		tbls[装備種[i]] = ce("table");
+		tbls[装備種[i]].classList.add("装備選択テーブル");
+		li2.appendChild(tbls[装備種[i]]);
 
 		li1.addEventListener("click", (function (e, 外, 中) {
 			return function () {
 				外.scrollTop = 中.offsetTop - 外.offsetTop;
 			}
-		})("", ul2, uls[装備種[i]]))
+		})("", div2, tbls[装備種[i]]))
 	}
 
 
 
 
-	for (var i in 艦戦データ) {
-		var li = ce("li");
+	for (let i in 艦戦データ) {
+		const tr = tbls[艦戦データ[i].種類].appendChild(ce("tr"));
 
-		var sp1 = li.appendChild(ce("span")); //対空値
-		sp1.classList.add("対空値表示", "num");
-		sp1.appendChild(ct(零_実質対空値(i, "出撃")));
+		const td1 = tr.appendChild(ce("td")); //対空値
+		td1.classList.add("num");
+		td1.appendChild(ct(零_実質対空値(i, "出撃")));
 
-		var sp2 = li.appendChild(ce("span")); //対空値
-		sp2.classList.add("対空値表示", "num", "防空時");
+		const td2 = tr.appendChild(ce("td")); //対空値
+		td2.classList.add("num");
 		if (eq(零_種類(i), ["局地戦闘機", "陸軍戦闘機"])) {
-			sp2.appendChild(ct(零_実質対空値(i, "防空")));
+			td2.appendChild(ct(零_実質対空値(i, "防空")));
+		} else {
+			td2.appendChild(ct(" "));
 		}
 
-		li.appendChild(ct(i));
-		li.dataset.value = i; //装備名
-		li.classList.add(艦戦データ[i].種類, "艦載機");
-		if (零_種類(i) === "艦上爆撃機" && 艦戦データ[i].対空値 >= 4) li.classList.add("対空値有");
-		if (艦戦データ[i].夜間航空機 === true) li.classList.add("夜間航空機");
-		li.draggable = true;
-		li.addEventListener("dragstart", (function (i) {
+
+		tr.appendChild(ce("td")).appendChild(ct(i)); //装備
+
+		const td4 = tr.appendChild(ce("td")); //半径
+		td4.classList.add("num");
+		if (i === "艦攻" || i === "艦爆") {
+			td4.appendChild(ct("?"));
+		} else {
+			td4.appendChild(ct(零_行動半径(i)));
+		}
+
+		tr.dataset.value = i; //行全体設定
+		tr.classList.add(艦戦データ[i].種類, "艦載機");
+		if (零_種類(i) === "艦上爆撃機" && 艦戦データ[i].対空値 >= 4) tr.classList.add("対空値有");
+		if (艦戦データ[i].夜間航空機 === true) tr.classList.add("夜間航空機");
+		tr.draggable = true;
+		tr.addEventListener("dragstart", (function (i) {
 			return function (e) {
 				e.dataTransfer.setData("text/x-name", i);
 				e.dataTransfer.setData("text/x-from", "装備リスト");
 				DT = "装備リスト";
 			}
 		})(i));
-		uls[艦戦データ[i].種類].appendChild(li);
 	}
 	var left, top;
 	if (($("自艦隊").getBoundingClientRect().left + $("自艦隊").offsetWidth + 410) < document.body.offsetWidth) {
