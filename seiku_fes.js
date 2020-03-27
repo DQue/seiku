@@ -1,8 +1,7 @@
 window.addEventListener("DOMContentLoaded", function () {
 	//	二_フェス管理(年,月,日,時,"fes_name");
 
-	//	二_フェス管理(2019,2,8,11,"セッツブーン");
-	二_フェス管理(2020, 3, 27, 11, "hishimochi");
+	//	二_フェス管理(2020, 3, 27, 11, "hishimochi");
 }, false);
 
 
