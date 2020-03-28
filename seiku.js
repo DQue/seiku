@@ -1981,11 +1981,11 @@ function 二_敵艦隊選択を表示(p) {
 		$("敵艦隊選択親").appendChild(el);
 	}
 }
-function 二_敵艦隊選択を生成(masu) {
-	var hou = O.hou;
-	var kai = O.kai;
-	var data = 海域データ[hou]["データ"][kai];
-	var el = ce("ul");
+const 二_敵艦隊選択を生成 = (masu) => {
+	const hou = O.hou;
+	const kai = O.kai;
+	const data = 海域データ[hou]["データ"][kai];
+	const el = ce("ul");
 	if (data[masu] === undefined) { //敵編成がいない場合は選択画面を出さずに「航空戦力なし」を設定
 		二_深海棲艦を全員はずす();
 		二_深海棲艦を追加(2);
@@ -1995,23 +1995,23 @@ function 二_敵艦隊選択を生成(masu) {
 		二_結果テーブルを表示();
 		return 0;
 	} else {
-		for (var i = 0; i < data[masu].length; i++) {
-			var li = ce("li");
-			var hs = data[masu][i];
-			var sp = ce("span");
-			var so = 零_敵合計制空値(hs, false);
+		for (let i = 0; i < data[masu].length; i++) {
+			const li = ce("li");
+			const hs = data[masu][i];
+			const sp = ce("span");
+			const so = 零_敵合計制空値(hs, false);
 			sp.appendChild(ct(`制空値${so}|`))
 			li.appendChild(sp);
-			for (var j = 0; j < hs.length; j++) {
-				var ss = 零_i2n(hs[j]);
+			for (let j = 0; j < hs.length; j++) {
+				const ss = 零_i2n(hs[j]);
 				if (ss === "-") continue;
-				var sp = ce("span");
-				sp.className = "深海棲艦名";
-				sp.appendChild(ct(ss));
-				li.appendChild(sp);
+				const en = ce("span");
+				en.className = "深海棲艦名";
+				en.appendChild(ct(ss));
+				li.appendChild(en);
 			}
-			li.addEventListener("click", (function (e, hs) {
-				return function () {
+			li.addEventListener("click", ((hs) => {
+				return () => {
 					二_深海棲艦を全員はずす();
 					hs.forEach(a => { 二_深海棲艦を追加(零_n2i(a)) });
 					O.eseikus[O.eseikus.length - 1] = 零_敵制空初期値();
@@ -2020,8 +2020,9 @@ function 二_敵艦隊選択を生成(masu) {
 					O.kouku_recalc = true;
 					二_結果テーブルを表示();
 				}
-			})("", hs));
+			})(hs));
 			el.appendChild(li);
+			if (data[masu].length === 1) li.click();
 		}
 		return el;
 	}
