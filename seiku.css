@@ -70,12 +70,14 @@ a:active{}
 }
 .clickable{
 	cursor:pointer;
-	background:#fff url("imgs/clickablebg.png") right bottom no-repeat;
+	/*	background:#fff url("imgs/clickablebg.png") right bottom no-repeat;*/
+	background:#fff;
 	box-shadow:
 		0 -0.5px 1px 0 rgba(150,255,150,.5) inset;
 }
 .clickable:hover{
-	background:#eee url("imgs/clickablebgh.png") right bottom no-repeat !important;
+	/*	background:#eee url("imgs/clickablebgh.png") right bottom no-repeat !important;*/	
+	background:#eee !important;
 	color:#000;
 	box-shadow:
 		0 -0.5px 1px 0 rgba(255,150,150,.5) inset;
@@ -884,6 +886,9 @@ h3.opener.closed:hover + *.hide{
 #自艦隊 th{
 	vertical-align: middle;
 }
+#自艦隊 td.separate{
+	border-width: 1px 0;
+}
 #編成展開親{
 	display:none;
 }
@@ -997,7 +1002,7 @@ td.jukuren,td.kaishu{
 	line-height:1.2em;
 }
 .装備できない,.装備できない.対空値有{
-	background-image:url("imgs/clickablebg.png") !important;
+/*	background-image:url("imgs/clickablebg.png") !important;*/
 	background-color:rgb(128,0,0) !important;
 	color:#fff !important;
 	text-decoration:line-through;

@@ -812,7 +812,7 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 				}
 			})(e, idx, i)
 		);
-		etousai.classList.add("clickable", "ポップアップ起動ボタン")
+		etousai.classList.add("clickable", "ポップアップ起動ボタン", "separate")
 
 		//装備
 		var esoubi = 二_自艦隊のセルを生成("soubi", tableData.soubi[i], rows);
@@ -820,7 +820,7 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 		var 種類 = 零_種類(tableData.soubi[i]);
 		const 装備名 = tableData.soubi[i];
 		if (艦種 && 零_装備できるか(艦種, tableData.kanmusu, tableData.kaizou, 種類, 装備名) === false) esoubi.classList.add("装備できない");
-		esoubi.classList.add(種類, "ポップアップ起動ボタン");
+		esoubi.classList.add(種類, "ポップアップ起動ボタン", "separate");
 		if (種類 === "艦上爆撃機" && 艦戦データ[tableData.soubi[i]].対空値 >= 4) esoubi.classList.add("対空値有");
 		if (艦戦データ[tableData.soubi[i]].夜間航空機 === true) esoubi.classList.add("夜間航空機");
 		esoubi.addEventListener("click",
@@ -857,7 +857,7 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 				二_装備にドロップされた(e, idx, i);
 			}
 		})(e, idx, i));
-		esoubi.classList.add("clickable");
+		esoubi.classList.add("clickable", "separate");
 		etrs[i].appendChild(esoubi);
 
 
@@ -880,7 +880,7 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 				}
 			})(e, idx, i)
 		);
-		ejukuren.classList.add("clickable");
+		ejukuren.classList.add("clickable", "separate");
 		etrs[i].appendChild(ejukuren);
 
 		//改修
@@ -902,7 +902,7 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 				}
 			})(e, idx, i)
 		);
-		ekaishu.classList.add("clickable");
+		ekaishu.classList.add("clickable", "separate");
 		etrs[i].appendChild(ekaishu);
 
 
@@ -911,7 +911,9 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 
 
 		//制空
-		etrs[i].appendChild(二_自艦隊のセルを生成("seiku", tableData.seiku[i]), 1);
+		const eseiku = 二_自艦隊のセルを生成("seiku", tableData.seiku[i]);
+		eseiku.classList.add("separate");
+		etrs[i].appendChild(eseiku);
 
 
 		//小計
