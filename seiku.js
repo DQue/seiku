@@ -912,7 +912,7 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 
 		//制空
 		const eseiku = 二_自艦隊のセルを生成("seiku", tableData.seiku[i]);
-		eseiku.classList.add("separate");
+		//		eseiku.classList.add("separate");
 		etrs[i].appendChild(eseiku);
 
 
