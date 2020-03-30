@@ -1068,6 +1068,40 @@ td.jukuren,td.kaishu{
 #広域海域リスト .hide{
 	display:none;
 }
+#広域海域リスト [class*="4-1"]:hover,
+#広域海域リスト [class*="4-1"].selected{
+	background:#350200;
+	color:white;
+	box-shadow:4px 4px rgba(255,0,0,0.3) 6px 6px;
+}
+#広域海域リスト [class*="4-1"]:hover{
+	animation: yure .3s infinite;
+}
+#広域海域リスト [class*="4-1"]:hover a,
+	#広域海域リスト [class*="4-1"].selected a{
+	color:white;
+}
+@keyframes yure {
+	0% {
+		transform: translate(0, 0) rotateZ(0)
+	}
+
+	25% {
+		transform: translate(2px, 1px) rotateZ(-0.2deg)
+	}
+
+	50% {
+		transform: translate(0px, 1px) rotateZ(0)
+	}
+
+	75% {
+		transform: translate(2px, 0px) rotateZ(-0.3deg)
+	}
+
+	100% {
+		transform: translate(0px, 0px) rotateZ(0)
+	}
+}
 
 #マップ{
 /*	width:400px;
