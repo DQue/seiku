@@ -773,7 +773,7 @@ h3.opener.closed:hover + *.hide{
 	overflow-y:auto;
 	transition:max-height 0.5s ease-out 0s,padding 0.5s linear 0s, background 0.5s ease-out 0.5s, margin 0.5s linear 0s;
 	-moz-transition:max-height 0.5s ease-out 0s,padding 0.5s linear 0s, background 0.5s ease-out 0.5s, margin 0.5s linear 0s;
-	margin:0 0 12px;
+/*	margin:0 0 12px;*/
 	padding:0 0 2px;/*消すと謎のスクロールバーが出現する 2015-12-06*/
 	background-color:inherit;
 }
