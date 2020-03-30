@@ -11,6 +11,7 @@ const 隠す = (a) => { if ($(a)) $(a).parentNode.removeChild($(a)); }
 const 非表示 = (a) => { if ($(a)) $(a).style.display = "none" }
 const R = new Map();
 const sqrt = (a) => R[a] ? R[a] : R.set(a, Math.sqrt(a)).get(a);
+const is0401 = () => { const o = 現在時刻(); if (o.mo === 4 && o.d === 1) return true; return false; };
 
 const 二_全部隠すか = (e) => {
 	let ispopup = false;
@@ -1682,6 +1683,9 @@ function 二_海域方面選択を表示() {
 function 二_海域方面選択を生成() {
 	var el = ce("ul");
 	for (var i in 海域データ) {
+		if (i === "【4月1日限定】南方レーモン海域") {
+			if (is0401() === false) continue;
+		}
 		var li = ce("li");
 		if (海域データ[i]["属性"]) {
 			var ez = ce("span");
@@ -1755,6 +1759,7 @@ function 二_海域wikiリンクを生成(hou) {
 		a1.dataset.hou = a2.dataset.hou = hou;
 
 	} else {
+		if (hou === "【4月1日限定】南方レーモン海域") hou = "戦艦レ級";
 		var a = span.appendChild(ce("a"));
 		if (isDai1ki && !isEvent) {
 			a.href = wiki_url("第一期/" + hou.replace(/《.+》|\(旧\)/g, ""));
