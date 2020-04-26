@@ -3728,7 +3728,7 @@ function 零_装備できるか(艦種, 艦名, 改造, 種類, 装備名) {
 			break;
 		case "水上爆撃機":
 			if (eq(艦種, ["水上機母艦", "航空巡洋艦", "航空戦艦", "補給艦", "潜水空母"])) return true;
-			if (eq(艦名, ["Littorio", "Roma", "Zara", "Pola", "金剛", "比叡"])) return true;
+			if (eq(艦名, ["Littorio", "Roma", "Zara", "Pola", "金剛"])) return true;
 			if (艦名 === "Richelieu" && 装備名 === "Laté 298B") return true;
 			if (艦種 === "軽巡洋艦") return true;
 			break;
