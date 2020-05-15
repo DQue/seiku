@@ -18,7 +18,7 @@
 	<script src="data_migration.js?2"></script>
 
 	<script src="data_version.js"></script>
-	<script src="seiku.js?1"></script>
+	<script src="seiku.js?2"></script>
 	<script src="euc.js?1"></script>
 	<script src="map.js?3"></script>
 	<script src="toggle.js?1"></script>
@@ -184,6 +184,7 @@
 			<div class="inner hide">
 				<ul>
 					<li>装備はドラッグで移動可能です。別の装備欄にドロップすると交換、×ボタンにドロップするとはずします</li>
+					<li>装備を別の装備欄にドロップする際にCtrlキーを押すと交換ではなく複製します</li>
 					<li>艦娘もドラッグで移動可能です。一番左のマスがドラッグ可能です。別の艦娘のマスにドロップすると交換、×ボタンにドロップするとはずします</li>
 					<li>自動保存されたデータを消去したい場合は<button
 							onclick="二_ローカルストレージデータをリセットする()">このボタン</button>をクリックしてください。ページ下部の▼その他 内にもあります</li>
@@ -485,8 +486,9 @@
 			<p>より細かい更新履歴は<a href="https://github.com/DQue/seiku/commits/master"
 					target="_blank">GitHubのCommits</a>で確認できます(2019年10月25日以降)</p>
 			<dl id="his" itemscope itemtype="http://schema.org/SoftwareApplication">
-				<dt><time itemprop="dateModified" datetime="2020-04-30+0900" content="2020-04-30+0900">2020-04-30</time>
-				</dt>
+				<dt><time itemprop="dateModified" datetime="2020-05-16+0900">2020-05-16</time></dt>
+				<dd class="beg_of_month">装備ドラッグアンドドロップ時にCtrlキーを押すと交換ではなくコピーする機能を追加</dd>
+				<dt>2020-04-30</dt>
 				<dd class="kancolle">「流星」「流星改」「天山一二型甲改(空六号電探改装備機)」「天山一二型甲改(熟練/空六号電探改装備機)」「XF5U」の装備データを追加</dd>
 				<dt>2020-04-23</dt>
 				<dd class="kancolle">「比叡改二丙」「Gotland andra」の艦娘データを追加</dd>

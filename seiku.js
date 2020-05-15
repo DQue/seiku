@@ -130,6 +130,14 @@ O.etable = [];
 O.route = [];
 O.tmat = [];
 O.eseikus = [];
+/*
+const KD = {};
+window.addEventListener("keydown", (e) => {
+	KD[e.code] = true;
+}, false);
+window.addEventListener("keyup", (e) => {
+	KD[e.code] = false;
+}, false)*/
 
 window.addEventListener("DOMContentLoaded", function () {
 	if (localStorage.kantaiData === undefined) {
@@ -845,7 +853,11 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 		esoubi.addEventListener("dragover", function (e) {
 			e.preventDefault();
 			if (DT === "艦娘装備") {
-				e.dataTransfer.dropEffect = "move";
+				if (e.ctrlKey === true) {
+					e.dataTransfer.dropEffect = "copy";
+				} else {
+					e.dataTransfer.dropEffect = "move";
+				}
 			} else if (DT === "装備リスト") {
 				e.dataTransfer.dropEffect = "copy";
 			} else {
@@ -1238,8 +1250,16 @@ function 二_艦娘をはずす(idx) {
 }
 function 二_装備にドロップされた(e, idx, i) {
 	const from = e.dataTransfer.getData("text/x-from");
+	const isCtrl = e.ctrlKey;
+	const from_idx = Number(e.dataTransfer.getData("text/x-idx"));
+	const from_i = Number(e.dataTransfer.getData("text/x-i"));
+	console.log(isCtrl)
 	if (from === "艦娘装備") {
-		二_装備を交換(Number(e.dataTransfer.getData("text/x-idx")), Number(e.dataTransfer.getData("text/x-i")), idx, i);
+		if (isCtrl === true) {
+			二_装備を複製(from_idx, from_i, idx, i);
+		} else {
+			二_装備を交換(from_idx, from_i, idx, i);
+		}
 	} else if (from === "装備リスト") {
 		一_表のセルデータ変更(idx, "soubi", e.dataTransfer.getData("text/x-name"), i);
 		二_自艦隊の表を更新();
@@ -1249,7 +1269,7 @@ function 二_装備にドロップされた(e, idx, i) {
 	for(var i=0; i<O.table.length; i++){
 	}
 }*/
-function 二_装備を交換(idx, i, idx2, i2) { //1:ドラッグ中のやつ 2:ドロップ先のやつ
+const 二_装備を交換 = (idx, i, idx2, i2) => { //1:ドラッグ中のやつ 2:ドロップ先のやつ
 	var s1 = 一_表の艦娘データ取得(idx).soubi[i];
 	var s2 = 一_表の艦娘データ取得(idx2).soubi[i2];
 	var j1 = 一_表の艦娘データ取得(idx).jukuren[i];
@@ -1262,6 +1282,15 @@ function 二_装備を交換(idx, i, idx2, i2) { //1:ドラッグ中のやつ 2:
 	一_表のセルデータ変更(idx2, "jukuren", j1, i2);
 	一_表のセルデータ変更(idx, "kaishu", k2, i);
 	一_表のセルデータ変更(idx2, "kaishu", k1, i2);
+	二_自艦隊の表を更新();
+}
+const 二_装備を複製 = (fidx, fi, tidx, ti) => {
+	const fs = 一_表の艦娘データ取得(fidx).soubi[fi];
+	const fj = 一_表の艦娘データ取得(fidx).jukuren[fi];
+	const fk = 一_表の艦娘データ取得(fidx).kaishu[fi];
+	一_表のセルデータ変更(tidx, "soubi", fs, ti);
+	一_表のセルデータ変更(tidx, "jukuren", fj, ti);
+	一_表のセルデータ変更(tidx, "kaishu", fk, ti);
 	二_自艦隊の表を更新();
 }
 function 一_艦娘をはずす(idx) {
@@ -2939,7 +2968,6 @@ const 一_敵制空テーブルを生成 = () => {
 		if (O.kouku_set && O.kouku_calc && O.kouku_recalc && list[i].length > 0) {
 			apl = true;
 			const o = 一_航空隊シミュ(list[i], O.eseikus[i].敵編成);
-			DEBUG = o
 			O.eseikus[i].上位制空値 = o.top;
 			O.eseikus[i].制空値分布 = o.count;
 			O.eseikus[i].確率分布 = o.dist;
