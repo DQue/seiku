@@ -1293,6 +1293,25 @@ const 二_装備を複製 = (fidx, fi, tidx, ti) => {
 	一_表のセルデータ変更(tidx, "kaishu", fk, ti);
 	二_自艦隊の表を更新();
 }
+const 二_装備を挿入 = (name) => {
+	const type = 零_種類(name);
+	for (let idx = 0; idx < 零_艦娘数(); idx++) {
+		if (O.table[idx].deleted || O.table[idx].data.hidden) continue;
+		const kn = 一_表のセルデータ取得(idx, "kanmusu");
+		const ki = 一_表のセルデータ取得(idx, "kaizou");
+		const ks = 零_艦娘データ取得(kn)["データ"][ki]["艦種"];
+		if (零_装備できるか(ks, kn, ki, type, name) === false) continue;
+
+		const di = 零_艦娘スロット数(kn, ki);
+		for (let i = 0; i < di; i++) {
+			if (一_表のセルデータ取得(idx, "soubi", i) === "-") {
+				一_表のセルデータ変更(idx, "soubi", name, i);
+				二_自艦隊の表を更新();
+				return;
+			}
+		}
+	}
+}
 function 一_艦娘をはずす(idx) {
 	O.table.splice(idx, 1);
 }
@@ -4119,6 +4138,7 @@ function 二_ドラッグアンドドロップリストを表示(ev) {
 				DT = "装備リスト";
 			}
 		})(i));
+		tr.addEventListener("dblclick", () => { 二_装備を挿入(i) }, false);
 	}
 	var left, top;
 	if (($("自艦隊").getBoundingClientRect().left + $("自艦隊").offsetWidth + 410) < document.body.offsetWidth) {
