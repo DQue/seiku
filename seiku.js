@@ -2491,7 +2491,7 @@ function 二_防空結果テーブルを生成() {
 					th.classList.add("左見出し");
 				} else {
 					var td = tr.appendChild(ce("td"));
-					var o = 零_敵合計制空値(敵艦隊s[j - 1], false);
+					var o = 零_敵合計制空値(敵艦隊s[j - 1], true);
 					const 防空値 = 重爆空襲か[j - 1] ? 対重爆防空値 : 対通常防空値;
 					var 制空争い結果 = 零_制空判定(防空値, o);
 					switch (i) {
