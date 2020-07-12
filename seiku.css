@@ -1252,9 +1252,7 @@ td.jukuren,td.kaishu{
 }
 #ルート選択>div{
 	float:left;
-}
-#ルート選択>div+div{
-	margin-left:1em;
+	margin-right:1em;
 }
 #ルート選択>div>div{
 	border-bottom:1px solid transparent;
