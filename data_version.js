@@ -1,1 +1,1 @@
-var data_version = "20200718-001";
+var data_version = "20200719-001";
