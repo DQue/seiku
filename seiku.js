@@ -3911,7 +3911,7 @@ function 一_編成展開行を生成(kantai, tenki, idx) {
 	var td = tr.appendChild(ce("td"));
 	var sp = td.appendChild(ce("span"));
 	sp.textContent = tenki;
-	sp.classList.add("編成展開ボタン", "編成展開展記", "clickable", "ポップアップ起動ボタン");
+	sp.classList.add("編成展開ボタン", "編成展開展記", "clickable", "ポップアップ起動ボタン", tenki);
 	sp.addEventListener("click", (function (idx, tenki) {
 		return function (e) {
 			二_編成展開展記(e, idx, tenki);

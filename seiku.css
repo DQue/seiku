@@ -928,7 +928,8 @@ h3.opener.closed:hover + *.hide{
 	color:#fff;
 	white-space:nowrap;
 }
-.編成展開展記{background:#3aa;}
+.編成展開展記.記録{background:#3aa;}
+.編成展開展記.展開{background:rgb(62,147,216)}
 .編成展開削除{background:#b99;}
 
 .一時非表示 td, .一時非表示 th{
