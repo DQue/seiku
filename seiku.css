@@ -184,6 +184,9 @@ td.empty.c{
 .陸上攻撃機{
 	background-color:rgb(200,225,220);
 }
+.大型陸上機{
+	background-color:rgb(181,219,199);
+}
 .局地戦闘機,.陸軍戦闘機{
 	background-color:rgb(192,247,165);
 }

@@ -974,26 +974,38 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 			var kanb = "";
 			var url = "";
 			var isSoubi = false;
-			if (tableData.kanmusu === "基地航空隊" && tableData.kaizou !== "防空") { //出撃コスト・戦闘行動半径
-				var cost = { 燃料: 0, 弾薬: 0 };
+			if (tableData.kanmusu === "基地航空隊") {
+				var cost = { 燃料: 0, 弾薬: 0, ボーキ: 0, 要検証: false, 不定: false };
 				var radMin = 99; //戦闘行動半径のうち最短のもの
 				var radTei = 0;  //偵察機の戦闘行動半径のうち最長のもの
 				var radStr = "";
 				for (var j = 0; j < rows; j++) {
+					const 装備 = tableData.soubi[j];
+					const 種類 = 零_種類(装備);
+					const 搭載 = tableData.tousai[j];
 					if (tableData.soubi[j] === "-") continue;
-					if (零_種類(tableData.soubi[j]) == "陸上攻撃機") {
-						cost.燃料 += Math.ceil(1.5 * tableData.tousai[j]);
-						cost.弾薬 += Math.floor(0.7 * tableData.tousai[j]);
-					} else {
-						cost.燃料 += Math.ceil(1 * tableData.tousai[j]);
-						cost.弾薬 += Math.ceil(0.6 * tableData.tousai[j]);
+					if (種類 == "陸上攻撃機") {
+						cost.燃料 += Math.ceil(1.5 * 搭載);
+						cost.弾薬 += Math.floor(0.7 * 搭載);
+						cost.ボーキ += 18 * 零_配置コスト(装備);
+					} else if (種類 === "大型陸上機") {
+						cost.燃料 += Math.ceil(1.5 * 搭載);
+						cost.弾薬 += Math.floor(0.7 * 搭載);
+						cost.ボーキ += 9 * 零_配置コスト(装備);
+						cost.要検証 = true;
 					}
+					else {
+						cost.燃料 += Math.ceil(1 * 搭載);
+						cost.弾薬 += Math.ceil(0.6 * 搭載);
+						cost.ボーキ += 4 * 零_配置コスト(装備);
+					}
+					if (零_配置コスト(装備) === 0) cost.不定 = true;
 
 					isSoubi = true;
-					if (tableData.soubi[j] === "艦攻") kank = "※「艦攻」の半径に注意";
-					if (tableData.soubi[j] === "艦爆") kanb = "※「艦爆」の半径に注意";
+					if (tableData.soubi[j] === "艦攻") kank = "「艦攻」の半径・コストはこちら";
+					if (tableData.soubi[j] === "艦爆") kanb = "「艦爆」の半径・コストはこちら";
 
-					if (eq(零_種類(tableData.soubi[j]), ["水上偵察機", "艦上偵察機", "大型飛行艇", "陸上偵察機"])) {
+					if (eq(種類, ["水上偵察機", "艦上偵察機", "大型飛行艇", "陸上偵察機"])) {
 						radTei = Math.max(radTei, 零_行動半径(tableData.soubi[j]));
 						radMin = Math.min(radMin, 零_行動半径(tableData.soubi[j]));
 					} else {
@@ -1007,27 +1019,38 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 				}
 				if (isSoubi == false) radStr = "0";
 				if (isSoubi) {
-					data.push(`出撃コスト:燃${cost.燃料}弾${cost.弾薬}`);
-					data.push("戦闘行動半径:" + radStr);
+					if (tableData.kaizou !== "防空") {
+						if (cost.要検証 === true) {
+							data.push(`出撃コスト:燃${cost.燃料}?弾${cost.弾薬}?`);
+						} else {
+							data.push(`出撃コスト:燃${cost.燃料}弾${cost.弾薬}`);
+						}
+						data.push("戦闘行動半径:" + radStr);
+					}
+
+					if (cost.不定 === true) {
+						data.push(`配置コスト:不明`);
+					} else {
+						data.push(`配置コスト:ボーキ${cost.ボーキ}`);
+					}
+
 				}
 				if (kank) {
 					var obj = {};
 					obj.tag = "a";
 					obj.str = kank;
-					obj.url = wiki_url(wiki_表記("装備一覧(種類別)")) + "#Attacker";
+					obj.url = wiki_url("基地航空隊") + "#performance_table";
 					data.push(obj);
 				}
 				if (kanb) {
 					var obj = {};
 					obj.tag = "a";
 					obj.str = kanb;
-					obj.url = wiki_url(wiki_表記("装備一覧(種類別)")) + "#Bomber";
+					obj.url = wiki_url("基地航空隊") + "#performance_table";
 					data.push(obj);
 				}
 			}//航空隊終わり
-			if (tableData.kanmusu === "基地航空隊" && tableData.kaizou === "防空") { //
 
-			}
 			let 艦種 = "";
 			const 艦娘データ = 零_艦娘データ取得(tableData.kanmusu);
 			if (艦娘データ !== undefined) 艦種 = 艦娘データ["データ"][tableData.kaizou]["艦種"];
@@ -1450,6 +1473,8 @@ function 一_表のセルデータ変更(idx, shu, data, di) {
 	if (shu === "soubi") {
 		if (eq(零_種類(data), ["水上偵察機", "艦上偵察機", "大型飛行艇", "陸上偵察機"]) && 一_表のセルデータ取得(idx, "kanmusu") === "基地航空隊") {
 			一_表のセルデータ変更(idx, "tousai", 4, di); //変更した装備が偵察機なら4に変更
+		} else if (eq(零_種類(data), ["大型陸上機"])) {
+			一_表のセルデータ変更(idx, "tousai", 9, di); //変更した装備が大型陸上機なら9に変更
 		} else {
 			一_表の搭載数をデフォルトに変更(idx, 一_表のセルデータ取得(idx, "kaizou"), di)
 		}
@@ -1597,6 +1622,10 @@ function 零_行動半径(s) {
 	} else {
 		return 0;
 	}
+}
+const 零_配置コスト = (s) => {
+	if (艦戦データ[s] === undefined || 艦戦データ[s].コスト === undefined) return 0;
+	return 艦戦データ[s].コスト;
 }
 function 零_種類(s) {
 	if (艦戦データ[s] === undefined) throw new Error("不明な装備(" + s + ")");
