@@ -989,8 +989,8 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 						cost.弾薬 += Math.floor(0.7 * 搭載);
 						cost.ボーキ += 18 * 零_配置コスト(装備);
 					} else if (種類 === "大型陸上機") {
-						cost.燃料 += Math.ceil(1.5 * 搭載);
-						cost.弾薬 += Math.floor(0.7 * 搭載);
+						cost.燃料 += Math.floor(2 * 搭載); //式は不明だけど9機で18
+						cost.弾薬 += Math.floor(2 * 搭載); //同上
 						cost.ボーキ += 9 * 零_配置コスト(装備);
 						cost.要検証 = true;
 					}
