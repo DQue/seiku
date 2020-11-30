@@ -987,7 +987,6 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 					if (種類 == "陸上攻撃機") {
 						cost.燃料 += Math.ceil(1.5 * 搭載);
 						cost.弾薬 += Math.floor(0.7 * 搭載);
-						cost.ボーキ += 18 * 零_配置コスト(装備);
 					} else if (種類 === "大型陸上機") {
 						cost.燃料 += Math.floor(2 * 搭載); //式は不明だけど9機で18
 						cost.弾薬 += Math.floor(2 * 搭載); //同上
@@ -997,8 +996,15 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 					else {
 						cost.燃料 += Math.ceil(1 * 搭載);
 						cost.弾薬 += Math.ceil(0.6 * 搭載);
-						cost.ボーキ += 4 * 零_配置コスト(装備);
 					}
+
+					if (種類 === "大型陸上機") {
+					} else if (eq(種類, ["水上偵察機", "艦上偵察機", "大型飛行艇", "陸上偵察機"])) {
+						cost.ボーキ += 4 * 零_配置コスト(装備);
+					} else {
+						cost.ボーキ += 18 * 零_配置コスト(装備);
+					}
+
 					if (零_配置コスト(装備) === 0) cost.不定 = true;
 
 					isSoubi = true;
