@@ -2498,6 +2498,7 @@ function 二_防空結果テーブルを生成() {
 		if (O.kai === "四国沖/九州西方五島列島沖") jf = true;
 		if (O.kai === "小笠原諸島沖") jf = true;
 		if (O.kai === "ノルウェー北岬沖/北極海") jf = true;
+		if (O.hou === "護衛せよ！船団輸送作戦《甲》" && O.kai === "ルソン島沖/オルモック沖") jf = true;
 		if (jf) {
 			重爆空襲か[j] = true;
 		}
