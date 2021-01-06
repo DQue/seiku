@@ -851,11 +851,11 @@ h3.opener.closed:hover + *.hide{
 	background:#e9e9e9;
 }
 #remove_kanmusu,#remove_equip{float:left;}
-#open_equip_list{cursor:pointer}
-#open_equip_list:hover::after, .kome:hover{
+.help_on_mouse{cursor:pointer}
+.help_on_mouse:hover::after, .kome:hover{
 	padding-bottom:260px;
 }
-#open_equip_list:hover::after, .kome:hover::after{
+.help_on_mouse:hover::after, .kome:hover::after{
 	content:attr(data-help);
 	position:absolute;
 	top:20px;left:0;
@@ -876,6 +876,16 @@ h3.opener.closed:hover + *.hide{
 .btn_in_table img{
 	height:18px;
 	vertical-align: middle;
+}
+#自動空襲モード{
+	display:none;
+}
+#自動空襲モード+img{
+	transition: transform 0.5s;
+	transform:rotate(45deg);
+}
+#自動空襲モード:checked+img{
+	transform:rotate(0deg);
 }
 .btn_in_table.fault{
 	

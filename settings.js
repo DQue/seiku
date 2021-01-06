@@ -45,10 +45,15 @@ const 設定項目 = {
 		"ID": "累積確率ボーダー",
 	},
 	"show_kushu": {
-		type: "boolean",
+		"type": "boolean",
 		"default": true,
 		"ID": "空襲結果を表示する",
 	},
+	"auto_bomb": {
+		"type": "boolean",
+		"defalut": false,
+		"ID": "自動空襲モード",
+	}
 }
 
 const set_HTML要素操作 = () => {
@@ -93,5 +98,10 @@ const set_ev発生 = (e, type, name) => {
 			break;
 	}
 	if (eq(name, ["num_simulate", "cumulative_threshold"])) O.kouku_recalc = true;
+	if (name === "auto_bomb") {
+		const bomb_mode = O.settings.auto_bomb;
+		一_自動空襲切り替え(bomb_mode);
+		二_自艦隊の表を更新();
+	}
 	二_結果テーブルを表示();
 }

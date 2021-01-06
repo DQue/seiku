@@ -405,6 +405,9 @@ function 二_艦娘選択を生成(e, idx, add) {
 							二_艦娘選択ウィンドウを隠す();
 							if (艦娘名 === "基地航空隊" && 改造度 === "出撃") {
 								O.kouku_recalc = true;
+								if (O.settings.auto_bomb === true) {
+									一_自動空襲適用(idx);
+								}
 								二_航空隊出撃ポイント選択を表示();
 								二_結果チャートをリセット();
 								二_結果テーブルを表示();
@@ -479,7 +482,25 @@ const 一_空襲を発生させる = (idx) => {
 		if (num <= 0) break;
 	}
 }
-
+const 一_自動空襲適用 = (idx) => {
+	const a = 一_表のセルデータ取得(idx, "kaizou");
+	一_表の搭載数をデフォルトに変更(idx, a);
+	一_空襲を発生させる(idx);
+}
+const 一_自動空襲切り替え = (bomb_mode) => {
+	const n = O.table.length;
+	for (let idx = 0; idx < n; idx++) {
+		const name = 一_表のセルデータ取得(idx, "kanmusu");
+		if (name === "基地航空隊") {
+			if (bomb_mode === true) {
+				一_自動空襲適用(idx);
+			} else {
+				const a = 一_表のセルデータ取得(idx, "kaizou");
+				一_表の搭載数をデフォルトに変更(idx, a);
+			}
+		}
+	}
+}
 
 
 
@@ -611,10 +632,9 @@ const 二_装備変更 = (e, idx, di) => {
 	const kanmusu = 一_表のセルデータ取得(idx, "kanmusu");
 	const kaizou = 一_表のセルデータ取得(idx, "kaizou");
 	一_表のセルデータ変更(idx, "soubi", t, di);
-	if (kanmusu === "基地航空隊" && eq(零_種類(一_表のセルデータ取得(idx, "soubi", di)), ["艦上偵察機", "水上偵察機", "大型飛行艇", "陸上偵察機"])) {
-		一_表のセルデータ変更(idx, "tousai", 4, di); //偵察機を装備したときは搭載を4に
-	} else {
-		一_表の搭載数をデフォルトに変更(idx, 一_表のセルデータ取得(idx, "kaizou"), di);
+	一_表の搭載数をデフォルトに変更(idx, 一_表のセルデータ取得(idx, "kaizou"), di);
+	if (O.settings.auto_bomb === true) {
+		一_自動空襲適用(idx);
 	}
 	二_自艦隊の表を更新();
 }
@@ -638,9 +658,9 @@ const 二_自艦隊の空行を生成 = (idx) => {
 	return tb;
 }
 function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 搭載数 装備 熟練度 等
-	var def = 1;
-	if (零_艦娘数() === 0) def = 4;
-	var rows = 零_艦娘スロット数(tableData.kanmusu, tableData.kaizou, def);
+	let lines_for_addbtn = 1;
+	if (零_艦娘数() === 0) lines_for_addbtn = 4;
+	let rows = 零_艦娘スロット数(tableData.kanmusu, tableData.kaizou, lines_for_addbtn);
 
 	let isTop = false;//この艦娘が一番上に表示されている艦娘である
 	let isBottom = false;
@@ -1282,7 +1302,8 @@ function 二_装備にドロップされた(e, idx, i) {
 	const isCtrl = e.ctrlKey;
 	const from_idx = Number(e.dataTransfer.getData("text/x-idx"));
 	const from_i = Number(e.dataTransfer.getData("text/x-i"));
-	console.log(isCtrl)
+	const from_name = 一_表のセルデータ取得(from_idx, "kanmusu");
+	const to_name = 一_表のセルデータ取得(idx, "kanmusu");
 	if (from === "艦娘装備") {
 		if (isCtrl === true) {
 			二_装備を複製(from_idx, from_i, idx, i);
@@ -1291,8 +1312,12 @@ function 二_装備にドロップされた(e, idx, i) {
 		}
 	} else if (from === "装備リスト") {
 		一_表のセルデータ変更(idx, "soubi", e.dataTransfer.getData("text/x-name"), i);
-		二_自艦隊の表を更新();
 	}
+	if (O.settings.auto_bomb === true) {
+		if (from_name === "基地航空隊") 一_自動空襲適用(from_idx);
+		if (to_name === "基地航空隊") 一_自動空襲適用(idx);
+	}
+	二_自艦隊の表を更新();
 }
 /*function 二_対空値順に艦戦を交換(){
 	for(var i=0; i<O.table.length; i++){
@@ -1311,7 +1336,6 @@ const 二_装備を交換 = (idx, i, idx2, i2) => { //1:ドラッグ中のやつ
 	一_表のセルデータ変更(idx2, "jukuren", j1, i2);
 	一_表のセルデータ変更(idx, "kaishu", k2, i);
 	一_表のセルデータ変更(idx2, "kaishu", k1, i2);
-	二_自艦隊の表を更新();
 }
 const 二_装備を複製 = (fidx, fi, tidx, ti) => {
 	const fs = 一_表の艦娘データ取得(fidx).soubi[fi];
@@ -1320,7 +1344,6 @@ const 二_装備を複製 = (fidx, fi, tidx, ti) => {
 	一_表のセルデータ変更(tidx, "soubi", fs, ti);
 	一_表のセルデータ変更(tidx, "jukuren", fj, ti);
 	一_表のセルデータ変更(tidx, "kaishu", fk, ti);
-	二_自艦隊の表を更新();
 }
 const 二_装備を挿入 = (name) => {
 	const type = 零_種類(name);
@@ -1335,6 +1358,10 @@ const 二_装備を挿入 = (name) => {
 		for (let i = 0; i < di; i++) {
 			if (一_表のセルデータ取得(idx, "soubi", i) === "-") {
 				一_表のセルデータ変更(idx, "soubi", name, i);
+
+				if (kn === "基地航空隊" && O.settings.auto_bomb === true) {
+					一_自動空襲適用(idx);
+				}
 				二_自艦隊の表を更新();
 				return;
 			}
@@ -1506,7 +1533,7 @@ function 一_表の搭載数をデフォルトに変更(idx, kai, di) {
 		if (kan === "基地航空隊" && eq(零_種類(一_表のセルデータ取得(idx, "soubi", i)), ["艦上偵察機", "水上偵察機", "大型飛行艇", "陸上偵察機"])) {
 			一_表のセルデータ変更(idx, "tousai", 4, i); //偵察機の場合デフォルト=4
 		} else if (kan === "基地航空隊" && eq(零_種類(一_表のセルデータ取得(idx, "soubi", i)), ["大型陸上機"])) {
-			一_表のセルデータ変更(idx, "tousai", 9, i);
+			一_表のセルデータ変更(idx, "tousai", 9, i); //重爆は9
 		} else if (kan === "") {
 			一_表のセルデータ変更(idx, "tousai", 0);
 		} else {
@@ -4091,7 +4118,6 @@ function 一_編成記録(idx, name) {
 		K.kantai[idx].hensei = hensei;
 	}
 }
-
 
 
 
