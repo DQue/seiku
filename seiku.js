@@ -484,7 +484,7 @@ const 一_空襲を発生させる = (idx) => {
 }
 const 一_自動空襲適用 = (idx) => {
 	const name = 一_表のセルデータ取得(idx, "kanmusu");
-	if (kanmusu !== "基地航空隊") return;
+	if (name !== "基地航空隊") return;
 	const a = 一_表のセルデータ取得(idx, "kaizou");
 	一_表の搭載数をデフォルトに変更(idx, a);
 	一_空襲を発生させる(idx);
