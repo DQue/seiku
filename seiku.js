@@ -483,6 +483,8 @@ const 一_空襲を発生させる = (idx) => {
 	}
 }
 const 一_自動空襲適用 = (idx) => {
+	const name = 一_表のセルデータ取得(idx, "kanmusu");
+	if (kanmusu !== "基地航空隊") return;
 	const a = 一_表のセルデータ取得(idx, "kaizou");
 	一_表の搭載数をデフォルトに変更(idx, a);
 	一_空襲を発生させる(idx);
@@ -1359,7 +1361,7 @@ const 二_装備を挿入 = (name) => {
 			if (一_表のセルデータ取得(idx, "soubi", i) === "-") {
 				一_表のセルデータ変更(idx, "soubi", name, i);
 
-				if (kn === "基地航空隊" && O.settings.auto_bomb === true) {
+				if (O.settings.auto_bomb === true) {
 					一_自動空襲適用(idx);
 				}
 				二_自艦隊の表を更新();
