@@ -3830,6 +3830,8 @@ function 零_装備できるか(艦種, 艦名, 改造, 種類, 装備名) {
 	if (艦種 == "") return true;
 	if (艦種 == "基地航空隊") return true;
 
+	cl(艦種, 艦名, 改造, 種類, 装備名);
+
 	switch (種類) {
 		case "艦上戦闘機":
 			if (eq(艦種, ["正規空母", "軽空母", "装甲空母"])) return true;
@@ -3858,8 +3860,7 @@ function 零_装備できるか(艦種, 艦名, 改造, 種類, 装備名) {
 			if (eq(艦種, ["水上機母艦", "航空巡洋艦", "航空戦艦", "潜水空母", "潜水母艦", "補給艦"])) return true;
 			if (艦種 === "戦艦" && 艦名 !== "金剛" && 艦名 !== "Richelieu") return true; //戦艦は金剛とリシュ以外水戦装備可能
 			if (艦種 === "重巡洋艦") return true;
-			if (艦名 === "由良") return true;
-			if (艦名 === "多摩") return true;
+			if (eq(艦名, ["由良", "多摩", "球磨"])) return true;
 			if (艦名 === "神州丸") return true;
 			break;
 		case "噴式戦闘爆撃機":
