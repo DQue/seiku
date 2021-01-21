@@ -1578,7 +1578,7 @@ function 零_制空値を計算(soubi, tousai, jukuren, kaishu, kanmusu, kaizou)
 	var taiku = 零_対空値(soubi);
 	if (零_種類(soubi) === "艦上戦闘機") {
 		taiku += 0.2 * kaishu;
-	} else if (零_種類(soubi) === "艦上爆撃機" && soubi !== "艦爆") {
+	} else if (零_種類(soubi) === "艦上爆撃機" && taiku >= 4) {
 		taiku += 0.25 * kaishu;
 	} else if (零_種類(soubi) === "水上戦闘機") {
 		taiku += 0.2 * kaishu;
