@@ -2442,25 +2442,42 @@ const 零_制空判定 = (f, e) => {
 
 
 const 零_喪失数計算 = (機数, 制空状況, 形式) => {
-	const o = {
-		確保: [7, 15],
-		優勢: [20, 45],
-		拮抗: [30, 75],
-		劣勢: [45, 105],
-		喪失: [65, 150],
-	};
+	const 制空定数表 = { 確保: 1, 優勢: 3, 拮抗: 5, 劣勢: 7, 喪失: 10, };
+	const 制空定数 = 制空定数表[制空状況];
+	const m = Math.floor(制空定数 * 100 / 3)
 	switch (形式) {
 		case "最小":
-			return parseInt(機数 * o[制空状況][0] / 256);
+			return Math.floor(機数 * (制空定数 / 4) / 10);
 		case "最大":
-			return parseInt(機数 * o[制空状況][1] / 256);
+			return Math.floor(機数 * (m / 100 + 制空定数 / 4) / 10);
 		case "平均":
-			let c = 0;
-			for (let i = o[制空状況][0]; i <= o[制空状況][1]; i++) {
-				c += parseInt(機数 * i / 256);
+			let s = 0;
+			for (let i = 0; i <= m; i++) {
+				s += Math.floor(機数 * (i / 100 + 制空定数 / 4) / 10);
 			}
-			return c / (o[制空状況][1] - o[制空状況][0] + 1);
+			return s / (m + 1);
 	}
+	/*	旧式
+		const o = {
+			確保: [7, 15],
+			優勢: [20, 45],
+			拮抗: [30, 75],
+			劣勢: [45, 105],
+			喪失: [65, 150],
+		};
+		switch (形式) {
+			case "最小":
+				return parseInt(機数 * o[制空状況][0] / 256);
+			case "最大":
+				return parseInt(機数 * o[制空状況][1] / 256);
+			case "平均":
+				let c = 0;
+				for (let i = o[制空状況][0]; i <= o[制空状況][1]; i++) {
+					c += parseInt(機数 * i / 256);
+				}
+				return c / (o[制空状況][1] - o[制空状況][0] + 1);
+		}
+	*/
 }
 const 零_敵喪失数計算 = (機数, 制空状況, 形式) => {
 	const m = {
