@@ -520,13 +520,13 @@ function 二_装備変更を表示(e, idx, di) {
 		var ks = "";
 	}
 	var uls = {};
-	var ul1 = el.appendChild(ce("ul"));
-	ul1.classList.add("選択リスト", "種別");
+	var e_selector = el.appendChild(ce("ul"));
+	e_selector.classList.add("選択リスト", "種別");
 	var ul2 = el.appendChild(ce("ul"));
 	ul2.classList.add("選択リスト", "項目", "艦載機リスト");
 	for (var i = 0; i < 装備種.length; i++) {
 		if (零_装備できるものがあるか(ks, kan, kai, 装備種[i]) === false) continue;
-		var li1 = ul1.appendChild(ce("li"));
+		var li1 = e_selector.appendChild(ce("li"));
 		li1.classList.add(装備種[i], "clickable");
 		if (雑データ.短縮.装備種[装備種[i]]) {
 			li1.appendChild(ct(雑データ.短縮.装備種[装備種[i]]));
@@ -1010,7 +1010,7 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 						cost.燃料 += Math.ceil(1.5 * 搭載);
 						cost.弾薬 += Math.floor(0.7 * 搭載);
 					} else if (種類 === "大型陸上機") {
-						cost.燃料 += Math.floor(2 * 搭載); //式は不明だけど9機で18
+						cost.燃料 += Math.floor(2 * 搭載); //式は不明だけど9機で18なので2x搭載で仮置き
 						cost.弾薬 += Math.floor(2 * 搭載); //同上
 						cost.ボーキ += 9 * 零_配置コスト(装備);
 						cost.要検証 = true;
@@ -3842,29 +3842,27 @@ function 零_第2艦隊所属艦数() {
 	}
 	return cnt;
 }
-function 零_装備できるか(艦種, 艦名, 改造, 種類, 装備名) {
-	if (種類 == "装備なし") return true;
-	if (艦種 == "") return true;
-	if (艦種 == "基地航空隊") return true;
-
-	cl(艦種, 艦名, 改造, 種類, 装備名);
+const 零_装備できるか = (艦種, 艦名, 改造, 種類, 装備名) => {
+	if (種類 === "装備なし") return true;
+	if (艦種 === "") return true;
+	if (艦種 === "基地航空隊") return true;
 
 	switch (種類) {
 		case "艦上戦闘機":
 			if (eq(艦種, ["正規空母", "軽空母", "装甲空母"])) return true;
-			if (艦名 == "伊勢" && 改造 == "改二") return true;
-			if (艦名 == "日向" && 改造 == "改二") return true;
+			if (艦名 === "伊勢" && 改造 === "改二") return true;
+			if (艦名 === "日向" && 改造 === "改二") return true;
 			if (艦名 === "あきつ丸") return true;
 			break;
 		case "艦上爆撃機":
 			if (eq(艦種, ["正規空母", "軽空母", "装甲空母"])) return true;
-			if (艦名 == "伊勢" && 改造 == "改二") return true;
-			if (艦名 == "日向" && 改造 == "改二") return true;
+			if (艦名 === "伊勢" && 改造 === "改二") return true;
+			if (艦名 === "日向" && 改造 === "改二") return true;
 			break;
 		case "艦上攻撃機":
-			if (艦名 == "春日丸" && 改造 == "無印") return false;
+			if (艦名 === "春日丸" && 改造 === "無印") return false;
 			if (eq(艦種, ["正規空母", "軽空母", "装甲空母"])) return true;
-			if (艦名 == "速吸" && 改造 == "改") return true;
+			if (艦名 === "速吸" && 改造 === "改") return true;
 			break;
 		case "水上爆撃機":
 			if (eq(艦種, ["水上機母艦", "航空巡洋艦", "航空戦艦", "補給艦", "潜水空母"])) return true;
@@ -3875,7 +3873,7 @@ function 零_装備できるか(艦種, 艦名, 改造, 種類, 装備名) {
 			break;
 		case "水上戦闘機":
 			if (eq(艦種, ["水上機母艦", "航空巡洋艦", "航空戦艦", "潜水空母", "潜水母艦", "補給艦"])) return true;
-			if (艦種 === "戦艦" && 艦名 !== "金剛" && 艦名 !== "Richelieu") return true; //戦艦は金剛とリシュ以外水戦装備可能
+			if (艦種 === "戦艦" && 艦名 !== "金剛" && 艦名 !== "Richelieu") return true;
 			if (艦種 === "重巡洋艦") return true;
 			if (eq(艦名, ["由良", "多摩", "球磨"])) return true;
 			if (艦名 === "神州丸") return true;
@@ -4143,97 +4141,100 @@ function 一_編成記録(idx, name) {
 
 
 
-function 二_ドラッグアンドドロップリストを表示(ev) {
-	var di = 二_可動ポップアップを生成("ドラッグ＆ドロップで装備をセット");
+const 二_ドラッグアンドドロップリストを表示 = (ev) => {
+	const di = 二_可動ポップアップを生成("ドラッグ＆ドロップで装備をセット");
 	di.id = "自艦隊ツール_DnD";
 	di.classList.add("loong");
-	var na = di.childNodes[2];
+	const e_inner = di.childNodes[2];
 
-	var tbls = {};
-	var ul1 = na.appendChild(ce("ul"));
-	ul1.classList.add("選択リスト", "種別");
-	var div2 = na.appendChild(ce("div"));
-	div2.classList.add("選択リスト", "項目", "艦載機リスト");
+	const tbs = {};
+	const e_selector = e_inner.appendChild(ce("ul"));
+	e_selector.classList.add("選択リスト", "種別");
 
-	//	var he=ul2.appendChild(ce("li"));
-	//	he.appendChild(ct("対空値(出撃時)　|　対空値(防空時)　|　装備名"));
-	//	he.classList.add("装備選択表ヘッダ");
+	const e_list = e_inner.appendChild(ce("div"));
+	e_list.classList.add("選択リスト", "項目", "艦載機リスト");
 
-	tbls.header = ce("table");
-	tbls.header.classList.add("装備選択テーブル");
-	const htr = tbls.header.appendChild(ce("tr"));
-	["対空", "防空", "装備名", "半径"].forEach(a => {
-		const td = htr.appendChild(ce("td"));
-		if (a !== "装備名") td.classList.add("header");
-		td.appendChild(ct(a));
-	})
-	div2.appendChild(tbls.header);
+	const e_table = e_list.appendChild(ce("table"));
+	const e_thead = e_table.appendChild(ce("thead"));
 
-	for (var i = 0; i < 装備種.length; i++) {
-		var li1 = ul1.appendChild(ce("li"));
-		li1.classList.add(装備種[i], "clickable");
-		if (雑データ.短縮.装備種[装備種[i]]) {
-			li1.appendChild(ct(雑データ.短縮.装備種[装備種[i]]));
-		} else {
-			li1.appendChild(ct(装備種[i]));
-		}
-		var li2 = div2.appendChild(ce("li"));
-		li2.classList.add("項目", 装備種[i]);
-		tbls[装備種[i]] = ce("table");
-		tbls[装備種[i]].classList.add("装備選択テーブル");
-		li2.appendChild(tbls[装備種[i]]);
-
-		li1.addEventListener("click", (function (e, 外, 中) {
-			return function () {
-				外.scrollTop = 中.offsetTop - 外.offsetTop;
+	//右カラムヘッダ
+	const e_thead_tr = e_thead.appendChild(ce("tr"));
+	e_thead_tr.classList.add("DnDヘッダ")
+	const thlist = ["対空", "防空", "装備名", "半径"];
+	for (let i = 0; i < thlist.length; i++) {
+		const e_th = e_thead_tr.appendChild(ce("th"));
+		e_th.appendChild(ct(thlist[i]));
+		e_th.dataset.key = i;
+		e_th.classList.add("DnDヘッダセル");
+		e_th.addEventListener("click", ((num, tbs) => {
+			return (ev) => {
+				二_ドラッグアンドドロップリストを並び替え(ev, num, tbs);
 			}
-		})("", div2, tbls[装備種[i]]))
+		})(i, tbs), false);
 	}
 
+	//右カラム装備コンテナ
+	for (let i = 0; i < 装備種.length; i++) {
+		const e_tbody = e_table.appendChild(ce("tbody"));
+		e_tbody.classList.add("項目", 装備種[i]);
+		tbs[装備種[i]] = e_tbody;
+	}
 
-
-
+	//右カラム装備一覧
 	for (let i in 艦戦データ) {
-		const tr = tbls[艦戦データ[i].種類].appendChild(ce("tr"));
+		const 種類 = 零_種類(i);
+		const is夜間機 = 艦戦データ[i].夜間航空機 === true ? true : false;
+		const e_tr = tbs[種類].appendChild(ce("tr"));
 
-		const td1 = tr.appendChild(ce("td")); //対空値
-		td1.classList.add("num");
-		td1.appendChild(ct(零_実質対空値(i, "出撃")));
-
-		const td2 = tr.appendChild(ce("td")); //対空値
-		td2.classList.add("num");
-		if (eq(零_種類(i), ["局地戦闘機", "陸軍戦闘機"])) {
-			td2.appendChild(ct(零_実質対空値(i, "防空")));
-		} else {
-			td2.appendChild(ct(" "));
-		}
-
-
-		tr.appendChild(ce("td")).appendChild(ct(i)); //装備
-
-		const td4 = tr.appendChild(ce("td")); //半径
-		td4.classList.add("num");
-		if (i === "艦攻" || i === "艦爆") {
-			td4.appendChild(ct("?"));
-		} else {
-			td4.appendChild(ct(零_行動半径(i)));
-		}
-
-		tr.dataset.value = i; //行全体設定
-		tr.classList.add(艦戦データ[i].種類, "艦載機");
-		if (零_種類(i) === "艦上爆撃機" && 艦戦データ[i].対空値 >= 4) tr.classList.add("対空値有");
-		if (艦戦データ[i].夜間航空機 === true) tr.classList.add("夜間航空機");
-		tr.draggable = true;
-		tr.addEventListener("dragstart", (function (i) {
-			return function (e) {
-				e.dataTransfer.setData("text/x-name", i);
-				e.dataTransfer.setData("text/x-from", "装備リスト");
+		//行設定
+		e_tr.dataset.value = i;
+		e_tr.classList.add(艦戦データ[i].種類, "艦載機", "装備選択テーブル");
+		if (種類 === "艦上爆撃機" && 艦戦データ[i].対空値 >= 4) e_tr.classList.add("対空値有");
+		if (is夜間機) e_tr.classList.add("夜間航空機");
+		e_tr.draggable = true;
+		e_tr.addEventListener("dragstart", ((i) => {
+			return (ev) => {
+				ev.dataTransfer.setData("text/x-name", i);
+				ev.dataTransfer.setData("text/x-from", "装備リスト");
 				DT = "装備リスト";
 			}
-		})(i));
-		tr.addEventListener("dblclick", () => { 二_装備を挿入(i) }, false);
+		})(i), false);
+		e_tr.addEventListener("dblclick", () => { 二_装備を挿入(i) }, false);
+
+		//セル設定
+		const e_td_taiku = e_tr.appendChild(ce("td"));
+		const e_td_bouku = e_tr.appendChild(ce("td"));
+		const e_td_name = e_tr.appendChild(ce("td"));
+		const e_td_radius = e_tr.appendChild(ce("td"));
+
+		e_td_taiku.classList.add("num");
+		e_td_bouku.classList.add("num");
+		e_td_radius.classList.add("num");
+
+
+		e_td_taiku.appendChild(ct(零_実質対空値(i, "出撃")));
+		const bouku = eq(種類, ["局地戦闘機", "陸軍戦闘機"]) ? 零_実質対空値(i, "防空") : " "; //局戦陸戦以外は空欄に
+		e_td_bouku.appendChild(ct(bouku));
+		e_td_name.appendChild(ct(i));
+		const radius = (eq(i, ["艦攻", "艦爆"])) ? "?" : 零_行動半径(i);
+		e_td_radius.appendChild(ct(radius));
 	}
-	var left, top;
+
+	//左カラム
+	for (let i = 0; i < 装備種.length; i++) {
+		const e_li = e_selector.appendChild(ce("li"));
+		e_li.classList.add(装備種[i], "clickable");
+		const eqname = 雑データ.短縮.装備種[装備種[i]] ? 雑データ.短縮.装備種[装備種[i]] : 装備種[i];
+		e_li.appendChild(ct(eqname));
+		e_li.addEventListener("click", ((外, 中) => {
+			return () => {
+				外.scrollTop = 中.offsetTop - 外.offsetTop + 24;//24は可動ポップアップのタイトルバーの高さ　あとでなおす
+			}
+		})(e_list, tbs[装備種[i]]));
+	}
+
+	//ポップアップする
+	let left, top;
 	if (($("自艦隊").getBoundingClientRect().left + $("自艦隊").offsetWidth + 410) < document.body.offsetWidth) {
 		left = $("自艦隊").getBoundingClientRect().left + $("自艦隊").offsetWidth + 10;
 		top = Math.max(10, $("自艦隊").getBoundingClientRect().top + window.pageYOffset - 100);
@@ -4245,6 +4246,52 @@ function 二_ドラッグアンドドロップリストを表示(ev) {
 	di.style.top = top + "px";
 	document.body.appendChild(di);
 }
+const 二_ドラッグアンドドロップリストを並び替え = (ev, num, tbs) => {
+	const e_target = ev.target;
+	let mode;
+	if (e_target.dataset.order) {
+		mode = e_target.dataset.order === "↓" ? "↑" : "↓";
+	} else {
+		mode = "↓"; //最初は降順
+	}
+	const e_ths = document.getElementsByClassName("DnDヘッダセル");
+	for (let i = 0; i < e_ths.length; i++) {
+		e_ths[i].dataset.order = "";
+	}
+	e_target.dataset.order = mode;
+
+
+	for (let i in tbs) {
+		const len = tbs[i].childNodes.length;
+		const keys = new Array(len);
+		const trs = new Array(len);
+		const e_trs = tbs[i].getElementsByTagName("tr");
+
+		for (let j = 0; j < len; j++) {
+			const temp = e_trs[j].getElementsByTagName("td")[num].textContent;
+			keys[j] = isNaN(Number(temp)) ? temp : Number(temp); //数字っぽいものは数字にして比較（2と10は10のほうが大きい）
+			trs[j] = e_trs[j]
+		}
+
+		//ソート
+		for (let left = 0; left < len - 1; left++) {
+			for (let right = left + 1; right < len; right++) {
+				if (mode === "↓" && keys[right] <= keys[left]) continue;
+				if (mode === "↑" && keys[left] <= keys[right]) continue;
+				[keys[left], keys[right]] = [keys[right], keys[left]];
+				[trs[left], trs[right]] = [trs[right], trs[left]];
+			}
+		}
+		//DOM書き換え
+		while (tbs[i].firstChild) {
+			tbs[i].removeChild(tbs[i].firstChild);
+		}
+		for (let j = 0; j < len; j++) {
+			tbs[i].appendChild(trs[j]);
+		}
+	}
+}
+
 
 function 二_可動ポップアップを生成(title, onclose) {
 	M[title] = {};

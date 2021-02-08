@@ -187,8 +187,11 @@ td.empty.c{
 .大型陸上機{
 	background-color:rgb(181,219,199);
 }
-.局地戦闘機,.陸軍戦闘機{
+.局地戦闘機{
 	background-color:rgb(192,247,165);
+}
+.陸軍戦闘機{
+	background-color:rgb(179, 247, 144);
 }
 .艦上偵察機,.水上偵察機,.大型飛行艇,.陸上偵察機{
 	background-color:rgb(255,250,160);
@@ -366,13 +369,7 @@ td.empty.c{
 /*	padding-bottom:600px;
 */
 }
-.艦載機リスト li.艦載機{
-	padding-left:6px;
-	position:relative;
-}
-.可動ポップアップ .艦載機リスト li.艦載機{
-	cursor:move;
-}
+
 .対空値表示{
 	display:inline-block;
 	width:28px;
@@ -397,11 +394,31 @@ td.empty.c{
 .装備選択テーブル .num, .装備選択テーブル .header{
 	width:32px;
 }
-.装備選択テーブル tr:hover:not(:active){
-	background:#eee;
+.装備選択テーブル:hover:not(:active){
+	background:#eee !important;
 }
 
 
+/*DnDリスト*/
+.可動ポップアップ .艦載機リスト .艦載機{
+	cursor:move;
+}
+.艦載機リスト table, .艦載機リスト th, .艦載機リスト td, .艦載機リスト tr{
+	border:none;
+}
+.艦載機リスト th{
+	white-space: nowrap;
+	text-align: left;
+	font-weight: normal;
+}
+.DnDヘッダセル{
+	position:sticky;
+	top:0;
+	background:white;
+}
+.DnDヘッダセル::after{
+	content:attr(data-order);
+}
 
 
 
