@@ -231,13 +231,12 @@ td.empty.c{
 	white-space:nowrap;
 	overflow:auto;
 	font-size:14px;
-	line-height:16px;
 	height:auto;
 }
 .選択ポップアップ{
 	width:200px;
 	padding:7px;
-	max-height:260px;
+	max-height:300px;
 	z-index:100;
 	box-shadow:1px 2px 2px #ddd;
 	display:inline-block;
@@ -347,28 +346,16 @@ td.empty.c{
 	padding:0;
 	vertical-align:top;
 }
-.選択リスト ul, .選択リスト li{
-	list-style-type:none;
-	margin:0;
-	padding:0;
-}
 .選択リスト.種別{
-	width:15%;
-	width:calc(3em);
+	width:3em;
 }
 .選択リスト.項目{
-	width:85%;
 	width:calc(100% - 3em);
 	max-height:476px;
-	overflow:auto;
+	white-space: normal;
+	overflow-y: auto;
 }
-.選択リスト.項目>li{
-	background:inherit;
-}
-.選択リスト.項目>li:last-child{
-/*	padding-bottom:600px;
-*/
-}
+
 
 .対空値表示{
 	display:inline-block;
@@ -399,26 +386,32 @@ td.empty.c{
 }
 
 
-/*DnDリスト*/
+/*DnDリスト/装備選択リスト*/
 .可動ポップアップ .艦載機リスト .艦載機{
 	cursor:move;
 }
-.艦載機リスト table, .艦載機リスト th, .艦載機リスト td, .艦載機リスト tr{
+.艦載機リスト, .艦載機リスト table, .艦載機リスト th, .艦載機リスト td, .艦載機リスト tr{
 	border:none;
+	margin:0;
+	padding:0;
 }
+
 .艦載機リスト th{
 	white-space: nowrap;
 	text-align: left;
 	font-weight: normal;
+	padding:0 3px;
 }
-.DnDヘッダセル{
+.DnDヘッダセル, .装備リストヘッダセル{
 	position:sticky;
 	top:0;
-	background:white;
+	height:2em;
+
 }
-.DnDヘッダセル::after{
+.DnDヘッダセル::after, .装備リストヘッダセル::after{
 	content:attr(data-order);
 }
+
 
 
 
@@ -1014,9 +1007,8 @@ td.jukuren,td.kaishu{
 	vertical-align:middle;
 }
 #装備変更{
-/*	width:250px;*/
 	max-height:600px;
-	padding:7px 0 0 7px;
+	padding:0 !important;
 }
 .艦娘備考 ul, .艦娘備考.li{
 	margin:0;

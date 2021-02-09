@@ -507,72 +507,140 @@ const 一_自動空襲切り替え = (bomb_mode) => {
 
 
 
-function 二_装備変更を表示(e, idx, di) {
-	var el = document.body.appendChild(ce("div"));
-	var kan = 一_表のセルデータ取得(idx, "kanmusu");
-	var kai = 一_表のセルデータ取得(idx, "kaizou");
-	let mode = "";
-	if (kan) {
-		var ks = 零_艦娘データ取得(kan)["データ"][kai]["艦種"];
-		if (kan === "基地航空隊" && kai === "出撃") mode = "出撃";
-		if (kan === "基地航空隊" && kai === "防空") mode = "防空";
-	} else {
-		var ks = "";
+const 二_装備変更を表示 = (e, idx, di) => {
+	const el = document.body.appendChild(ce("div"));
+	const 艦娘 = 一_表のセルデータ取得(idx, "kanmusu");
+	const 改造 = 一_表のセルデータ取得(idx, "kaizou");
+	let mode = "", 艦種 = "";
+	if (艦娘) {
+		艦種 = 零_艦娘データ取得(艦娘)["データ"][改造]["艦種"];
+		if (艦娘 === "基地航空隊" && 改造 === "出撃") mode = "出撃";
+		if (艦娘 === "基地航空隊" && 改造 === "防空") mode = "防空";
 	}
-	var uls = {};
-	var e_selector = el.appendChild(ce("ul"));
+	let tbs = {};
+
+	//装備種選択
+	const e_selector = el.appendChild(ce("ul"));
 	e_selector.classList.add("選択リスト", "種別");
-	var ul2 = el.appendChild(ce("ul"));
-	ul2.classList.add("選択リスト", "項目", "艦載機リスト");
-	for (var i = 0; i < 装備種.length; i++) {
-		if (零_装備できるものがあるか(ks, kan, kai, 装備種[i]) === false) continue;
-		var li1 = e_selector.appendChild(ce("li"));
+	const e_table = el.appendChild(ce("table"));
+	e_table.classList.add("選択リスト", "艦載機リスト", "項目");
+	for (let i = 0; i < 装備種.length; i++) {
+		if (零_装備できるものがあるか(艦種, 艦娘, 改造, 装備種[i]) === false) continue;
+		const li1 = e_selector.appendChild(ce("li"));
 		li1.classList.add(装備種[i], "clickable");
 		if (雑データ.短縮.装備種[装備種[i]]) {
 			li1.appendChild(ct(雑データ.短縮.装備種[装備種[i]]));
 		} else {
 			li1.appendChild(ct(装備種[i]));
 		}
-		var li2 = ul2.appendChild(ce("li"));
-		li2.classList.add("項目", 装備種[i]);
-		uls[装備種[i]] = ce("ul");
-		li2.appendChild(uls[装備種[i]]);
+		const e_tbody = e_table.appendChild(ce("tbody"));
+		e_tbody.classList.add(装備種[i]);
+		tbs[装備種[i]] = e_tbody;
 
-		li1.addEventListener("click", (function (e, 外, 中) {
-			return function () {
+		li1.addEventListener("click", ((外, 中) => {
+			return () => {
 				外.scrollTop = 中.offsetTop - 外.offsetTop;
 			}
-		})("", ul2, uls[装備種[i]]))
+		})(e_table, e_tbody))
 	}
-	for (var i in 艦戦データ) {
-		if (零_装備できるか(ks, kan, kai, 艦戦データ[i].種類, i) === false) continue;
-		var li = ce("li");
-		var sp = li.appendChild(ce("span"));
-		sp.classList.add("対空値表示", "num");
-		sp.dataset.value = i;
-		//		sp.appendChild(ct(艦戦データ[i].対空値));
-		sp.appendChild(ct(零_実質対空値(i, mode))); //対空値
 
-		li.appendChild(ct(i)); //装備名
-		li.dataset.value = i;
-		li.addEventListener("click", function (e) {
+	//ヘッダ
+	const e_thead = e_table.appendChild(ce("thead"));
+	const e_tr = e_thead.appendChild(ce("tr"));
+	const thlist = ["対空", "装備名"];
+	if (艦娘 === "基地航空隊" && 改造 === "防空") thlist[0] = "防空";
+	for (let i = 0; i < thlist.length; i++) {
+		const e_th = e_tr.appendChild(ce("th"));
+		e_th.appendChild(ct(thlist[i]));
+		e_th.dataset.key = i;
+		e_th.classList.add("装備リストヘッダセル", "clickable");
+		e_th.addEventListener("click", ((num, tbs) => {
+			return (ev) => {
+				二_装備一覧をソート(ev, num, tbs);
+			}
+		})(i, tbs), false);
+	}
+
+	//装備一覧
+	for (let i in 艦戦データ) {
+		const 種類 = 艦戦データ[i].種類;
+		if (零_装備できるか(艦種, 艦娘, 改造, 種類, i) === false) continue;
+
+		const e_tr = tbs[種類].appendChild(ce("tr"));
+
+		//対空値
+		const e_td_taiku = e_tr.appendChild(ce("td"));
+		e_td_taiku.classList.add("対空値表示", "num");
+		e_td_taiku.dataset.value = i;
+		e_td_taiku.appendChild(ct(零_実質対空値(i, mode)));
+
+		//装備名
+		const e_td_name = e_tr.appendChild(ce("td"));
+		e_td_name.appendChild(ct(i));
+		e_td_name.dataset.value = i;
+
+		e_tr.addEventListener("click", (ev) => {
 			非表示("装備変更");
-			二_装備変更(e, idx, di);
+			二_装備変更(ev, idx, di);
 		});
-		li.classList.add("clickable");
-		li.classList.add(艦戦データ[i].種類, "艦載機");
-		if (零_種類(i) === "艦上爆撃機" && 艦戦データ[i].対空値 >= 4) li.classList.add("対空値有");
-		if (艦戦データ[i].夜間航空機 === true) li.classList.add("夜間航空機");
-
-		uls[艦戦データ[i].種類].appendChild(li);
+		e_tr.classList.add("clickable");
+		e_tr.classList.add(種類, "艦載機");
+		if (零_種類(i) === "艦上爆撃機" && 艦戦データ[i].対空値 >= 4) e_tr.classList.add("対空値有");
+		if (艦戦データ[i].夜間航空機 === true) e_tr.classList.add("夜間航空機");
 	}
-
 
 	el.id = "装備変更";
 	el.classList.add("選択ポップアップ", "long");
 	el.style.left = getMousePos(e).x + "px";
 	el.style.top = getMousePos(e).y + "px";
 }
+
+const 二_装備一覧をソート = (ev, num, tbs) => {
+	const e_target = ev.target;
+	let mode;
+	if (e_target.dataset.order) {
+		mode = e_target.dataset.order === "↓" ? "↑" : "↓";
+	} else {
+		mode = "↓"; //最初は降順
+	}
+	const e_ths = document.getElementsByClassName("装備リストヘッダセル");
+	for (let i = 0; i < e_ths.length; i++) {
+		e_ths[i].dataset.order = "";
+	}
+	e_target.dataset.order = mode;
+
+
+	for (let i in tbs) {
+		const len = tbs[i].childNodes.length;
+		const keys = new Array(len);
+		const trs = new Array(len);
+		const e_trs = tbs[i].getElementsByTagName("tr");
+
+		for (let j = 0; j < len; j++) {
+			const temp = e_trs[j].getElementsByTagName("td")[num].textContent;
+			keys[j] = isNaN(Number(temp)) ? temp : Number(temp); //数字っぽいものは数字にして比較（2と10は10のほうが大きい）
+			trs[j] = e_trs[j]
+		}
+
+		//ソート
+		for (let left = 0; left < len - 1; left++) {
+			for (let right = left + 1; right < len; right++) {
+				if (mode === "↓" && keys[right] <= keys[left]) continue;
+				if (mode === "↑" && keys[left] <= keys[right]) continue;
+				[keys[left], keys[right]] = [keys[right], keys[left]];
+				[trs[left], trs[right]] = [trs[right], trs[left]];
+			}
+		}
+		//DOM書き換え
+		while (tbs[i].firstChild) {
+			tbs[i].removeChild(tbs[i].firstChild);
+		}
+		for (let j = 0; j < len; j++) {
+			tbs[i].appendChild(trs[j]);
+		}
+	}
+}
+
 
 function 二_全員の装備をいじる(a, aki) {
 	for (var i = 0; i < O.table.length; i++) {
@@ -4165,10 +4233,10 @@ const 二_ドラッグアンドドロップリストを表示 = (ev) => {
 		const e_th = e_thead_tr.appendChild(ce("th"));
 		e_th.appendChild(ct(thlist[i]));
 		e_th.dataset.key = i;
-		e_th.classList.add("DnDヘッダセル");
+		e_th.classList.add("DnDヘッダセル", "clickable");
 		e_th.addEventListener("click", ((num, tbs) => {
 			return (ev) => {
-				二_ドラッグアンドドロップリストを並び替え(ev, num, tbs);
+				二_ドラッグアンドドロップリストをソート(ev, num, tbs);
 			}
 		})(i, tbs), false);
 	}
@@ -4246,7 +4314,7 @@ const 二_ドラッグアンドドロップリストを表示 = (ev) => {
 	di.style.top = top + "px";
 	document.body.appendChild(di);
 }
-const 二_ドラッグアンドドロップリストを並び替え = (ev, num, tbs) => {
+const 二_ドラッグアンドドロップリストをソート = (ev, num, tbs) => {
 	const e_target = ev.target;
 	let mode;
 	if (e_target.dataset.order) {
