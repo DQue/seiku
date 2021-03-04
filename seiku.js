@@ -539,7 +539,8 @@ const 二_装備変更を表示 = (e, idx, di) => {
 
 		li1.addEventListener("click", ((外, 中) => {
 			return () => {
-				外.scrollTop = 中.offsetTop - 外.offsetTop;
+				外.scrollTop = 中.offsetTop - 外.offsetTop - 26;
+				//26はヘッダ分
 			}
 		})(e_table, e_tbody))
 	}
@@ -4296,7 +4297,9 @@ const 二_ドラッグアンドドロップリストを表示 = (ev) => {
 		e_li.appendChild(ct(eqname));
 		e_li.addEventListener("click", ((外, 中) => {
 			return () => {
-				外.scrollTop = 中.offsetTop - 外.offsetTop + 24;//24は可動ポップアップのタイトルバーの高さ　あとでなおす
+				外.scrollTop = 中.offsetTop - 外.offsetTop + 24 - 26;
+				//24は可動ポップアップのタイトルバーの高さ　あとでなおす
+				//26はヘッダ分
 			}
 		})(e_list, tbs[装備種[i]]));
 	}
