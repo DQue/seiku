@@ -2794,7 +2794,7 @@ function 二_結果ヘッダを生成(ss) {
 
 	return th;
 }
-let 二_結果グラフを生成 = () => {
+const 二_結果グラフを生成 = () => {
 	const ss = 一_戦闘数を取得();
 	const td = 一_結果ボディを生成(ss);
 	const canvas = ce("canvas");
@@ -2808,6 +2808,9 @@ let 二_結果グラフを生成 = () => {
 	const ch = gh + 5;	//描画領域全体の縦幅
 	const cw = ss * (gw + gml + gmr);	//描画領域の横幅
 	const fontSize = 12;
+	const dotSize = 2.5; //折れ線グラフの点の半径
+	const boxPaddingX = 3; //制空値の点の背景のパディング
+	const boxPaddingY = 5;
 
 	canvas.width = cw;
 	canvas.height = ch;
@@ -2833,9 +2836,10 @@ let 二_結果グラフを生成 = () => {
 
 	//描画
 	//棒・点　→　値・線
-	let lefts = [], rights = [], clefts = [], ys = [], tops = [];
+	const lefts = [], rights = [], clefts = [], ys = [[], [], [], []], tops = [];
 	for (let i = 0; i < ss; i++) { //棒・点
-		const fs = td.制空値[i];
+		const fs = [];
+		fs[0] = td.制空値[i], fs[1] = td.最大制空値[i], fs[2] = td.平均制空値[i], fs[3] = td.最小制空値[i];
 
 		//棒グラフ
 		const left = i * (gw + gml + gmr) + gml;
@@ -2856,37 +2860,37 @@ let 二_結果グラフを生成 = () => {
 		tops.push(top_a);
 
 
-		//折れ線グラフ
+		//折れ線グラフ用座標
 		const cleft = Math.floor(left + gw / 2);
-		const cy = gh - Math.floor(fs * pa);
+		for (let j = 0; j < 4; j++) {
+			const temp = gh - Math.floor(fs[j] * pa);
+			ys[j].push(temp);
+		}
 		clefts.push(cleft);
-		ys.push(cy);
+
 
 		//線
 		if (i >= 1) {
-			ctx.strokeStyle = "#222";
-			ctx.lineWidth = 1.5;
-			ctx.setLineDash([2, 3]);
-
+			ctx.strokeStyle = "rgba(0,0,0,0.5)";
+			ctx.lineWidth = 0.5;
 			ctx.beginPath();
-			ctx.moveTo(clefts[i - 1], ys[i - 1]);
-			ctx.lineTo(clefts[i], ys[i]);
+			for (let j = 1; j < 4; j++) {
+				ctx.moveTo(clefts[i - 1], ys[j][i - 1]);
+				ctx.lineTo(clefts[i], ys[j][i]);
+			}
 			ctx.stroke();
 		}
 	}
 
 	for (let i = 0; i < ss; i++) {
 		const fs = td.制空値[i];
+
 		//折れ線グラフの点
-		const r = 3.5;
-		ctx.fillStyle = "#222";
-		ctx.strokeStyle = "#fff";
-		ctx.setLineDash([]);
-		ctx.lineWidth = 2;
+		ctx.fillStyle = "#000";
 		ctx.beginPath();
-		ctx.arc(clefts[i], ys[i], r, 0, Math.PI * 2, true);
+		ctx.arc(clefts[i], ys[0][i], dotSize, 0, Math.PI * 2, true);
 		ctx.fill();
-		ctx.stroke();
+
 
 		/*
 		//自艦隊制空値(非表示)
@@ -2925,6 +2929,7 @@ let 二_結果グラフを生成 = () => {
 			ctx.fillText(str, x, y);
 		}
 	}
+	cl(ys)
 	return canvas;
 }
 let 二_結果グラフ凡例を生成 = () => {
@@ -3041,18 +3046,24 @@ function 二_結果ボディを生成(tableData, idx, ss) { //tbodyを1つ==1人
 	}
 	return tb;
 }
-function 一_結果ボディを生成(ss) {
-	var 艦娘 = [];
-	var tableData = {};
+const 一_結果ボディを生成 = (ss) => {
+	const 艦娘 = [];
+	const tableData = {};
 	tableData.ボーキ消費量 = 0;
 	tableData.制空値 = [];
+	tableData.最大制空値 = [];
+	tableData.平均制空値 = [];
+	tableData.最小制空値 = [];
 	tableData.制空状況 = [];
+	tableData.最大制空状況 = [];
+	tableData.平均制空状況 = [];
+	tableData.最小制空状況 = [];
 
 
-	var cnt = 0;
-	var rows, 艦娘名, 改造度;
+	let cnt = 0;
+	let rows, 艦娘名, 改造度;
 
-	for (var i = 0; i < O.table.length; i++) {
+	for (let i = 0; i < O.table.length; i++) {
 		if (O.table[i].data.kanmusu === "") continue;
 		if (O.table[i].data.kanmusu === "基地航空隊") continue;
 		if (一_表のセルデータ取得(i, "hidden") === true) continue;
@@ -3062,16 +3073,22 @@ function 一_結果ボディを生成(ss) {
 		改造度 = 一_表のセルデータ取得(i, "kaizou");
 		艦娘[i].スロット数 = 零_艦娘スロット数(艦娘名, 改造度);
 		艦娘[i].搭載数 = [];
+		艦娘[i].最大搭載数 = [];
+		艦娘[i].平均搭載数 = [];
+		艦娘[i].最小搭載数 = [];
 		艦娘[i].航空戦に参加 = [];
-		for (var di = 0; di < 艦娘[i].スロット数; di++) {
+		for (let di = 0; di < 艦娘[i].スロット数; di++) {
 			艦娘[i].搭載数[di] = [];
+			艦娘[i].最大搭載数[di] = [];
+			艦娘[i].平均搭載数[di] = [];
+			艦娘[i].最小搭載数[di] = [];
 		}
 	}
 
-	for (var j = 0; j < ss + 1; j++) {	//j: 戦闘数側（横）　ssが戦闘数　戦闘終了後に1マス分なのでss+1
-		tableData.制空値[j] = 0;
-		var 撃墜モード = (O.settings.calc_ave === true) ? "平均" : "最大";
-		for (var i = 0; i < O.table.length; i++) { //艦娘を並べる　縦方向
+	for (let j = 0; j < ss + 1; j++) {	//j: 戦闘数側（横）　ssが戦闘数　戦闘終了後に1マス分なのでss+1
+		tableData.制空値[j] = tableData.最大制空値[j] = tableData.平均制空値[j] = tableData.最小制空値[j] = 0;
+		const 撃墜モード = (O.settings.calc_ave === true) ? "平均" : "最大";
+		for (let i = 0; i < O.table.length; i++) { //艦娘を並べる　縦方向
 			if (O.table[i].data.kanmusu === "") continue;
 			if (O.table[i].data.kanmusu === "基地航空隊") continue;
 			if (一_表のセルデータ取得(i, "hidden") === true) continue;
@@ -3083,42 +3100,53 @@ function 一_結果ボディを生成(ss) {
 			}
 
 			//基地航空隊以外の艦娘が存在する場合
-			for (var di = 0; di < 艦娘[i].スロット数; di++) {
+			for (let di = 0; di < 艦娘[i].スロット数; di++) {
 				if (j == 0) { //横方向0番目==1戦目
-					艦娘[i].搭載数[di][j] = 一_表のセルデータ取得(i, "tousai", di);
+					const t = 一_表のセルデータ取得(i, "tousai", di);
+					艦娘[i].搭載数[di][j] = 艦娘[i].最大搭載数[di][j] = 艦娘[i].平均搭載数[di][j] = 艦娘[i].最小搭載数[di][j] = t;
 					if (艦娘[i].航空戦に参加[j]) {
-						tableData.制空値[j] += 一_表のセルデータ取得(i, "seiku", di);
+						const 制空値 = 一_表のセルデータ取得(i, "seiku", di);
+						tableData.制空値[j] += 制空値;
+						tableData.最大制空値[j] += 制空値;
+						tableData.平均制空値[j] += 制空値;
+						tableData.最小制空値[j] += 制空値;
 					}
 				} else { //1番目以降
-					var 喪失数 = 零_喪失数計算(艦娘[i].搭載数[di][j - 1], tableData.制空状況[j - 1], 撃墜モード); //前回の搭載数と制空状況から喪失数を計算
+					const 喪失数 = 零_喪失数計算(艦娘[i].搭載数[di][j - 1], tableData.制空状況[j - 1], 撃墜モード); //前回の搭載数と制空状況から喪失数を計算
+					const 最大喪失数 = 零_喪失数計算(艦娘[i].最大搭載数[di][j - 1], tableData.最大制空状況[j - 1], "最小"); //搭載数・制空値が最大のときの最小喪失数=最良の場合
+					const 平均喪失数 = 零_喪失数計算(艦娘[i].平均搭載数[di][j - 1], tableData.平均制空状況[j - 1], "平均");
+					const 最小喪失数 = 零_喪失数計算(艦娘[i].最小搭載数[di][j - 1], tableData.最小制空状況[j - 1], "最大");//搭載数・制空値が最小のときの最大喪失数=最悪の場合
+
 					if (艦娘[i].航空戦に参加[j - 1] === false) 喪失数 = 0;
 					if (一_表のセルデータ取得(i, "soubi", di) !== "-") {
 						tableData.ボーキ消費量 += 喪失数 * 5;
 					}
 					艦娘[i].搭載数[di][j] = 艦娘[i].搭載数[di][j - 1] - 喪失数;
+					艦娘[i].最大搭載数[di][j] = 艦娘[i].最大搭載数[di][j - 1] - 最大喪失数;
+					艦娘[i].平均搭載数[di][j] = 艦娘[i].平均搭載数[di][j - 1] - 平均喪失数;
+					艦娘[i].最小搭載数[di][j] = 艦娘[i].最小搭載数[di][j - 1] - 最小喪失数;
 					if (O.settings.calc_1 === true) { //搭載数1で計算
 						if (false === 零_戦闘機か(一_表のセルデータ取得(i, "soubi", di))) {
-							艦娘[i].搭載数[di][j] = 1;
+							艦娘[i].搭載数[di][j] = 艦娘[i].最大搭載数[di][j] = 艦娘[i].平均搭載数[di][j] = 艦娘[i].最小搭載数[di][j] = 1;
 						}
 					}
 					if (艦娘[i].航空戦に参加[j]) {
-						tableData.制空値[j] += 零_制空値を計算(
-							一_表のセルデータ取得(i, "soubi", di),
-							艦娘[i].搭載数[di][j],
-							一_表のセルデータ取得(i, "jukuren", di),
-							一_表のセルデータ取得(i, "kaishu", di),
-							一_表のセルデータ取得(i, "kanmusu"),
-							一_表のセルデータ取得(i, "kaizou")
-						);
+						const p = [一_表のセルデータ取得(i, "soubi", di), 一_表のセルデータ取得(i, "jukuren", di), 一_表のセルデータ取得(i, "kaishu", di), 一_表のセルデータ取得(i, "kanmusu"), 一_表のセルデータ取得(i, "kaizou")];
+						tableData.制空値[j] += 零_制空値を計算(p[0], 艦娘[i].搭載数[di][j], p[1], p[2], p[3], p[4]);
+						tableData.最大制空値[j] += 零_制空値を計算(p[0], 艦娘[i].最大搭載数[di][j], p[1], p[2], p[3], p[4]);
+						tableData.平均制空値[j] += 零_制空値を計算(p[0], 艦娘[i].平均搭載数[di][j], p[1], p[2], p[3], p[4]);
+						tableData.最小制空値[j] += 零_制空値を計算(p[0], 艦娘[i].最小搭載数[di][j], p[1], p[2], p[3], p[4]);
 					}
 				}
 			}
-			tableData.制空値[j] = 数字をn桁で切り捨て(tableData.制空値[j], 0);
 		}
 		let temp = 0;
 		if (j < ss) {
 			temp = 零_使用制空値(O.eseikus[j]);
 			tableData.制空状況[j] = 零_制空判定(tableData.制空値[j], temp);
+			tableData.最大制空状況[j] = 零_制空判定(tableData.最大制空値[j], temp);
+			tableData.平均制空状況[j] = 零_制空判定(tableData.平均制空値[j], temp);
+			tableData.最小制空状況[j] = 零_制空判定(tableData.最小制空値[j], temp);
 		}
 	}
 	tableData.艦娘 = 艦娘;
