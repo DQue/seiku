@@ -243,6 +243,7 @@ window.addEventListener("DOMContentLoaded", function () {
 	$("全スロットの改修値を最大にする").addEventListener("click", function () { 二_全スロットの改修値をいじる(10); });
 	$("全スロットの改修値をリセットする").addEventListener("click", function () { 二_全スロットの改修値をいじる(0); });
 	$("艦娘全員はずす").addEventListener("click", function (e) { 二_艦娘全員はずす(e); });
+	$("艦娘を連続で追加").addEventListener("click", 二_艦娘を連続で追加, false);
 	//	$("自艦隊ツール_DnDボタン").addEventListener("click", function (e) { 隠す("自艦隊ツール_DnD"); 二_ドラッグアンドドロップリストを表示(e); })
 	$("open_equip_list").addEventListener("click", function (e) { 隠す("自艦隊ツール_DnD"); 二_ドラッグアンドドロップリストを表示(e); })
 	$("データ入出力_出ボタン").addEventListener("click", function () { $("データ入出力textarea").value = JSON.stringify(O.table); setTimeout(function () { alert("書き出しok") }, 100) });
@@ -1470,6 +1471,55 @@ function 二_艦娘全員はずす(e) {
 
 	document.body.appendChild(el);
 }
+const 二_艦娘を連続で追加 = () => {
+	let flg = true;
+	const kanmusus = [];
+	const kaizous = [];
+	const idxs = [];
+	const recalc = false;
+	let idx = O.table.length;
+	while (flg) {
+		const str = prompt("追加したい艦娘を入力(完全一致)\n終わる場合はキャンセルか空欄で送信");
+		if (str === "") flg = false;
+		if (str === null) flg = false;
+
+		const [kanmusu, kaizou] = 零_艦娘を検索(str);
+		if (kanmusu !== undefined) {
+			kanmusus.push(kanmusu);
+			kaizous.push(kaizou);
+			idxs.push(idx);
+			idx++;
+		}
+	}
+	for (let i = 0; i < kanmusus.length; i++) {
+		一_艦娘を追加(idxs[i], kanmusus[i], kaizous[i]);
+		if ((kanmusus[i] === "基地航空隊" && kaizous[i] === "出撃")) {
+			recalc = true;
+			if (O.settings.auto_bomb === true) 一_自動空襲適用(idxs[i]);
+		}
+	}
+	if (recalc) {
+		O.kouku_recalc = true;
+		二_航空隊出撃ポイント選択を表示();
+		二_結果チャートをリセット();
+		二_結果テーブルを表示();
+	}
+	二_自艦隊の表を更新();
+}
+const 零_艦娘を検索 = (str) => {
+	for (let kanmusu in 艦娘データ) {
+		if (kanmusu === str || 艦娘データ[kanmusu].読み === str) {
+			let kaizou = "";
+			for (let j in 艦娘データ[kanmusu].データ) {
+				kaizou = j;
+			}
+			return [kanmusu, kaizou];
+		}
+	}
+	return [undefined, undefined];
+}
+
+
 
 
 function 一_自艦隊の制空値を計算(idx, di) {
@@ -2929,7 +2979,6 @@ const 二_結果グラフを生成 = () => {
 			ctx.fillText(str, x, y);
 		}
 	}
-	cl(ys)
 	return canvas;
 }
 let 二_結果グラフ凡例を生成 = () => {
