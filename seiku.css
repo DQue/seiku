@@ -411,7 +411,15 @@ td.empty.c{
 .DnDヘッダセル::after, .装備リストヘッダセル::after{
 	content:attr(data-order);
 }
-
+/*連続追加*/
+#艦娘を連続で追加ポップアップ input[type=text]{
+    box-sizing: border-box;
+	width:100%
+}
+#艦娘を連続で追加ポップアップ input[type=submit]{
+	display:block;
+	margin-top:4px;
+}
 
 
 

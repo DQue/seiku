@@ -9,6 +9,7 @@ const eq2 = (a) => { for (let i = 0; i < a.length; i++) { if (a[i][0] != a[i][1]
 const amax = (a) => { let m = -Infinity; for (let i of a) { m = m > i ? m : i } return m; }
 const 隠す = (a) => { if ($(a)) $(a).parentNode.removeChild($(a)); }
 const 非表示 = (a) => { if ($(a)) $(a).style.display = "none" }
+const 子要素全削除 = (el) => { while (el.firstChild) { el.removeChild(el.firstChild) } }
 const R = new Map();
 const sqrt = (a) => R[a] ? R[a] : R.set(a, Math.sqrt(a)).get(a);
 const is0401 = () => { const o = 現在時刻(); if (o.mo === 4 && o.d === 1) return true; return false; };
@@ -243,7 +244,6 @@ window.addEventListener("DOMContentLoaded", function () {
 	$("全スロットの改修値を最大にする").addEventListener("click", function () { 二_全スロットの改修値をいじる(10); });
 	$("全スロットの改修値をリセットする").addEventListener("click", function () { 二_全スロットの改修値をいじる(0); });
 	$("艦娘全員はずす").addEventListener("click", function (e) { 二_艦娘全員はずす(e); });
-	$("艦娘を連続で追加").addEventListener("click", 二_艦娘を連続で追加, false);
 	//	$("自艦隊ツール_DnDボタン").addEventListener("click", function (e) { 隠す("自艦隊ツール_DnD"); 二_ドラッグアンドドロップリストを表示(e); })
 	$("open_equip_list").addEventListener("click", function (e) { 隠す("自艦隊ツール_DnD"); 二_ドラッグアンドドロップリストを表示(e); })
 	$("データ入出力_出ボタン").addEventListener("click", function () { $("データ入出力textarea").value = JSON.stringify(O.table); setTimeout(function () { alert("書き出しok") }, 100) });
@@ -339,7 +339,7 @@ const 二_艦娘追加を生成 = (idx) => {
 	const add = 零_艦娘数() <= idx;
 
 	if (!add) { //艦娘追加ではない==変更の場合は"はずす"選択肢を追加
-		var ei = ce("li");
+		const ei = ce("li");
 		ei.appendChild(ct("はずす"));
 		ei.classList.add("clickable")
 		ei.addEventListener("click", function (e) {
@@ -349,8 +349,8 @@ const 二_艦娘追加を生成 = (idx) => {
 		el.appendChild(ei)
 	}
 
-	for (var i = 0; i < 艦種.length; i++) {
-		var e1 = ce("li");
+	for (let i = 0; i < 艦種.length; i++) {
+		const e1 = ce("li");
 		const 種 = 艦種[i];
 		e1.appendChild(ct(種));
 		el.appendChild(e1);
@@ -358,6 +358,16 @@ const 二_艦娘追加を生成 = (idx) => {
 		e1.addEventListener("mouseover", function (e) { if (!O.cl) 二_艦娘選択を表示(e, idx, add) });
 		e1.classList.add("clickable");
 	}
+	if (add) {
+		const e_input = el.appendChild(ce("li"));
+		e_input.appendChild(ct("まとめて追加"));
+		e_input.classList.add("clickable");
+		e_input.addEventListener("click", (e) => {
+			二_艦娘を連続で追加(e);
+			二_艦娘選択ウィンドウを隠す();
+		}, false);
+	}
+
 	el.id = "艦娘追加"
 	el.classList.add("選択ポップアップ");
 	return el;
@@ -1471,54 +1481,101 @@ function 二_艦娘全員はずす(e) {
 
 	document.body.appendChild(el);
 }
-const 二_艦娘を連続で追加 = () => {
-	let flg = true;
-	const kanmusus = [];
-	const kaizous = [];
-	const idxs = [];
-	const recalc = false;
-	let idx = O.table.length;
-	while (flg) {
-		const str = prompt("追加したい艦娘を入力(完全一致)\n終わる場合はキャンセルか空欄で送信");
-		if (str === "") flg = false;
-		if (str === null) flg = false;
+const 二_艦娘を連続で追加 = (e) => {
+	隠す("艦娘を連続で追加ポップアップ");
+	const div = 二_可動ポップアップを生成("艦娘名を指定して追加");
+	const x = getMousePos(e).x;
+	const y = getMousePos(e).y;
+	div.style.left = x + 45 + "px";
+	div.style.top = y - 310 + "px";
+	document.body.appendChild(div);
 
-		const [kanmusu, kaizou] = 零_艦娘を検索(str);
-		if (kanmusu !== undefined) {
-			kanmusus.push(kanmusu);
-			kaizous.push(kaizou);
-			idxs.push(idx);
-			idx++;
+	div.id = "艦娘を連続で追加ポップアップ";
+	const outer = div.childNodes[2];
+	const el = outer.appendChild(ce("form"));
+	let kanmusus = [];
+	let kaizous = [];
+	let idxs = [];
+	let recalc = false;
+	let idx = O.table.length;
+
+	const input = el.appendChild(ce("input"));
+	const list = el.appendChild(ce("ul"));
+	const btn = el.appendChild(ce("input"));
+
+	input.type = "text";
+	btn.type = "submit";
+	btn.value = "まとめて追加";
+	input.focus();
+
+	input.addEventListener("input", () => {
+		kanmusus = [];
+		kaizous = [];
+		idxs = [];
+		recalc = false;
+		idx = O.table.length;
+
+		子要素全削除(list);
+		const strs = input.value.split(/[\s,・、，]/);
+		for (let i = 0; i < strs.length; i++) {
+			let temp = strs[i];
+			temp = jaconv.toZenKana(temp);
+			temp = romajiConv.toKatakana(temp);
+			temp = jaconv.toHanAscii(temp);
+			const str = temp;
+			if (str === "") continue;
+			const [kanmusu, kaizou] = 零_艦娘を検索(str);
+			if (kanmusu !== undefined) {
+				kanmusus.push(kanmusu);
+				kaizous.push(kaizou);
+				idxs.push(idx);
+				idx++;
+			}
 		}
-	}
-	for (let i = 0; i < kanmusus.length; i++) {
-		一_艦娘を追加(idxs[i], kanmusus[i], kaizous[i]);
-		if ((kanmusus[i] === "基地航空隊" && kaizous[i] === "出撃")) {
-			recalc = true;
-			if (O.settings.auto_bomb === true) 一_自動空襲適用(idxs[i]);
+		for (let i = 0; i < kanmusus.length; i++) {
+			const li = list.appendChild(ce("li"));
+			li.appendChild(ct(kanmusus[i]));
+			if (i === kanmusus.length - 1) {
+				隠す("連続追加備考");
+				const e_txt = el.appendChild(ce("p"));
+				e_txt.appendChild(ct("追加後に改造段階を変更してください"));
+				e_txt.id = "連続追加備考";
+			}
 		}
-	}
-	if (recalc) {
-		O.kouku_recalc = true;
-		二_航空隊出撃ポイント選択を表示();
-		二_結果チャートをリセット();
-		二_結果テーブルを表示();
-	}
-	二_自艦隊の表を更新();
+	}, false);
+
+	el.addEventListener("submit", (e) => {
+		e.preventDefault();
+		for (let i = 0; i < kanmusus.length; i++) {
+			一_艦娘を追加(idxs[i], kanmusus[i], kaizous[i]);
+			if ((kanmusus[i] === "基地航空隊" && kaizous[i] === "出撃")) {
+				recalc = true;
+				if (O.settings.auto_bomb === true) 一_自動空襲適用(idxs[i]);
+			}
+		}
+		if (recalc) {
+			O.kouku_recalc = true;
+			二_航空隊出撃ポイント選択を表示();
+			二_結果チャートをリセット();
+			二_結果テーブルを表示();
+		}
+		隠す("艦娘を連続で追加ポップアップ");
+		二_自艦隊の表を更新();
+	}, false);
 }
 const 零_艦娘を検索 = (str) => {
 	for (let kanmusu in 艦娘データ) {
-		if (kanmusu === str || 艦娘データ[kanmusu].読み === str) {
+		if (kanmusu.includes(str) || 艦娘データ[kanmusu].読み.includes(str)) {
 			let kaizou = "";
 			for (let j in 艦娘データ[kanmusu].データ) {
 				kaizou = j;
+				if (kaizou === "出撃") break;
 			}
 			return [kanmusu, kaizou];
 		}
 	}
 	return [undefined, undefined];
 }
-
 
 
 
