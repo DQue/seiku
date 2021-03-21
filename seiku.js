@@ -1502,10 +1502,17 @@ const 二_艦娘を連続で追加 = (e) => {
 	const input = el.appendChild(ce("input"));
 	const list = el.appendChild(ce("ul"));
 	const btn = el.appendChild(ce("input"));
+	const lbl = el.appendChild(ce("label"));
+	const chk = lbl.appendChild(ce("input"));
 
 	input.type = "text";
 	btn.type = "submit";
 	btn.value = "まとめて追加";
+	lbl.appendChild(ct("追加後にウィンドウを閉じる"));
+	chk.type = "checkbox";
+	chk.id = "連続追加後閉じる";
+	chk.checked = true;
+
 	input.focus();
 
 	input.addEventListener("input", () => {
@@ -1559,8 +1566,15 @@ const 二_艦娘を連続で追加 = (e) => {
 			二_結果チャートをリセット();
 			二_結果テーブルを表示();
 		}
-		隠す("艦娘を連続で追加ポップアップ");
 		二_自艦隊の表を更新();
+		if ($("連続追加後閉じる").checked) {
+			隠す("艦娘を連続で追加ポップアップ");
+		} else {
+			子要素全削除(list);
+			input.value = "";
+			input.focus();
+		}
+		kanmusus = [];
 	}, false);
 }
 const 零_艦娘を検索 = (str) => {
