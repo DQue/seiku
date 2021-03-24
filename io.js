@@ -143,7 +143,7 @@ const io_作戦室形式 = () => {
                     proficiency: ((j) => {
                         if (j === 7 && O.settings.calc_120) j = 8;
                         return [0, 10, 25, 40, 55, 70, 85, 100, 120][j];
-                    })(d.jukuren[i]),
+                    })(d.jukuren[j]),
                 };
 
                 temp.slots[j] = d.tousai[j];
