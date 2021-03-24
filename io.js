@@ -86,11 +86,11 @@ const io_作戦室形式 = () => {
     outobj.version = 1;
     outobj.hqLevel = 120; //適当
     outobj.side = "Player";
-    outobj.fleets = [];
+    outobj.fleets = [{ ships: [] }, { ships: [] }];
     outobj.landBase = [];
 
     outobj.name = "艦隊-" + 現在時刻().str;
-    outobj.fleetType = "";
+    outobj.fleetType = "Single";
     let num_fleet = 0;
 
     for (let i = 0; i < O.table.length; i++) {
@@ -148,18 +148,13 @@ const io_作戦室形式 = () => {
 
                 temp.slots[j] = d.tousai[j];
             }
-
-            if (outobj.fleets[fidx] === undefined) {
-                outobj.fleets[fidx] = { ships: [] };
-            }
-
             outobj.fleets[fidx].ships.push(temp);
+            num_fleet = num_fleet | (fidx + 1);
         } else {
             throw `艦娘「${kanmusu} ${kaizou}」が見当たりません`;
         }
     }
 
-    num_fleet = outobj.fleets.length;
-    outobj.fleetType = ["", "Single", "CarrierTaskForce"][num_fleet];
+    outobj.fleetType = (num_fleet === 0b11 ? "CarrierTaskForce" : "Single"); //第1艦隊と第2艦隊どっちも存在するなら連合艦隊
     return JSON.stringify(outobj);
 }
