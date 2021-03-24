@@ -908,7 +908,7 @@ h3.opener.closed:hover + *.hide{
 .btn_in_table.fault{
 	
 }
-#自艦隊親,#編成展開親{
+#自艦隊親,#編成展開親, #外部サイトフォーム{
 	margin-left:5em;
 	background-color:inherit;
 	position:relative;
@@ -920,9 +920,23 @@ h3.opener.closed:hover + *.hide{
 #自艦隊 td.separate{
 	border-width: 1px 0;
 }
-#編成展開親{
+#編成展開親, #外部サイトフォーム{
 	display:none;
 }
+#外部サイトフォーム{
+	border-left:1px solid #222;
+	min-height:250px;
+	padding:12px;
+}
+#外部サイト出力{
+	width:90%;
+	height:10em;
+}
+
+
+
+
+
 #艦娘一覧{
 	position:relative;
 	background-color:inherit;
@@ -933,20 +947,24 @@ h3.opener.closed:hover + *.hide{
 	top:0;left:0;
 	z-index:5;
 }
-.編成ボタン,#編成戻るボタン{
+.編成ボタン, .編成戻るボタン{
 	display:block;
 	border:1px solid #567;
-	margin:4px 1px 3px;
-	padding:2px 20px 2px 0.5em;
+	margin:4px 1px 1px;
+	padding:3px 20px 3px 6px;
 	border-radius:0.3em;
 }
-.編成ボタン:hover, #編成戻るボタン:hover{
-	margin:3px 0 -1px;
+.編成ボタン:hover{
+	padding:2px 19px 2px 5px;
 	border-width:2px;
 }
-#編成戻るボタン{
-	display:inline-block;
-	padding:2px 0.5em;
+.編成戻るボタン{
+	display:table-cell;
+	padding:3px 8px;
+}
+.編成戻るボタン:hover{
+	padding:2px 7px;
+	border-width:2px;
 }
 .編成艦娘数{
 	display:block;

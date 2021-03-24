@@ -9,7 +9,7 @@ const eq2 = (a) => { for (let i = 0; i < a.length; i++) { if (a[i][0] != a[i][1]
 const amax = (a) => { let m = -Infinity; for (let i of a) { m = m > i ? m : i } return m; }
 const 隠す = (a) => { if ($(a)) $(a).parentNode.removeChild($(a)); }
 const 非表示 = (a) => { if ($(a)) $(a).style.display = "none" }
-const 子要素全削除 = (el) => { while (el.firstChild) { el.removeChild(el.firstChild) } }
+const 子要素全削除 = (el) => { if (typeof el === "string") { el = $(el); } while (el.firstChild) { el.removeChild(el.firstChild) } }
 const R = new Map();
 const sqrt = (a) => R[a] ? R[a] : R.set(a, Math.sqrt(a)).get(a);
 const is0401 = () => { const o = 現在時刻(); if (o.mo === 4 && o.d === 1) return true; return false; };
@@ -194,7 +194,16 @@ window.addEventListener("DOMContentLoaded", function () {
 
 	$("編成記録ボタン").addEventListener("click", function () { 二_編成保存テーブルを表示("記録") });
 	$("編成展開ボタン").addEventListener("click", function () { 二_編成保存テーブルを表示("展開") });
-	$("編成戻るボタン").addEventListener("click", function () { 隠す("編成記録情報"); 二_編成保存テーブルを非表示() });
+	$("IOボタン").addEventListener("click", function () { 二_外部サイトフォームを表示() });
+	const b = document.getElementsByClassName("編成戻るボタン");
+	$("制空権シミュURL生成").addEventListener("click", 二_制空権シミュURLを表示, false);
+	$("デッキビルダー形式生成").addEventListener("click", 二_デッキビルダー形式を表示, false);
+	$("デッキビルダーURL生成").addEventListener("click", 二_デッキビルダーURLを表示, false);
+	$("作戦室URL生成").addEventListener("click", 二_作戦室URL生成, false);
+	$("外部サイト出力削除").addEventListener("click", 二_外部サイト出力を削除, false);
+
+
+	for (let i of b) { i.addEventListener("click", function () { 隠す("編成記録情報"); 二_編成保存テーブルを非表示() }) };
 	$("search_equip").addEventListener("dragover", (e) => { e.preventDefault(); e.dataTransfer.dropEffect = "link"; if (DT !== "艦娘装備" && DT !== "装備リスト") e.dataTransfer.dropEffect = "none"; }, false);
 	$("remove_kanmusu").addEventListener("dragover", (e) => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; if (DT !== "艦娘") { e.dataTransfer.dropEffect = "none"; } }, false);
 	$("remove_equip").addEventListener("dragover", (e) => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; if (DT !== "艦娘装備") { e.dataTransfer.dropEffect = "none" } }, false);
@@ -644,9 +653,7 @@ const 二_装備一覧をソート = (ev, num, tbs) => {
 			}
 		}
 		//DOM書き換え
-		while (tbs[i].firstChild) {
-			tbs[i].removeChild(tbs[i].firstChild);
-		}
+		子要素全削除(tbs[i]);
 		for (let j = 0; j < len; j++) {
 			tbs[i].appendChild(trs[j]);
 		}
@@ -1954,7 +1961,7 @@ const 零_敵装備カテゴリ = (id) => {
 	return d.cat;
 }
 const 零_敵装備 = (i) => {
-	const id = 零_n2i(i);
+	const id = 零_n2i(i, "深海棲艦");
 	const d = 深海棲艦idデータ[id];
 	if (!d) return [];
 	if (!d.eq) return [];
@@ -2314,7 +2321,7 @@ const 二_敵艦隊選択を生成 = (masu) => {
 			sp.appendChild(ct(`制空値${so}|`))
 			li.appendChild(sp);
 			for (let j = 0; j < hs.length; j++) {
-				const ss = 零_i2n(hs[j]);
+				const ss = 零_i2n(hs[j], "深海棲艦");
 				if (ss === "-") continue;
 				const en = ce("span");
 				en.className = "深海棲艦名";
@@ -2324,7 +2331,7 @@ const 二_敵艦隊選択を生成 = (masu) => {
 			li.addEventListener("click", ((hs) => {
 				return () => {
 					二_深海棲艦を全員はずす();
-					hs.forEach(a => { 二_深海棲艦を追加(零_n2i(a)) });
+					hs.forEach(a => { 二_深海棲艦を追加(零_n2i(a, "深海棲艦")) });
 					O.eseikus[O.eseikus.length - 1] = 零_敵制空初期値();
 					$("敵艦隊選択親").classList.add("chked");
 					$("敵艦隊選択親").querySelector("h3").dataset.selected = `敵編成：${零_敵艦隊一行()}`;
@@ -2428,7 +2435,7 @@ function 二_深海棲艦を追加(a) {
 		}
 	} else {
 		O.eseikus[O.eseikus.length - 1] = 零_敵制空初期値(); //結果テーブル最終列をリセット
-		const i = 零_n2i(a);
+		const i = 零_n2i(a, "深海棲艦");
 		一_深海棲艦を追加(i);
 		二_深海棲艦表に行を追加(i, O.etable.length);
 		二_深海棲艦表を更新();
@@ -2451,7 +2458,7 @@ const 二_深海棲艦表に行を追加 = (a, idx) => {
 	c0.appendChild(b);
 	tr.appendChild(c0);
 
-	c1.appendChild(ct(零_i2n(a)));
+	c1.appendChild(ct(零_i2n(a, "深海棲艦")));
 	tr.appendChild(c1);
 	c2.appendChild(ct(零_敵制空値(a)));
 
@@ -2492,7 +2499,7 @@ function 二_深海棲艦追加を生成() {
 			}
 		})(i), false);
 		li.classList.add("clickable");
-		li.appendChild(ct(零_i2n(i)));
+		li.appendChild(ct(零_i2n(i, "深海棲艦")));
 		li.appendChild(sp);
 		el.appendChild(li);
 	}
@@ -2580,29 +2587,59 @@ function 零_敵合計制空値(ary, land = false) {
 	return s;
 }
 const 零_敵制空値 = (a, land = false) => {
-	const i = 零_n2i(a); //aが名前かidか分からないのでidに統一
+	const i = 零_n2i(a, "深海棲艦"); //aが名前かidか分からないのでidに統一
 	const s = 深海棲艦idデータ[i];
 	if (s === undefined) return 0;
 	if (land && s.apl) return s.apl;
 	return s.ap;
 }
 const 零_敵搭載数 = (i) => {
-	const id = 零_n2i(i);
+	const id = 零_n2i(i, "深海棲艦");
 	const a = 深海棲艦idデータ[id];
 	if (!a) return [];
 	if (!a.ac) return [];
 	return deepcopy(a.ac);
 }
 
-const 零_i2n = (i) => {
-	if ("" + i !== "" + Number(i)) return i; //iがidではない場合そのまま返す
-	if (深海棲艦idデータ[i]) return 深海棲艦idデータ[i].name;
+const 零_i2n = (id, s) => {
+	if ("" + id !== "" + Number(id)) return id; //idではない場合そのまま返す
+	switch (s) {
+		case "深海棲艦":
+			if (深海棲艦idデータ[id]) return 深海棲艦idデータ[id].name;
+			break;
+		case "艦娘":
+			for (let i in 艦娘データ) {
+				for (let j in 艦娘データ[i].データ) {
+					const d = 艦娘データ[i].データ[j];
+					if (d.id === id) return j;
+				}
+			}
+			break;
+		case "装備":
+			for (let i in 艦戦データ) {
+				if (艦戦データ[i] && 艦戦データ[i].id === id) return i;
+			}
+			break;
+	}
 	return "-";
 }
-const 零_n2i = (n) => {
-	if ("" + n === "" + Number(n)) return n; //nがidの場合そのまま返す
-	for (let i in 深海棲艦idデータ) {
-		if (n === 深海棲艦idデータ[i].name) return i;
+const 零_n2i = (name, s, kaizou) => {
+	if ("" + name === "" + Number(name)) return name; //nがidの場合そのまま返す
+	switch (s) {
+		case "深海棲艦":
+			for (let i in 深海棲艦idデータ) {
+				if (name === 深海棲艦idデータ[i].name) return i;
+			}
+			break;
+		case "艦娘":
+			if (艦娘データ[name] && 艦娘データ[name].データ[kaizou]) {
+				const d = 艦娘データ[name].データ[kaizou]
+				if (d.id) return d.id;
+			}
+			break;
+		case "装備":
+			if (艦戦データ[name] && 艦戦データ[name].id) return 艦戦データ[name].id;
+			break;
 	}
 	return 0;
 }
@@ -2690,8 +2727,6 @@ const 零_敵喪失数計算 = (機数, 制空状況, 形式) => {
 	}
 }
 
-
-
 function 二_結果テーブルを表示() {
 	零_ローカルストレージ保存(O, "O");
 	隠す("結果一行");
@@ -2775,7 +2810,7 @@ function 二_防空結果テーブルを生成() {
 							var ul = td.appendChild(ce("ul"));
 							for (var k = 0; k < 敵艦隊.length; k++) {
 								var li = ul.appendChild(ce("li"))
-								li.appendChild(ct(零_i2n(敵艦隊[k])));
+								li.appendChild(ct(零_i2n(敵艦隊[k], "深海棲艦")));
 							}
 							break;
 						case 7: //敵制空値
@@ -3827,7 +3862,7 @@ const 零_航空隊制空値 = (番号) => {
 	}
 }
 const 零_敵艦隊一行 = () => {
-	const a = O.etable.map(a => 零_i2n(a)).filter(a => a !== "-"); //名前が"-"でないものだけ抽出
+	const a = O.etable.map(a => 零_i2n(a, "深海棲艦")).filter(a => a !== "-"); //名前が"-"でないものだけ抽出
 	if (a.length > 0) return a.reduce((a, b) => { return a + "," + b });
 	return "未設定";
 }
@@ -4143,6 +4178,7 @@ const 零_マップの戦闘マスを列挙 = (h, k) => {
 function 二_編成保存テーブルを表示(tenki) {
 	$("自艦隊親").style.display = "none";
 	$("編成展開親").style.display = "block";
+	$("外部サイトフォーム").style.display = "none";
 	隠す("編成記録情報");
 	O.cl = false;
 	$("編成展開展記").textContent = tenki;
@@ -4325,6 +4361,7 @@ function 二_編成展開削除を生成(idx, tenki) {
 function 二_編成保存テーブルを非表示() {
 	$("自艦隊親").style.display = "block";
 	$("編成展開親").style.display = "none";
+	$("外部サイトフォーム").style.display = "none";
 }
 function 一_編成自動保存() { //autosave生成
 	一_編成記録("autosave");
@@ -4352,6 +4389,56 @@ function 一_編成記録(idx, name) {
 	} else {
 		K.kantai[idx].hensei = hensei;
 	}
+}
+
+const 二_外部サイトフォームを表示 = () => {
+	$("自艦隊親").style.display = "none";
+	$("編成展開親").style.display = "none";
+	$("外部サイトフォーム").style.display = "block";
+}
+
+const 二_制空権シミュURLを表示 = () => {
+	const el = $("外部サイト出力");
+	const str = io_制空権シミュURL();
+	el.value = str;
+
+	子要素全削除("外部サイトを開く");
+	const a = $("外部サイトを開く").appendChild(ce("a"));
+	a.appendChild(ct("制空権シミュレータで開く"));
+	a.href = str;
+	a.target = "_blank";
+}
+const 二_デッキビルダー形式を表示 = () => {
+	子要素全削除("外部サイトを開く");
+	const el = $("外部サイト出力");
+	const str = io_デッキビルダー形式(true);
+	el.value = JSON.stringify(str, null, "    ");
+}
+const 二_デッキビルダーURLを表示 = () => {
+	const el = $("外部サイト出力");
+	const str = io_デッキビルダーURL();
+	el.value = str;
+
+	子要素全削除("外部サイトを開く");
+	const a = $("外部サイトを開く").appendChild(ce("a"));
+	a.appendChild(ct("艦隊シミュレーター＆デッキビルダーで開く"));
+	a.href = str;
+	a.target = "_blank";
+}
+const 二_作戦室URL生成 = () => {
+	const el = $("外部サイト出力");
+	const str = io_作戦室URL();
+	el.value = str;
+
+	子要素全削除("外部サイトを開く");
+	const a = $("外部サイトを開く").appendChild(ce("a"));
+	a.appendChild(ct("作戦室 Jervis ORで開く"));
+	a.href = str;
+	a.target = "_blank";
+}
+const 二_外部サイト出力を削除 = () => {
+	子要素全削除("外部サイトを開く");
+	$("外部サイト出力").value = "";
 }
 
 
@@ -4502,9 +4589,7 @@ const 二_ドラッグアンドドロップリストをソート = (ev, num, tbs
 			}
 		}
 		//DOM書き換え
-		while (tbs[i].firstChild) {
-			tbs[i].removeChild(tbs[i].firstChild);
-		}
+		子要素全削除(tbs[i]);
 		for (let j = 0; j < len; j++) {
 			tbs[i].appendChild(trs[j]);
 		}
