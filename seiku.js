@@ -1532,13 +1532,8 @@ const 二_艦娘を連続で追加 = (e) => {
 		子要素全削除(list);
 		const strs = input.value.split(/[\s,・、，]/);
 		for (let i = 0; i < strs.length; i++) {
-			let temp = strs[i];
-			temp = jaconv.toZenKana(temp);
-			temp = romajiConv.toKatakana(temp);
-			temp = jaconv.toHanAscii(temp);
-			const str = temp;
-			if (str === "") continue;
-			const [kanmusu, kaizou] = 零_艦娘を検索(str);
+			if (strs[i] === "") continue;
+			const [kanmusu, kaizou] = 零_艦娘を検索(strs[i]);
 			if (kanmusu !== undefined) {
 				kanmusus.push(kanmusu);
 				kaizous.push(kaizou);
@@ -1585,12 +1580,21 @@ const 二_艦娘を連続で追加 = (e) => {
 	}, false);
 }
 const 零_艦娘を検索 = (str) => {
+	str = str.toLowerCase()
+	let temp = str;
+	temp = jaconv.toZenKana(temp);
+	temp = romajiConv.toKatakana(temp);
+	temp = jaconv.toHanAscii(temp);
+	const kanaStr = temp;
+
 	for (let kanmusu in 艦娘データ) {
-		if (kanmusu.includes(str) || 艦娘データ[kanmusu].読み.includes(str)) {
+		const yomi = 艦娘データ[kanmusu].読み;
+		const name = kanmusu.toLowerCase();
+		if (name.includes(kanaStr) || yomi.includes(kanaStr) || name.includes(str)) {
 			let kaizou = "";
 			for (let j in 艦娘データ[kanmusu].データ) {
 				kaizou = j;
-				if (kaizou === "出撃") break;
+				if (kaizou === "出撃") break; //基地航空隊は出撃で追加する
 			}
 			return [kanmusu, kaizou];
 		}
