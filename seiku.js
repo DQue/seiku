@@ -4132,6 +4132,7 @@ const 零_装備できるか = (艦種, 艦名, 改造, 種類, 装備名) => {
 			if (艦種 === "戦艦" && 艦名 !== "金剛" && 艦名 !== "Richelieu") return true;
 			if (艦種 === "重巡洋艦") return true;
 			if (eq(艦名, ["由良", "多摩", "球磨"])) return true;
+			if (艦名 === "矢矧" && 改造 === "改二乙") return true;
 			if (艦名 === "神州丸") return true;
 			break;
 		case "噴式戦闘爆撃機":
