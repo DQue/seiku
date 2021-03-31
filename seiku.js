@@ -255,6 +255,8 @@ window.addEventListener("DOMContentLoaded", function () {
 	$("艦娘全員はずす").addEventListener("click", function (e) { 二_艦娘全員はずす(e); });
 	//	$("自艦隊ツール_DnDボタン").addEventListener("click", function (e) { 隠す("自艦隊ツール_DnD"); 二_ドラッグアンドドロップリストを表示(e); })
 	$("open_equip_list").addEventListener("click", function (e) { 隠す("自艦隊ツール_DnD"); 二_ドラッグアンドドロップリストを表示(e); })
+	$("add_kanmusu_in_a_row").addEventListener("click", (e) => { 二_艦娘を連続で追加(e); }, false);
+
 	$("データ入出力_出ボタン").addEventListener("click", function () { $("データ入出力textarea").value = JSON.stringify(O.table); setTimeout(function () { alert("書き出しok") }, 100) });
 	$("データ入出力_入ボタン").addEventListener("click", function () { const str = $("データ入出力textarea").value; const obj = JSON.parse(str); O.table = obj; 零_ローカルストレージ保存(O, "O"); 二_自艦隊の表を更新(); setTimeout(function () { alert("読み込みok") }, 100) });
 
@@ -373,7 +375,6 @@ const 二_艦娘追加を生成 = (idx) => {
 		e_input.classList.add("clickable");
 		e_input.addEventListener("click", (e) => {
 			二_艦娘を連続で追加(e);
-			二_艦娘選択ウィンドウを隠す();
 		}, false);
 	}
 
@@ -1490,11 +1491,12 @@ function 二_艦娘全員はずす(e) {
 }
 const 二_艦娘を連続で追加 = (e) => {
 	隠す("艦娘を連続で追加ポップアップ");
+	二_艦娘選択ウィンドウを隠す();
 	const div = 二_可動ポップアップを生成("艦娘名を指定して追加");
 	const x = getMousePos(e).x;
 	const y = getMousePos(e).y;
 	div.style.left = x + 45 + "px";
-	div.style.top = y - 310 + "px";
+	div.style.top = Math.max(y - 310, 100) + "px";
 	document.body.appendChild(div);
 
 	div.id = "艦娘を連続で追加ポップアップ";
