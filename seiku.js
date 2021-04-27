@@ -1588,11 +1588,12 @@ const 零_艦娘を検索 = (str) => {
 	temp = romajiConv.toKatakana(temp);
 	temp = jaconv.toHanAscii(temp);
 	const kanaStr = temp;
-
+	cl(kanaStr)
 	for (let kanmusu in 艦娘データ) {
 		const yomi = 艦娘データ[kanmusu].読み;
 		const name = kanmusu.toLowerCase();
-		if (name.includes(kanaStr) || yomi.includes(kanaStr) || name.includes(str)) {
+		const d = 艦娘データ[kanmusu].検索ワード ? 艦娘データ[kanmusu].検索ワード : undefined;
+		if (name.includes(kanaStr) || yomi.includes(kanaStr) || name.includes(str) || (d && d.includes(kanaStr))) {
 			let kaizou = "";
 			for (let j in 艦娘データ[kanmusu].データ) {
 				kaizou = j;
