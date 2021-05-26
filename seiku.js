@@ -109,9 +109,9 @@ let 文字数合わせ = (s, l) => {
 	}
 	return str + s;
 }
-function 兄弟要素を取得(自分, 兄弟) {
-	var e = 自分;
-	if (兄弟 == "兄") {
+const 兄弟要素を取得 = (e自分, 取得対象) => {
+	let e = e自分;
+	if (取得対象 == "兄") {
 		while ((e = e.previousSibling).nodeType != 1) {
 		}
 	} else {
