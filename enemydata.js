@@ -290,9 +290,8 @@ const 深海棲艦idデータ = {
     "1975": { "id": 1975, "name": "南太平洋空母棲姫-壊", "ac": [36, 32, 16, 16], "eq": [581, 582, null, 583], "est": true, "ap": 118, "apl": 118 },
     "1976": { "id": 1976, "name": "南太平洋空母棲姫-壊", "ac": [72, 36, 36, 30], "eq": [581, 582, null, 583], "ap": 155, "apl": 155 },
 
-    "2015": { "id": 2015, "name": "集積地棲姫II バカンスmode(甲)", "ac": [0, 0, 0, 98], "eq": [null, null, null, 561], "est": true, ap: 49 },
-    "2016": { "id": 2016, "name": "集積地棲姫II バカンスmode(乙)", "ac": [0, 0, 0, 88], "eq": [null, null, null, 561], "est": true, ap: 46 },
-    "2017": { "id": 2017, "name": "集積地棲姫II バカンスmode(丙)", "ac": [0, 0, 0, 64], "eq": [null, null, null, 561], "est": true, ap: 40 },
-    "2018": { "id": 2018, "name": "集積地棲姫II バカンスmode(丁)", "ac": [0, 0, 0, 32], "eq": [null, null, null, 561], "est": true, ap: 16 },
-
+    "2015": { "id": 2015, "name": "集積地棲姫II バカンスmode(丁)", "ac": [0, 0, 0, 32], "eq": [null, null, null, 561], "est": true, ap: 16 },
+    "2016": { "id": 2016, "name": "集積地棲姫II バカンスmode(丙)", "ac": [0, 0, 0, 64], "eq": [null, null, null, 561], "est": true, ap: 40 },
+    "2017": { "id": 2017, "name": "集積地棲姫II バカンスmode(乙)", "ac": [0, 0, 0, 88], "eq": [null, null, null, 561], "est": true, ap: 46 },
+    "2018": { "id": 2018, "name": "集積地棲姫II バカンスmode(甲)", "ac": [0, 0, 0, 98], "eq": [null, null, null, 561], "est": true, ap: 49 },
 }
