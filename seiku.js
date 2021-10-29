@@ -4145,6 +4145,7 @@ const 零_装備できるか = (艦種, 艦名, 改造, 種類, 装備名) => {
 			if (艦名 === "翔鶴" && 改造 === "改二甲") return true;
 			if (艦名 === "瑞鶴" && 改造 === "改二甲") return true;
 			if (艦名 === "加賀" && 改造 === "改二護") return true;
+			if (艦名 === "Victorious" && 改造 === "改") return true;
 			break;
 	}
 	return false;
