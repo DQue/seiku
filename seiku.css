@@ -536,14 +536,7 @@ body[data-fes*="sanma"] header h1 .fes_mode{
 	font-weight:normal;
 	font-size:14px;
 }
-body[data-fes*="sanma"] header h1 .fes_mode::after,
-body[data-fes*="sanma"] header h1 .fes_mode::before{
-	display:inline-block;
-	width:77px;
-	height:18px;
-	background:url(./imgs/sanma_header.png) 50% 50% no-repeat;
-	content:"";
-}
+
 body[data-fes*="sanma"]{
 	background-image:url(./imgs/sanma_bg.png), url(./imgs/sanma_bg.png); /*ずらして2つ表示*/
 	background-position:0 0, 53px 25px;
@@ -578,22 +571,49 @@ body[data-fes*="iwashi"]  .mapSVG{
 }
 #sanma{
 	animation-name:swim;
-	animation-duration:3.1s;
+	animation-duration:3.2s;
 	animation-iteration-count:infinite;
 	height:28px;
 	vertical-align:middle;
 	display:inline-block;
 }
-#iwashi{
-	animation-name:swim;
-	animation-duration:2.71s;
+#sanma img{
+	transform: scale(-1,1);
+}
+#sanma2{
+	animation-name:swim2;
+	animation-duration:3.15s;
 	animation-iteration-count:infinite;
-	animation-delay:200ms;
+	animation-delay:130ms;
 	height:28px;
 	vertical-align:middle;
 	display:inline-block;
 }
+
 @keyframes swim{
+	0%{
+		transform:rotate(0deg);
+		margin-left:0;
+		margin-right:0;
+	}
+	28%{
+		transform:rotate(16deg);
+		margin-left:-6px;
+		margin-right:6px;
+	}
+	56%{
+		transform:rotate(6deg);
+		margin-left:-4px;
+		margin-right:4px;
+	}
+	78%{
+		transform:rotate(16deg);
+		margin-left:-2px;
+		margin-right:2px;
+	}
+}
+
+@keyframes swim2{
 	0%{
 		transform:rotate(0deg);
 		margin-left:0;
@@ -615,7 +635,6 @@ body[data-fes*="iwashi"]  .mapSVG{
 		margin-right:2px;
 	}
 }
-
 
 
 /*ドロップポイント*/
