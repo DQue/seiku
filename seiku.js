@@ -2052,23 +2052,26 @@ function 二_海域方面選択を生成() {
 	}
 	return el;
 }
-function 二_海域wikiリンクを生成(hou) {
-	var z = 海域データ[hou]["属性"];
-	var span = ce("span");
-	var a1 = ce("a");
-	var a2 = ce("a");
-	var isDai1ki = false, isEvent = false, isKakuchou = false;
+const 二_海域wikiリンクを生成 = (hou) => {
+	const z = 海域データ[hou]["属性"];
+	const span = ce("span");
+	const a1 = ce("a");
+	const a2 = ce("a");
+	let isDai1ki = false, isEvent = false, isKakuchou = false;
+	const wikiLink = 海域データ[hou]["Wikiリンク"];
+	let href = hou;
 
-	for (var i = 0; i < z.length; i++) {
+	for (let i = 0; i < z.length; i++) {
 		if (z[i] === "第一期") {
 			isDai1ki = true;
 		} else if (z[i] === "期間限定海域") {
 			isEvent = true;
 		}
 	}
+
 	if (海域データ[hou]["拡張作戦"]) {
-		var a1 = span.appendChild(ce("a"));
-		var a2 = span.appendChild(ce("a"));
+		const a1 = span.appendChild(ce("a"));
+		const a2 = span.appendChild(ce("a"));
 
 		a1.href = wiki_url(hou.replace(/《.+》/g, ""));
 		a2.href = wiki_url(hou.replace(/《.+》/g, "") + "/拡張作戦");
@@ -2079,12 +2082,15 @@ function 二_海域wikiリンクを生成(hou) {
 		a1.dataset.hou = a2.dataset.hou = hou;
 
 	} else {
-		if (hou === "【4月1日限定】南方レーモン海域") hou = "戦艦レ級";
-		var a = span.appendChild(ce("a"));
+		href = hou;
+		if (hou === "【4月1日限定】南方レーモン海域") href = "戦艦レ級";
+		if (wikiLink) href = wikiLink;
+
+		const a = span.appendChild(ce("a"));
 		if (isDai1ki && !isEvent) {
-			a.href = wiki_url("第一期/" + hou.replace(/《.+》|\(旧\)/g, ""));
+			a.href = wiki_url("第一期/" + href.replace(/《.+》|\(旧\)/g, ""));
 		} else {
-			a.href = wiki_url(hou.replace(/《.+》/g, ""));
+			a.href = wiki_url(href.replace(/《.+》/g, ""));
 		}
 		a.appendChild(ct("wiki"));
 		a.target = "_blank";
