@@ -9,11 +9,11 @@
 	<link rel="stylesheet" href="map.css">
 	<script>if (location.href.match(/dque.github.io/)) { document.write(`<` + `script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-48162218-1', 'auto',{'allowLinker':true});ga('require','linker');ga('linker:autoLink',['81.la']);ga('send', 'pageview');<` + `/script>`) };</script>
 
-	<script src="data.js?2"></script>
-	<script src="efleetdata.js?7"></script>
-	<script src="mapdata.js?6"></script>
-	<script src="enemydata.js?5"></script>
-	<script src="eedata.js?1"></script>
+	<script src="data.js?3"></script>
+	<script src="efleetdata.js?8"></script>
+	<script src="mapdata.js?7"></script>
+	<script src="enemydata.js?6"></script>
+	<script src="eedata.js?2"></script>
 	<script src="seiku_fes.js?6"></script>
 	<script src="data_migration.js?2"></script>
 
@@ -519,6 +519,9 @@
 			<p>より細かい更新履歴は<a href="https://github.com/DQue/seiku/commits/master"
 					target="_blank">GitHubのCommits</a>で確認できます(2019年10月25日以降)</p>
 			<dl id="his" itemscope itemtype="http://schema.org/SoftwareApplication">
+				<dt><time itemprop="dateModified" datetime="2021-12-11+0900">2022-1-1</time></dt>
+				<dd class="kancolle">「昭南本土航路」の海域データを追加</dd>
+				<dd class="kancolle beg_of_month">「ヒ船団棲姫」「ヒ船団棲姫-壊」の深海棲艦データを追加</dd>
 				<dt><time itemprop="dateModified" datetime="2021-12-11+0900">2021-12-11</time></dt>
 				<dd class="kancolle">「四式重爆 飛龍+イ号一型甲 誘導弾」「二式複戦 屠龍」「二式複戦 屠龍 丙型」の装備データを追加</dd>
 				<dd class="kancolle beg_of_month">「飛龍改二」「蒼龍改二」「三隈改」の搭載数を変更</dd>
@@ -1156,6 +1159,7 @@
 	・「その他の装備」的な装備を実装してそのスロットは使わないようにする
 ・一括設定の艦載機選択をちゃんと作る
 ・艦種の先頭に[戦]とか付ける
+・検索候補が複数あるときに最もそれらしい艦娘を選択するようにする（kumaで球磨でなく三隈が選択されるのを直す、^V$でVictoriousでなくConte di Ca__v__ourが選択されるのを直す）
 
 ▲マップ 関連
 ・（優先度低）航路のline要素1つにつきmarker要素を1つ生成するようにしてg要素で囲んでグループ化する
