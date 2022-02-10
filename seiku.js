@@ -265,7 +265,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
 	document.addEventListener("click", function (e) { 二_全部隠すか(e) }, false);
 	setTimeout(一_最新バージョンチェック, 1000);
-	setInterval(一_最新バージョンチェック, 60000);
+	setInterval(一_最新バージョンチェック, 1000 * 60 * 15); //15分に1回更新確認する
 
 	$("凡例親").appendChild(makeMapSVG("Hanrei", "凡例"));
 	二_マップを初期化(true);
