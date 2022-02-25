@@ -47,10 +47,12 @@ function ルートを列挙する(mn, routes) {
 		if (b4.length > 0) { //beforeが存在する
 			del_route: for (var j of b4) {
 				let cnt = {};
+				let max回以上通ったマスの数 = 0;
 				for (let k of routes[i]) {
 					const max = 2;
 					if (j == k) cnt[k] == undefined ? cnt[k] = 2 : cnt[k]++;
-					if (cnt[k] >= max) continue del_route; //1つのマスをmax回以上通るルートは破棄
+					if (cnt[k] >= max) max回以上通ったマスの数++;
+					if (max回以上通ったマスの数 >= 2) continue del_route; //重複破棄
 				}
 				new_routes.push([j].concat(routes[i])); //1つ前のマスに今までのルートを付け加えてnew_routesに格納
 			}
