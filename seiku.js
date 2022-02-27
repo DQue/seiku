@@ -264,8 +264,8 @@ window.addEventListener("DOMContentLoaded", function () {
 	$("記録編成データ入出力_入ボタン").addEventListener("click", function () { const str = $("記録編成データ入出力textarea").value; const obj = JSON.parse(str); K = obj; 零_ローカルストレージ保存(K, "K"); alert("読み込みok") });
 
 	document.addEventListener("click", function (e) { 二_全部隠すか(e) }, false);
-	setTimeout(一_最新バージョンチェック, 1000);
-	setInterval(一_最新バージョンチェック, 1000 * 60 * 15); //15分に1回更新確認する
+	//	setTimeout(一_最新バージョンチェック, 1000);
+	//	setInterval(一_最新バージョンチェック, 1000 * 60 * 15); //15分に1回更新確認する
 
 	$("凡例親").appendChild(makeMapSVG("Hanrei", "凡例"));
 	二_マップを初期化(true);
@@ -4749,7 +4749,7 @@ const 零_敵制空初期値 = () => {
 function 零_テーブル搭載数(td, i) {
 	return td[i] ? td[i] : 0;
 }
-
+/*
 function 一_最新バージョンチェック() {
 	if (location.href.match(/dque.github.io/) === null) return;
 	var xhr = new XMLHttpRequest();
@@ -4779,7 +4779,7 @@ function 一_バージョンチェック(s) {
 		}
 	}
 }
-
+*/
 
 
 

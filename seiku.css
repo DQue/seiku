@@ -460,55 +460,11 @@ header .kata{
 	background-color:transparent;
 	background-image:none;
 }
-header .tweet, header #version_check{
+header .tweet{
 	display:inline-block;
 }
 header h1 small{
 	font-weight:normal;
-}
-#version_check{
-	width:14px;
-	height:14px;
-	margin:2px;
-	border-radius:7px;
-	background:#def;
-	position:relative;
-	box-shadow:0 0 7px 0 rgba(192,192,192,0.9) inset;
-}
-#version_check:hover::after{
-	display:inline-block;
-	position:absolute;
-	right:0;
-	top:14px;
-	
-	width:9em;
-	text-align:center;
-	height:1.5em;
-	line-height:1.5em;
-	border:1px solid #344;
-	background:#f9f9f9;
-	content:"データは最新です";
-}
-#version_check.old{
-	background:red;
-}
-#version_check.old::after{
-	display:inline-block;
-	position:absolute;
-	right:0;
-	top:14px;
-	
-	width:14em;
-	text-align:center;
-	height:3.75em;
-	line-height:1.25em;
-	border:1px solid #344;
-	background:#f9f9f9;
-	white-space:pre;
-	content:"新しいデータがあります\Aキャッシュをクリアして\Aページを更新してください";
-}
-#version_check.old:hover::after{
-	border-width:2px;
 }
 .カッコカリ{
 	font-size:14px;
