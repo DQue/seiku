@@ -1,6 +1,10 @@
 const io_制空権シミュURL = () => {
     const db = io_デッキビルダー形式(true);
     const base = "https://noro6.github.io/kcTools?predeck=";
+
+    //制空シミュv2
+    //const base = "https://noro6.github.io/kc-web/?predeck=";
+
     const param = (JSON.stringify(db));
     return base + param;
 }
