@@ -4121,11 +4121,13 @@ const 零_装備できるか = (艦種, 艦名, 改造, 種類, 装備名) => {
 			if (艦名 === "伊勢" && 改造 === "改二") return true;
 			if (艦名 === "日向" && 改造 === "改二") return true;
 			if (艦名 === "あきつ丸") return true;
+			if (艦名 === "山汐丸" && 改造 === "改") return true;
 			break;
 		case "艦上爆撃機":
 			if (eq(艦種, ["正規空母", "軽空母", "装甲空母"])) return true;
 			if (艦名 === "伊勢" && 改造 === "改二") return true;
 			if (艦名 === "日向" && 改造 === "改二") return true;
+			if (艦名 === "山汐丸" && 改造 === "改") return true;
 			break;
 		case "艦上攻撃機":
 			if (艦名 === "春日丸" && 改造 === "無印") return false;
@@ -4133,6 +4135,7 @@ const 零_装備できるか = (艦種, 艦名, 改造, 種類, 装備名) => {
 			if (艦名 === "速吸" && 改造 === "改") return true;
 			break;
 		case "水上爆撃機":
+			if (艦名 === "山汐丸" && 改造 === "改") return false;
 			if (eq(艦種, ["水上機母艦", "航空巡洋艦", "航空戦艦", "補給艦", "潜水空母", "軽巡洋艦", "重巡洋艦"])) return true;
 			if (eq(艦名, ["Littorio", "Roma", "金剛", "Conte di Cavour"])) return true;
 			if (艦名 === "Richelieu" && 装備名 === "Laté 298B") return true;
@@ -4141,6 +4144,7 @@ const 零_装備できるか = (艦種, 艦名, 改造, 種類, 装備名) => {
 			if (艦名 === "大和" && 改造 === "改二") return true;
 			break;
 		case "水上戦闘機":
+			if (艦名 === "山汐丸" && 改造 === "改") return false;
 			if (eq(艦種, ["水上機母艦", "航空巡洋艦", "航空戦艦", "潜水空母", "潜水母艦", "補給艦"])) return true;
 			if (艦種 === "戦艦" && 艦名 !== "金剛" && 艦名 !== "Richelieu") return true;
 			if (艦種 === "重巡洋艦") return true;
