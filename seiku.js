@@ -4131,6 +4131,7 @@ const 零_装備できるか = (艦種, 艦名, 改造, 種類, 装備名) => {
 			break;
 		case "艦上攻撃機":
 			if (艦名 === "春日丸" && 改造 === "無印") return false;
+			if (艦名 === "鳳翔" && 改造 === "改二戦") return false;
 			if (eq(艦種, ["正規空母", "軽空母", "装甲空母"])) return true;
 			if (艦名 === "速吸" && 改造 === "改") return true;
 			break;
