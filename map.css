@@ -1,138 +1,169 @@
-.mapSVG{
-	background:rgba(255,255,255,0);
-	padding:0;
-/*	width:400px;
+.mapSVG {
+	background: rgba(255, 255, 255, 0);
+	padding: 0;
+	/*	width:400px;
 	height:250px;*/
 }
 
 
-.base{
-	stroke:#000;
-	stroke-width:0px;
-	fill:none;
+.base {
+	stroke: #000;
+	stroke-width: 0px;
+	fill: none;
 }
 
-.route{
-	stroke:#344;
-	stroke-width:3px;
-	stroke-dasharray:5,4;
-	stroke-dashoffset:0;
-	fill:none;
-}
-#routeMarker{
-	fill:#344;
-}
-#routeMarker::hover{
-	fill:#888;
-}
-.route_t{
-	strike:none;
-	fill:none;
-}
-.route.selected{
-	stroke:#29f;
-	stroke-width:5px;
-	stroke-dasharray:0;
+.route {
+	stroke: #344;
+	stroke-width: 3px;
+	stroke-dasharray: 5, 4;
+	stroke-dashoffset: 0;
+	fill: none;
 }
 
-.マス目{
-	stroke:#000;
-	stroke-width:2px;
-	fill:#fff;
+#routeMarker {
+	fill: #344;
 }
-.マス目:hover{
-	stroke-width:4.5px;
+
+#routeMarker::hover {
+	fill: #888;
 }
-.マス目.接続点:{
+
+.route_t {
+	strike: none;
+	fill: none;
 }
-.マス目.戦闘{
-	fill:#f53;
+
+.route.selected {
+	stroke: #29f;
+	stroke-width: 5px;
+	stroke-dasharray: 0;
 }
+
+.マス目 {
+	stroke: #000;
+	stroke-width: 2px;
+	fill: #fff;
+}
+
+.マス目:hover {
+	stroke-width: 4.5px;
+}
+
+.マス目.接続点: {}
+
+.マス目.戦闘 {
+	fill: #f53;
+}
+
 .マス目.気のせい,
 .マス目.能動分岐,
-.マス目.泊地修理{
-	fill:rgb(138,236,255)
+.マス目.泊地修理 {
+	fill: rgb(138, 236, 255)
 }
-.マス目.うずしお{
-	fill:rgb(192,145,238)
+
+.マス目.能動分岐 {
+	stroke: rgb(123, 133, 76)
 }
-.マス目.夜戦{
-	fill-opacity:1;
+
+.マス目.うずしお {
+	fill: rgb(192, 145, 238)
 }
+
+.マス目.夜戦 {
+	fill-opacity: 1;
+}
+
 .マス目.資源,
 .マス目.航空偵察,
-.マス目.揚陸地点{
-	fill:rgb(43,230,86)
-}
-.マス目.ボス{
-	fill:rgb(212,50,35)
-}
-.マス目.航空戦, .マス目.空襲戦{
-	fill:#fdd;
-}
-.マス目.基地{
-	fill:#999;
-}
-.マス目.不明{
-	fill:#eee;
-}
-.マス目.レーダー射撃{
-	fill:#fdd;
-}
-.航空戦の飛行機{
-	fill:#dcc;
-	stroke:#000;
-	stroke-width:0.7px;
-}
-.空襲戦の矢印{
-	fill:#b10;
-	stroke:none;
-}
-.航空戦の矢印{
-	fill:#03c;
-	stroke:none;
-}
-.出撃のパス{
-	fill:none;
-	stroke:#000;
-	stroke-width:1.2px;
-}
-.帰投のパス{
-	fill:none;
-	stroke:#000;
-	stroke-width:1.4px;
-}
-.旗のパス{
-	fill:rgb(10,200,50);
-	stroke-width:1.4px;
-	stroke:#009;
-}
-.基地のパス{
-	stroke-width:4.6px;
-	stroke:#fff;
-	stroke-linecap:round;
-}
-.レーダー射撃のパス{
-	fill:none;
-	stroke:#f40;
-	stroke-width:0.8px;
-}
-.夜戦の塗り{
-	fill:rgb(110,90,200);
-}
-.払暁戦の塗り上{
-	fill:rgb(110,90,200);
-}
-.払暁戦の塗り下{
-	fill:#f53;
+.マス目.揚陸地点 {
+	fill: rgb(43, 230, 86)
 }
 
-.マス目の文字{
-	font-size:12px;
-}
-.マス目の文字背景{
-	fill:#fff;
-	stroke:#000;
-	stroke-width:0.2px;
+.マス目.ボス {
+	fill: rgb(212, 50, 35)
 }
 
+.マス目.航空戦,
+.マス目.空襲戦 {
+	fill: #fdd;
+}
+
+.マス目.基地 {
+	fill: #999;
+}
+
+.マス目.不明 {
+	fill: #eee;
+}
+
+.マス目.レーダー射撃 {
+	fill: #fdd;
+}
+
+.航空戦の飛行機 {
+	fill: #dcc;
+	stroke: #000;
+	stroke-width: 0.7px;
+}
+
+.空襲戦の矢印 {
+	fill: #b10;
+	stroke: none;
+}
+
+.航空戦の矢印 {
+	fill: #03c;
+	stroke: none;
+}
+
+.出撃のパス {
+	fill: none;
+	stroke: #000;
+	stroke-width: 1.2px;
+}
+
+.帰投のパス {
+	fill: none;
+	stroke: #000;
+	stroke-width: 1.4px;
+}
+
+.旗のパス {
+	fill: rgb(10, 200, 50);
+	stroke-width: 1.4px;
+	stroke: #009;
+}
+
+.基地のパス {
+	stroke-width: 4.6px;
+	stroke: #fff;
+	stroke-linecap: round;
+}
+
+.レーダー射撃のパス {
+	fill: none;
+	stroke: #f40;
+	stroke-width: 0.8px;
+}
+
+.夜戦の塗り {
+	fill: rgb(110, 90, 200);
+}
+
+.払暁戦の塗り上 {
+	fill: rgb(110, 90, 200);
+}
+
+.払暁戦の塗り下 {
+	fill: #f53;
+}
+
+.マス目の文字 {
+	font-size: 12px;
+}
+
+.マス目の文字背景 {
+	fill: #fff;
+	stroke: #000;
+	stroke-width: 0.2px;
+}
