@@ -1,200 +1,142 @@
 /*全体*/
-[hidden] {
-	display: none !important
-}
-
-body,
-html {
-	margin: 0;
-	padding: 0 0 1000px 0;
-	background: #f0f0ff;
-	line-height: 1.2em;
-	font-size: 16px;
+[hidden]{display:none!important}
+body,html{
+	margin:0;
+	padding:0 0 1000px 0;
+	background:#f0f0ff;
+	line-height:1.2em;
+	font-size:16px;
 	-webkit-text-size-adjust: 100%;
 }
-
-p {
-	margin: 0
+p{margin:0}
+ul,ol{
+	margin-bottom:0.8em;
 }
-
-ul,
-ol {
-	margin-bottom: 0.8em;
+ul{list-style-type: disc}
+ul ul{list-style-type:disc}
+ul ul ul{list-style-type:square;;margin-bottom:0;line-height:1em;}
+ol{list-style-type:decimal}
+ol ol{list-style-type:lower-roman}
+em{
+	font-style:normal;
+	background:#def;
 }
-
-ul {
-	list-style-type: disc
+strong{
+	font-weight:bold;
+	color:#300;
+	background:rgba(128,0,0,0.05);
 }
-
-ul ul {
-	list-style-type: disc
+table,tr,th,td{
+	border:1px solid #567;
 }
-
-ul ul ul {
-	list-style-type: square;
-	;
-	margin-bottom: 0;
-	line-height: 1em;
+table{
+	margin-bottom:1.5em;
+	border-collapse:collapse;
 }
-
-ol {
-	list-style-type: decimal
+tr.border th, tr.border td{
+	background:#e0e0e0;
 }
-
-ol ol {
-	list-style-type: lower-roman
+h3{
+	font-weight:normal;
+	font-size:14px;
+	margin:0;
 }
-
-em {
-	font-style: normal;
-	background: #def;
+h4{
+	font-weight:normal;
+	font-size:14px;
+	margin:0;
+	padding:8px 0 0 18px;
 }
-
-strong {
-	font-weight: bold;
-	color: #300;
-	background: rgba(128, 0, 0, 0.05);
+a:link{
+	text-decoration:none;
 }
-
-table,
-tr,
-th,
-td {
-	border: 1px solid #567;
+a:visited{}
+a:hover{
+	text-decoration:underline;
 }
-
-table {
-	margin-bottom: 1.5em;
-	border-collapse: collapse;
-}
-
-tr.border th,
-tr.border td {
-	background: #e0e0e0;
-}
-
-h3 {
-	font-weight: normal;
-	font-size: 14px;
-	margin: 0;
-}
-
-h4 {
-	font-weight: normal;
-	font-size: 14px;
-	margin: 0;
-	padding: 8px 0 0 18px;
-}
-
-a:link {
-	text-decoration: none;
-}
-
-a:visited {}
-
-a:hover {
-	text-decoration: underline;
-}
-
-a:active {}
+a:active{}
 
 
 
 
 /*全体クラス付き*/
-.num {
-	text-align: right;
-	font-family: monospace;
-	font-size: 14px;
+.num{
+	text-align:right;
+	font-family:monospace;
+	font-size:14px;
 }
-
-.num.center {
-	text-align: center;
+.num.center{
+	text-align:center;
 }
-
-.clickable {
-	cursor: pointer;
+.clickable{
+	cursor:pointer;
 	/*	background:#fff url("imgs/clickablebg.png") right bottom no-repeat;*/
-	background: #fff;
+	background:#fff;
 	box-shadow:
-		0 -0.5px 1px 0 rgba(150, 255, 150, .5) inset;
+		0 -0.5px 1px 0 rgba(150,255,150,.5) inset;
 }
-
-.clickable:hover {
-	/*	background:#eee url("imgs/clickablebgh.png") right bottom no-repeat !important;*/
-	background: #eee !important;
-	color: #000;
+.clickable:hover{
+	/*	background:#eee url("imgs/clickablebgh.png") right bottom no-repeat !important;*/	
+	background:#eee !important;
+	color:#000;
 	box-shadow:
-		0 -0.5px 1px 0 rgba(255, 150, 150, .5) inset;
+		0 -0.5px 1px 0 rgba(255,150,150,.5) inset;
 }
-
-.clickable.box {
-	display: inline-block;
-	padding: 2px;
-	border: 1px solid #567;
+.clickable.box{
+	display:inline-block;
+	padding:2px;
+	border:1px solid #567;
 }
-
-.draggable {
-	cursor: move;
+.draggable{
+	cursor:move;
 }
-
-.draggable:hover {}
-
-td.empty.t {
-	border-top-style: hidden;
+.draggable:hover{
 }
-
-td.empty.r {
-	border-right-style: hidden;
+td.empty.t{
+	border-top-style:hidden;
 }
-
-td.empty.b {
-	border-bottom-style: hidden;
+td.empty.r{
+	border-right-style:hidden;
 }
-
-td.empty.l {
-	border-left-style: hidden;
+td.empty.b{
+	border-bottom-style:hidden;
 }
-
-td.empty.c {
-	background-color: #eee;
+td.empty.l{
+	border-left-style:hidden;
 }
-
-.選択ボタン {
-	display: inline-block;
-	padding: 4px;
-	margin: 1px 2px;
-	vertical-align: middle;
-	border: 1px solid #567;
-	border-radius: 4px;
-	line-height: 14px;
-	font-size: 14px;
-	white-space: nowrap;
-	cursor: pointer;
-	font-weight: normal;
+td.empty.c{
+	background-color:#eee;
 }
-
-.選択ボタン.single {
-	display: block;
-	text-align: center;
-	margin: 1px 4px;
+.選択ボタン{
+	display:inline-block;
+	padding:4px;
+	margin:1px 2px;
+	vertical-align:middle;
+	border:1px solid #567;
+	border-radius:4px;
+	line-height:14px;
+	font-size:14px;
+	white-space:nowrap;
+	cursor:pointer;
+	font-weight:normal;
 }
-
-.選択ボタン.big {
-	padding: 6px;
+.選択ボタン.single{
+	display:block;
+	text-align:center;
+	margin:1px 4px;
 }
-
-.選択ボタン:hover,
-.選択ボタン.selected {
-	background-color: #def;
-	border-width: 2px;
-	margin: 0 1px;
-	transition: background-color 0.6s;
+.選択ボタン.big{
+	padding:6px;
 }
-
+.選択ボタン:hover, .選択ボタン.selected{
+	background-color:#def;
+	border-width:2px;
+	margin:0 1px;
+	transition:background-color 0.6s;
+}
 .選択ボタン.single:hover,
-.選択ボタン.single.selected {
-	margin: 0 3px;
+.選択ボタン.single.selected{
+	margin:0 3px;
 }
 
 
@@ -205,417 +147,331 @@ td.empty.c {
 
 
 .艦上戦闘機,
-.水上戦闘機 {
-	background-color: rgb(220, 255, 250);
+.水上戦闘機{
+	background-color:rgb(220,255,250);
+}
+.艦上爆撃機{
+	background-color:rgb(255,220,250);
+}
+.艦上攻撃機{
+	background-color:rgb(220,230,255);
+}
+.水上爆撃機{
+	background-color:rgb(240,215,230);
 }
 
-.艦上爆撃機 {
-	background-color: rgb(255, 220, 250);
+.艦上爆撃機.対空値有{
+	background-image:linear-gradient(left top, rgb(255,220,250) 0, rgb(255,220,250) 70%, rgb(220,255,250) 100%);
+	background-image:-webkit-linear-gradient(left top, rgb(255,220,250) 0, rgb(255,220,250) 70%, rgb(220,255,250) 100%);
+	background-image:-moz-linear-gradient(left top, rgb(255,220,250) 0, rgb(255,220,250) 70%, rgb(220,255,250) 100%);
+}
+.艦上攻撃機.対空値有{
+	background-image:linear-gradient(left top, rgb(220,230,255) 0, rgb(220,230,255) 70%, rgb(220,255,250) 100%);
+	background-image:-webkit-linear-gradient(left top, rgb(220,230,255) 0, rgb(220,230,255) 70%, rgb(220,255,250) 100%);
+	background-image:-moz-linear-gradient(left top, rgb(220,230,255) 0, rgb(220,230,255) 70%, rgb(220,255,250) 100%);
+}
+.艦上戦闘機.夜間航空機{
+	background-image:linear-gradient(left top, rgb(220,255,250) 0, rgb(220,255,250) 70%, rgb(171,166,238) 100%);
+	background-image:-webkit-linear-gradient(left top, rgb(220,255,250) 0, rgb(220,255,250) 70%, rgb(171,166,238) 100%);
+	background-image:-moz-linear-gradient(left top, rgb(220,255,250) 0, rgb(220,255,250) 70%, rgb(171,166,238) 100%);
+}
+.艦上攻撃機.夜間航空機{
+	background-image:linear-gradient(left top, rgb(220,230,255) 0, rgb(220,230,255) 70%, rgb(99,89,224) 100%);
+	background-image:-webkit-linear-gradient(left top, rgb(220,230,255) 0, rgb(220,230,255) 70%, rgb(99,89,224) 100%);
+	background-image:-moz-linear-gradient(left top, rgb(220,230,255) 0, rgb(220,230,255) 70%, rgb(99,89,224) 100%);
 }
 
-.艦上攻撃機 {
-	background-color: rgb(220, 230, 255);
+.陸上攻撃機{
+	background-color:rgb(200,225,220);
 }
-
-.水上爆撃機 {
-	background-color: rgb(240, 215, 230);
+.大型陸上機{
+	background-color:rgb(181,219,199);
 }
-
-.艦上爆撃機.対空値有 {
-	background-image: linear-gradient(left top, rgb(255, 220, 250) 0, rgb(255, 220, 250) 70%, rgb(220, 255, 250) 100%);
-	background-image: -webkit-linear-gradient(left top, rgb(255, 220, 250) 0, rgb(255, 220, 250) 70%, rgb(220, 255, 250) 100%);
-	background-image: -moz-linear-gradient(left top, rgb(255, 220, 250) 0, rgb(255, 220, 250) 70%, rgb(220, 255, 250) 100%);
+.局地戦闘機{
+	background-color:rgb(192,247,165);
 }
-
-.艦上攻撃機.対空値有 {
-	background-image: linear-gradient(left top, rgb(220, 230, 255) 0, rgb(220, 230, 255) 70%, rgb(220, 255, 250) 100%);
-	background-image: -webkit-linear-gradient(left top, rgb(220, 230, 255) 0, rgb(220, 230, 255) 70%, rgb(220, 255, 250) 100%);
-	background-image: -moz-linear-gradient(left top, rgb(220, 230, 255) 0, rgb(220, 230, 255) 70%, rgb(220, 255, 250) 100%);
+.陸軍戦闘機{
+	background-color:rgb(179, 247, 144);
 }
-
-.艦上戦闘機.夜間航空機 {
-	background-image: linear-gradient(left top, rgb(220, 255, 250) 0, rgb(220, 255, 250) 70%, rgb(171, 166, 238) 100%);
-	background-image: -webkit-linear-gradient(left top, rgb(220, 255, 250) 0, rgb(220, 255, 250) 70%, rgb(171, 166, 238) 100%);
-	background-image: -moz-linear-gradient(left top, rgb(220, 255, 250) 0, rgb(220, 255, 250) 70%, rgb(171, 166, 238) 100%);
+.艦上偵察機,.水上偵察機,.大型飛行艇,.陸上偵察機{
+	background-color:rgb(255,250,160);
 }
-
-.艦上攻撃機.夜間航空機 {
-	background-image: linear-gradient(left top, rgb(220, 230, 255) 0, rgb(220, 230, 255) 70%, rgb(99, 89, 224) 100%);
-	background-image: -webkit-linear-gradient(left top, rgb(220, 230, 255) 0, rgb(220, 230, 255) 70%, rgb(99, 89, 224) 100%);
-	background-image: -moz-linear-gradient(left top, rgb(220, 230, 255) 0, rgb(220, 230, 255) 70%, rgb(99, 89, 224) 100%);
+.水上偵察機{
+	background-color:rgb(240,255,240);
 }
-
-.水上爆撃機.夜間航空機 {
-	background-image: linear-gradient(left top, rgb(240, 215, 230) 0, rgb(240, 215, 230) 70%, rgb(171, 166, 238) 100%);
-	background-image: -webkit-linear-gradient(left top, rgb(240, 215, 230) 0, rgb(240, 215, 230) 70%, rgb(171, 166, 238) 100%);
-	background-image: -moz-linear-gradient(left top, rgb(240, 215, 230) 0, rgb(240, 215, 230) 70%, rgb(171, 166, 238) 100%);
-
+.噴式戦闘爆撃機{
+	background-color:rgb(255,238,185);
 }
-
-.陸上攻撃機 {
-	background-color: rgb(200, 225, 220);
+.拮抗{
+	color:#000;
 }
-
-.大型陸上機 {
-	background-color: rgb(181, 219, 199);
+.有利{
+	color:#092;
 }
-
-.局地戦闘機 {
-	background-color: rgb(192, 247, 165);
+.不利{
+	color:#f00;
 }
-
-.陸軍戦闘機 {
-	background-color: rgb(179, 247, 144);
+.clear{
+	clear:both;
 }
-
-.艦上偵察機,
-.水上偵察機,
-.大型飛行艇,
-.陸上偵察機 {
-	background-color: rgb(255, 250, 160);
+.em{
+	border:3px double #f00;
+	display:inline-block;
+	background:rgb(255,225,225);
+	padding:.4em;
 }
-
-.水上偵察機 {
-	background-color: rgb(240, 255, 240);
+.small{
+	font-size:12px;
 }
-
-.噴式戦闘爆撃機 {
-	background-color: rgb(255, 238, 185);
+.選択ポップアップ,.可動ポップアップ{
+	position:absolute;
+	list-style-type:none;
+	background:white;
+	border:1px solid #344;
+	white-space:nowrap;
+	overflow:auto;
+	font-size:14px;
+	height:auto;
 }
-
-.回転翼機 {
-	background-color: rgb(200, 255, 200);
+.選択ポップアップ{
+	width:200px;
+	padding:7px;
+	max-height:300px;
+	z-index:100;
+	box-shadow:1px 2px 2px #ddd;
+	display:inline-block;
 }
-
-.対潜哨戒機 {
-	background-color: rgb(200, 255, 255);
+.選択ポップアップ input[type="number"]{
+	width:3em;
 }
-
-.拮抗 {
-	color: #000;
+.選択ポップアップ.long{
+	width:300px;
 }
-
-.有利 {
-	color: #092;
+.選択ポップアップ.loong{
+	width:400px;
 }
-
-.不利 {
-	color: #f00;
+.選択ポップアップ.breakLine{
+	white-space:normal;
 }
-
-.clear {
-	clear: both;
+.可動ポップアップ{
+/*	position:fixed;
+*/	position:absolute;	
+	z-index:200;
+	box-shadow:2px 4px 4px #ddd;
+	height:500px;
+	width:300px;
+	white-space:normal;
 }
-
-.em {
-	border: 3px double #f00;
-	display: inline-block;
-	background: rgb(255, 225, 225);
-	padding: .4em;
+.可動ポップアップ.long{
+	width:300px;
 }
-
-.small {
-	font-size: 12px;
+.可動ポップアップ.loong{
+	width:400px;
 }
-
-.選択ポップアップ,
-.可動ポップアップ {
-	position: absolute;
-	list-style-type: none;
-	background: white;
-	border: 1px solid #344;
-	white-space: nowrap;
-	overflow: auto;
-	font-size: 14px;
-	height: auto;
+.可動ポップアップ .中身{
+	margin-top:24px;
+	height:476px;
+	overflow:auto;
+	padding:0;
 }
-
-.選択ポップアップ {
-	width: 200px;
-	padding: 7px;
-	max-height: 300px;
-	z-index: 100;
-	box-shadow: 1px 2px 2px #ddd;
-	display: inline-block;
+.可動ポップアップ .中身>*{
+	list-style-type:none;
+	padding:0;
+	margin:0;
 }
-
-.選択ポップアップ input[type="number"] {
-	width: 3em;
-}
-
-.選択ポップアップ.long {
-	width: 300px;
-}
-
-.選択ポップアップ.loong {
-	width: 400px;
-}
-
-.選択ポップアップ.breakLine {
-	white-space: normal;
-}
-
-.可動ポップアップ {
-	/*	position:fixed;
-*/
-	position: absolute;
-	z-index: 200;
-	box-shadow: 2px 4px 4px #ddd;
-	height: 500px;
-	width: 300px;
-	white-space: normal;
-}
-
-.可動ポップアップ.long {
-	width: 300px;
-}
-
-.可動ポップアップ.loong {
-	width: 400px;
-}
-
-.可動ポップアップ .中身 {
-	margin-top: 24px;
-	height: 476px;
-	overflow: auto;
-	padding: 0;
-}
-
-.可動ポップアップ .中身>* {
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
-}
-
 .可動ポップアップ .タイトルバー,
-.可動ポップアップ .閉じるボタン {
-	margin: 0;
-	padding: 0;
-	height: 24px;
-	position: absolute;
-	top: 0;
-	line-height: 24px;
-	font-size: 12px;
+.可動ポップアップ .閉じるボタン{
+	margin:0;
+	padding:0;
+	height:24px;
+	position:absolute;
+	top:0;
+	line-height:24px;
+	font-size:12px;
 }
-
-.可動ポップアップ .タイトルバー {
-	width: 276px;
-	background: #eee;
-	position: absolute;
-	left: 0;
-	text-indent: 6px;
-	cursor: move;
+.可動ポップアップ .タイトルバー{
+	width:276px;
+	background:#eee;
+	position:absolute;
+	left:0;
+	text-indent:6px;
+	cursor:move;
 	box-shadow:
-		0 -0.5px 1px 0 rgba(150, 150, 255, .5) inset;
-	background: #eee url("imgs/draggable.png") right bottom no-repeat;
-	overflow: hidden;
-	white-space: nowrap;
+		0 -0.5px 1px 0 rgba(150,150,255,.5) inset;
+	background:#eee url("imgs/draggable.png") right bottom no-repeat;
+	overflow:hidden;
+	white-space:nowrap;
 }
-
-.可動ポップアップ.long .タイトルバー {
-	width: 276px;
+.可動ポップアップ.long .タイトルバー{
+	width:276px;
 }
-
-.可動ポップアップ.loong .タイトルバー {
-	width: 376px;
+.可動ポップアップ.loong .タイトルバー{
+	width:376px;
 }
-
-.可動ポップアップ .タイトルバー:hover {
+.可動ポップアップ .タイトルバー:hover{
 	box-shadow:
-		0 -0.5px 1px 0 rgba(255, 150, 150, .5) inset;
-	background: #eee url("imgs/draggableh.png") right bottom no-repeat;
+		0 -0.5px 1px 0 rgba(255,150,150,.5) inset;
+	background:#eee url("imgs/draggableh.png") right bottom no-repeat;
 }
-
-.可動ポップアップ .閉じるボタン {
-	width: 24px;
-	text-align: center;
-	background: #999;
-	right: 0;
-	cursor: pointer;
+.可動ポップアップ .閉じるボタン{
+	width:24px;
+	text-align:center;
+	background:#999;
+	right:0;
+	cursor:pointer;
 }
-
-.可動ポップアップ .閉じるボタン:hover {
-	color: red;
+.可動ポップアップ .閉じるボタン:hover{
+	color:red;
 }
-
-.navi {
-	display: inline-block;
-	padding: 2px 4px;
-	height: 20px;
-	line-height: 20px;
-	border-bottom: 1px dashed green;
+.navi{
+	display:inline-block;
+	padding:2px 4px;
+	height:20px;
+	line-height:20px;
+	border-bottom:1px dashed green;
 }
-
-.navi:hover {
-	border-bottom: 1px dashed red;
+.navi:hover{
+	border-bottom:1px dashed red;
 }
-
-.navi::before {
-	content: "(?)";
+.navi::before{
+	content:"(?)";
 }
-
-.ジャンプ先 {
-	animation: jump 0.3s ease 0s infinite alternate none running;
+.ジャンプ先{
+	animation:jump 0.3s ease 0s infinite alternate none running;
 }
-
-.選択リスト {
-	display: inline-block;
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	vertical-align: top;
+.選択リスト{
+	display:inline-block;
+	list-style-type:none;
+	margin:0;
+	padding:0;
+	vertical-align:top;
 }
-
-.選択リスト.種別 {
-	width: 3em;
+.選択リスト.種別{
+	width:3em;
 }
-
-.選択リスト.項目 {
-	width: calc(100% - 3em);
-	max-height: 476px;
+.選択リスト.項目{
+	width:calc(100% - 3em);
+	max-height:476px;
 	white-space: normal;
 	overflow-y: auto;
 }
 
 
-.対空値表示 {
-	display: inline-block;
-	width: 28px;
-	position: relative;
-	left: -6px;
+.対空値表示{
+	display:inline-block;
+	width:28px;
+	position:relative;
+	left:-6px;
+}
+.対空値表示.防空時{
+	width:24px;
+}
+.装備選択表ヘッダ{
+	white-space:nowrap;
 }
 
-.対空値表示.防空時 {
-	width: 24px;
+
+.装備選択テーブル{
+	width:100%;
+	margin:0;
 }
-
-.装備選択表ヘッダ {
-	white-space: nowrap;
+.装備選択テーブル, .装備選択テーブル tr, .装備選択テーブル td{
+	border:none;
 }
-
-
-.装備選択テーブル {
-	width: 100%;
-	margin: 0;
+.装備選択テーブル .num, .装備選択テーブル .header{
+	width:32px;
 }
-
-.装備選択テーブル,
-.装備選択テーブル tr,
-.装備選択テーブル td {
-	border: none;
-}
-
-.装備選択テーブル .num,
-.装備選択テーブル .header {
-	width: 32px;
-}
-
-.装備選択テーブル:hover:not(:active) {
-	background: #eee !important;
+.装備選択テーブル:hover:not(:active){
+	background:#eee !important;
 }
 
 
 /*DnDリスト/装備選択リスト*/
-.可動ポップアップ .艦載機リスト .艦載機 {
-	cursor: move;
+.可動ポップアップ .艦載機リスト .艦載機{
+	cursor:move;
+}
+.艦載機リスト, .艦載機リスト table, .艦載機リスト th, .艦載機リスト td, .艦載機リスト tr{
+	border:none;
+	margin:0;
+	padding:0;
 }
 
-.艦載機リスト,
-.艦載機リスト table,
-.艦載機リスト th,
-.艦載機リスト td,
-.艦載機リスト tr {
-	border: none;
-	margin: 0;
-	padding: 0;
-}
-
-.艦載機リスト th {
+.艦載機リスト th{
 	white-space: nowrap;
 	text-align: left;
 	font-weight: normal;
-	padding: 0 3px;
+	padding:0 3px;
 }
-
-.DnDヘッダセル,
-.装備リストヘッダセル {
-	position: sticky;
-	top: 0;
-	height: 2em;
+.DnDヘッダセル, .装備リストヘッダセル{
+	position:sticky;
+	top:0;
+	height:2em;
 
 }
-
-.DnDヘッダセル::after,
-.装備リストヘッダセル::after {
-	content: attr(data-order);
+.DnDヘッダセル::after, .装備リストヘッダセル::after{
+	content:attr(data-order);
 }
-
 /*連続追加*/
-#艦娘を連続で追加ポップアップ input[type=text] {
-	box-sizing: border-box;
-	width: 100%
+#艦娘を連続で追加ポップアップ input[type=text]{
+    box-sizing: border-box;
+	width:100%
 }
-
-#艦娘を連続で追加ポップアップ input[type=submit] {
-	display: block;
-	margin-top: 4px;
+#艦娘を連続で追加ポップアップ input[type=submit]{
+	display:block;
+	margin-top:4px;
 }
 
 
 
 /*ヘッダ*/
-header {
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	height: 32px;
-	border-bottom: 1px solid #344;
-	background: #f9f9f9;
-	box-shadow: 0 2px 4px #ddd;
-	position: relative;
+header{
+	margin:0;
+	padding:0;
+	width:100%;
+	height:32px;
+	border-bottom:1px solid #344;
+	background:#f9f9f9;
+	box-shadow:0 2px 4px #ddd;
+	position:relative;
+}
+header h1{
+	font-size:18px;
+	line-height:32px;
+	padding:0 3em 0 4px;
+	margin:auto;
+	height:32px;
+	background-image:none;
+	display:inline-block;
+	background: linear-gradient(90deg, #f9f9f9 0%, #f9f9f9  78%,rgba(249,249,249,0)  100%);
 }
 
-header h1 {
-	font-size: 18px;
-	line-height: 32px;
-	padding: 0 3em 0 4px;
-	margin: auto;
-	height: 32px;
-	background-image: none;
-	display: inline-block;
-	background: linear-gradient(90deg, #f9f9f9 0%, #f9f9f9 78%, rgba(249, 249, 249, 0) 100%);
+header .kata{
+	position:absolute;
+	right:4px;
+	top:12px;
+	
+	display:block;
+	top:4px;
+	right:0;
+	padding:auto;
+	height:24px;
+	width:120px;
+	text-align:right;
+	background-color:transparent;
+	background-image:none;
 }
-
-header .kata {
-	position: absolute;
-	right: 4px;
-	top: 12px;
-
-	display: block;
-	top: 4px;
-	right: 0;
-	padding: auto;
-	height: 24px;
-	width: 120px;
-	text-align: right;
-	background-color: transparent;
-	background-image: none;
+header .tweet{
+	display:inline-block;
 }
-
-header .tweet {
-	display: inline-block;
+header h1 small{
+	font-weight:normal;
 }
-
-header h1 small {
-	font-weight: normal;
-}
-
-.カッコカリ {
-	font-size: 14px;
-	letter-spacing: .7em;
-	padding-left: .7em;
-	font-family: serif;
-	font-weight: normal;
+.カッコカリ{
+	font-size:14px;
+	letter-spacing:.7em;
+	padding-left:.7em;
+	font-family:serif;
+	font-weight:normal;
 }
 
 
@@ -623,245 +479,222 @@ header h1 small {
 
 
 /*お祭り*/
-body[data-fes=""] header h1 .fes_mode {
-	display: none;
+body[data-fes=""] header h1 .fes_mode{
+	display:none;
 }
-
-body[data-fes=""] .fes_img_source {
-	display: none;
+body[data-fes=""] .fes_img_source{
+	display:none;
 }
 
 /*秋刀魚*/
-body[data-fes*="sanma"] header h1 .fes_mode {
-	display: inline-block;
-	font-weight: normal;
-	font-size: 14px;
+body[data-fes*="sanma"] header h1 .fes_mode{
+	display:inline-block;
+	font-weight:normal;
+	font-size:14px;
 }
 
-body[data-fes*="sanma"] {
-	background-image: url(./imgs/sanma_bg.png), url(./imgs/sanma_bg.png);
-	/*ずらして2つ表示*/
-	background-position: 0 0, 53px 25px;
+body[data-fes*="sanma"]{
+	background-image:url(./imgs/sanma_bg.png), url(./imgs/sanma_bg.png); /*ずらして2つ表示*/
+	background-position:0 0, 53px 25px;
 }
-
-body[data-fes*="sanma"] #マップ {
-	background: url(imgs/tairyouki_2.png) 50% 50% no-repeat !important;
+body[data-fes*="sanma"]  #マップ{
+	background:url(imgs/tairyouki_2.png) 50% 50% no-repeat !important;
 }
-
-body[data-fes*="sanma"] .mapSVG {
-	background: rgba(255, 255, 255, 0.7);
-	padding: 75px 0;
+body[data-fes*="sanma"]  .mapSVG{
+	background:rgba(255,255,255,0.7);
+	padding:75px 0;
 }
 
 
 
 
 /*鰯*/
-body[data-fes*="iwashi"] header h1 .fes_mode {
-	display: inline-block;
-	font-weight: normal;
-	font-size: 14px;
+body[data-fes*="iwashi"] header h1 .fes_mode{
+	display:inline-block;
+	font-weight:normal;
+	font-size:14px;
+}
+body[data-fes*="iwashi"]{
+	background-image:url(./imgs/sanma_iwashi_bg.png), url(./imgs/sanma_iwashi_bg.png); /*ずらして2つ表示*/
+	background-position:0 0, 75px 50px;
+}
+body[data-fes*="iwashi"]  #マップ{
+	background:url(imgs/tairyouki_2.png) 50% 50% no-repeat !important;
+}
+body[data-fes*="iwashi"]  .mapSVG{
+	background:rgba(255,255,255,0.7);
+	padding:75px 0;
+}
+#sanma{
+	animation-name:swim;
+	animation-duration:3.2s;
+	animation-iteration-count:infinite;
+	height:28px;
+	vertical-align:middle;
+	display:inline-block;
+}
+#sanma img{
+	transform: scale(-1,1);
+}
+#sanma2{
+	animation-name:swim2;
+	animation-duration:3.15s;
+	animation-iteration-count:infinite;
+	animation-delay:130ms;
+	height:28px;
+	vertical-align:middle;
+	display:inline-block;
 }
 
-body[data-fes*="iwashi"] {
-	background-image: url(./imgs/sanma_iwashi_bg.png), url(./imgs/sanma_iwashi_bg.png);
-	/*ずらして2つ表示*/
-	background-position: 0 0, 75px 50px;
-}
-
-body[data-fes*="iwashi"] #マップ {
-	background: url(imgs/tairyouki_2.png) 50% 50% no-repeat !important;
-}
-
-body[data-fes*="iwashi"] .mapSVG {
-	background: rgba(255, 255, 255, 0.7);
-	padding: 75px 0;
-}
-
-#sanma {
-	animation-name: swim;
-	animation-duration: 3.2s;
-	animation-iteration-count: infinite;
-	height: 28px;
-	vertical-align: middle;
-	display: inline-block;
-}
-
-#sanma img {
-	transform: scale(-1, 1);
-}
-
-#sanma2 {
-	animation-name: swim2;
-	animation-duration: 3.15s;
-	animation-iteration-count: infinite;
-	animation-delay: 130ms;
-	height: 28px;
-	vertical-align: middle;
-	display: inline-block;
-}
-
-@keyframes swim {
-	0% {
-		transform: rotate(0deg);
-		margin-left: 0;
-		margin-right: 0;
+@keyframes swim{
+	0%{
+		transform:rotate(0deg);
+		margin-left:0;
+		margin-right:0;
 	}
-
-	28% {
-		transform: rotate(16deg);
-		margin-left: -6px;
-		margin-right: 6px;
+	28%{
+		transform:rotate(16deg);
+		margin-left:-6px;
+		margin-right:6px;
 	}
-
-	56% {
-		transform: rotate(6deg);
-		margin-left: -4px;
-		margin-right: 4px;
+	56%{
+		transform:rotate(6deg);
+		margin-left:-4px;
+		margin-right:4px;
 	}
-
-	78% {
-		transform: rotate(16deg);
-		margin-left: -2px;
-		margin-right: 2px;
+	78%{
+		transform:rotate(16deg);
+		margin-left:-2px;
+		margin-right:2px;
 	}
 }
 
-@keyframes swim2 {
-	0% {
-		transform: rotate(0deg);
-		margin-left: 0;
-		margin-right: 0;
+@keyframes swim2{
+	0%{
+		transform:rotate(0deg);
+		margin-left:0;
+		margin-right:0;
 	}
-
-	28% {
-		transform: rotate(-16deg);
-		margin-left: -6px;
-		margin-right: 6px;
+	28%{
+		transform:rotate(-16deg);
+		margin-left:-6px;
+		margin-right:6px;
 	}
-
-	56% {
-		transform: rotate(0deg);
-		margin-left: -4px;
-		margin-right: 4px;
+	56%{
+		transform:rotate(0deg);
+		margin-left:-4px;
+		margin-right:4px;
 	}
-
-	78% {
-		transform: rotate(-10deg);
-		margin-left: -2px;
-		margin-right: 2px;
+	78%{
+		transform:rotate(-10deg);
+		margin-left:-2px;
+		margin-right:2px;
 	}
 }
 
 
 /*ドロップポイント*/
-#海域選択リスト>li.iwashiPoint {
-	padding-right: 77px;
-	background-image: url(./imgs/iwashi_point.png) !important;
-	background-repeat: no-repeat !important;
-	background-position: right center !important;
+#海域選択リスト>li.iwashiPoint{
+	padding-right:77px;
+	background-image:url(./imgs/iwashi_point.png) !important;
+	background-repeat:no-repeat !important;
+	background-position:right center !important;
 }
-
-#海域選択リスト>li.sanmaPoint {
-	padding-right: 77px;
-	background-image: url(./imgs/sanma_point.png) !important;
-	background-repeat: no-repeat !important;
-	background-position: right center !important;
+#海域選択リスト>li.sanmaPoint{
+	padding-right:77px;
+	background-image:url(./imgs/sanma_point.png) !important;
+	background-repeat:no-repeat !important;
+	background-position:right center !important;
 }
-
-#海域選択リスト>li.iwashiPoint.sanmaPoint {
-	padding-right: 77px;
-	background-image: url(./imgs/sanma_iwashi_point.png) !important;
-	background-repeat: no-repeat !important;
-	background-position: right center !important;
+#海域選択リスト>li.iwashiPoint.sanmaPoint{
+	padding-right:77px;
+	background-image:url(./imgs/sanma_iwashi_point.png) !important;
+	background-repeat:no-repeat !important;
+	background-position:right center !important;
 }
 
 
 /*菱餅*/
-body[data-fes*="hishimochi"] header {
-	background-image: url(./imgs/hinamatsuri_hishimochi.png);
-	background-repeat: repeat-x;
-	background-position: 50% right;
+body[data-fes*="hishimochi"]  header{
+	background-image:url(./imgs/hinamatsuri_hishimochi.png);
+	background-repeat:repeat-x;
+	background-position:50% right;
 }
 
 /*三越*/
-body[data-fes*="mitsukoshi"] header {
-	background-image: url(./imgs/mitsukoshi.png);
-	background-repeat: repeat-x;
-	background-position: 50% center;
-	background-position: right 112px top 50%;
+body[data-fes*="mitsukoshi"]  header{
+	background-image:url(./imgs/mitsukoshi.png);
+	background-repeat:repeat-x;
+	background-position:50% center;
+	background-position:right 112px top 50%;
 }
 
 /*正月*/
-body[data-fes*="0101"] header h1::before {
-	display: inline-block;
-	width: 28px;
-	height: 28px;
-	background: url(./imgs/kagamimochi_01.png) 50% 50% no-repeat;
-	content: "";
-	margin: -5px 5px;
+body[data-fes*="0101"] header h1::before{
+	display:inline-block;
+	width:28px;
+	height:28px;
+	background:url(./imgs/kagamimochi_01.png) 50% 50% no-repeat;
+	content:"";
+	margin:-5px 5px;
 }
 
 /*節分*/
-body[data-fes*="セッツブーン"] header h1::before {
-	display: inline-block;
-	width: 28px;
-	height: 28px;
-	background: url(./imgs/setsubun_mamemaki2.png) 50% 50% no-repeat;
-	content: "";
-	margin: -5px 5px;
+body[data-fes*="セッツブーン"] header h1::before{
+	display:inline-block;
+	width:28px;
+	height:28px;
+	background:url(./imgs/setsubun_mamemaki2.png) 50% 50% no-repeat;
+	content:"";
+	margin:-5px 5px;
 }
 
 
 /*セクション関連*/
-section {
-	border: 1px solid #567;
-	border-color: rgba(0, 0, 120, 0.5);
-	margin: 36px 18px;
-	padding: 0 12px;
-	box-shadow: 1px 2px 4px #ddd;
-	background: #f9f9f9;
+section{
+	border:1px solid  #567;
+	border-color:rgba(0,0,120,0.5);
+	margin:36px 18px;
+	padding:0 12px;
+	box-shadow:1px 2px 4px #ddd;
+	background:#f9f9f9;
 }
-
-.opener {
-	background: inherit;
-	cursor: pointer;
+.opener{
+	background:inherit;
+	cursor:pointer;
 	position: relative;
-
+	
 }
-
-h2.opener {
-	display: inline-block;
-	height: 20px;
-	margin: 0;
-	padding: 2px 8px 2px 20px;
-	font-size: 18px;
-	position: relative;
-	top: -25px;
-	left: -13px;
-	border: inherit;
-	border-width: 1px 1px 0 1px;
-	/*	transition:top 0.3s ease-in 0s;*/
+h2.opener{
+	display:inline-block;
+	height:20px;
+	margin:0;
+	padding:2px 8px 2px 20px;
+	font-size:18px;
+	position:relative;
+	top:-25px;
+	left:-13px;
+	border:inherit;
+	border-width:1px 1px 0 1px;
+/*	transition:top 0.3s ease-in 0s;*/
 }
-
-h2.opener.howtouse.beginner::after {
-	content: "←クリックで隠す";
-	position: absolute;
-	left: 7em;
-	top: 3px;
-	display: block;
-	width: 11em;
-	height: 16px;
-	line-height: 16px;
-	font-size: 12px;
-	padding: 0;
-	border-radius: 7px;
-	border: 1px solid #567;
-	background: #feecbf;
-	text-align: center;
-	animation: howtouse 1s ease 0s infinite alternate none running;
+h2.opener.howtouse.beginner::after{
+	content:"←クリックで隠す";
+	position:absolute;
+	left:7em;
+	top:3px;
+	display:block;
+	width:11em;
+	height:16px;
+	line-height:16px;
+	font-size:12px;
+	padding:0;
+	border-radius:7px;
+	border:1px solid #567;
+	background:#feecbf;
+	text-align:center;
+	animation:howtouse 1s ease 0s infinite alternate none running;
 }
-
 /*
 h2.opener.closed{
 	top:0;
@@ -869,147 +702,128 @@ h2.opener.closed{
 }
 */
 
-.inner .opener {
-	top: 0;
-	left: 0;
+.inner .opener{
+	top:0;
+	left:0;
 }
-
-.opener::before {
-	content: '';
-
-	display: block;
+.opener::before{
+	content:'';
+	
+	display:block;
 	width: 0;
 	height: 0;
-	line-height: 0;
+	line-height:0;
 	border-style: solid;
-	border-width: 0 5px calc(5px*1.732) 5px;
-	border-color: transparent transparent #000 transparent;
-
-	position: absolute;
-	left: 6px;
-	top: 6px;
+	border-width:0 5px calc(5px*1.732) 5px;
+	border-color:transparent transparent #000  transparent;
+	
+	position:absolute;
+	left:6px;
+	top:6px;
 	transform-origin: 0 calc(5px/2*1.732);
 	transition: transform 0.45s cubic-bezier(0.5, 1, 0.5, 0);
 }
-
-.opener:hover {}
-
-.opener:hover:before {
-	border-color: transparent transparent #f00 transparent;
+.opener:hover{
 }
-
-.opener.closed:before {
+.opener:hover:before{
+	border-color:transparent transparent #f00  transparent;
+}
+.opener.closed:before{
 	transform-origin: 0 calc(5px/2*1.732);
 	transform: translateY(-6px) rotateX(180deg);
 }
-
-h3.opener {
-	display: block;
+h3.opener{
+	display:block;
 	position: relative;
-	margin: 0 0 -1px;
-	padding-left: 28px;
+	margin:0 0 -1px;
+	padding-left:28px;
 }
-
-h3.opener::before,
-h4.opener::before,
-h5.opener::before {
-	position: absolute;
-	top: 8px;
+h3.opener::before, h4.opener::before, h5.opener::before{
+	position:absolute;
+	top:8px;
 }
-
-h4.opener::before {
-	top: 14px;
+h4.opener::before{
+	top:14px;
 }
-
-h3.opener+* {
-	border: 1px dotted #9ab;
-	padding: 4px 8px;
-	background: rgba(190, 190, 228, 0.15);
-
-	border-width: 0 0 1px 1px;
-	border-width: 0 0 0px 1px;
+h3.opener + *{
+	border:1px dotted #9ab;
+	padding:4px 8px;
+	background:rgba(190,190,228,0.15);
+	
+	border-width:0 0 1px 1px;
+	border-width:0 0 0px 1px;
 }
-
-h3.opener+*.hide {
-	background: #f9f9f9;
-	padding: 0 8px 0;
-	border-width: 0 0 1px 0px;
+h3.opener + *.hide{
+	background:#f9f9f9;
+	padding:0 8px 0;
+	border-width:0 0 1px 0px;
 }
-
-h3.opener.closed:hover+*.hide {
-	border-bottom-color: #f00;
+h3.opener.closed:hover + *.hide{
+	border-bottom-color:#f00;
 }
 
 
-.inner {
-	height: auto;
-	max-height: 1500px;
-	overflow-y: auto;
-	transition: max-height 0.5s ease-out 0s, padding 0.5s linear 0s, background 0.5s ease-out 0.5s, margin 0.5s linear 0s;
-	-moz-transition: max-height 0.5s ease-out 0s, padding 0.5s linear 0s, background 0.5s ease-out 0.5s, margin 0.5s linear 0s;
-	/*	margin:0 0 12px;*/
-	padding: 0 0 2px;
-	/*消すと謎のスクロールバーが出現する 2015-12-06*/
-	background-color: inherit;
+.inner{
+	height:auto;
+	max-height:1500px;
+	overflow-y:auto;
+	transition:max-height 0.5s ease-out 0s,padding 0.5s linear 0s, background 0.5s ease-out 0.5s, margin 0.5s linear 0s;
+	-moz-transition:max-height 0.5s ease-out 0s,padding 0.5s linear 0s, background 0.5s ease-out 0.5s, margin 0.5s linear 0s;
+/*	margin:0 0 12px;*/
+	padding:0 0 2px;/*消すと謎のスクロールバーが出現する 2015-12-06*/
+	background-color:inherit;
 }
-
-.inner.hide {
-	max-height: 0;
-	overflow-y: hidden;
-	padding: 0;
-	margin: 0;
+.inner.hide{
+	max-height:0;
+	overflow-y:hidden;
+	padding:0;
+	margin:0;
 }
-
-#凡例親 {
-	margin-right: 12px;
-	float: left;
-	width: 400px;
-	height: 250px;
-	background: white;
+#凡例親{
+	margin-right:12px;
+	float:left;
+	width:400px;
+	height:250px;
+	background:white;
 }
-
-#凡例解説 {
-	float: left;
-	width: 400px;
+#凡例解説{
+	float:left;
+	width:400px;
 }
 
 
 
 /*▼使い方*/
-.alert {
-	display: inline-block;
-	padding: 0.3em;
-	position: absolute;
-	top: 3px;
-	right: 3px;
-	color: #f00;
-	background: rgba(255, 0, 0, .1);
-	border: 3px double #f00;
+.alert{
+	display:inline-block;
+	padding:0.3em;
+	position:absolute;
+	top:3px;
+	right:3px;
+	color:#f00;
+	background:rgba(255,0,0,.1);
+	border:3px double #f00;
+}
+.alert:before{
+	content:"※";
 }
 
-.alert:before {
-	content: "※";
+.howtouse_div>ol>li{
+	counter-increment:a;
 }
-
-.howtouse_div>ol>li {
-	counter-increment: a;
+.howtouse_div ol ol{
+	counter-reset:b;
+	list-style-type:none;
 }
-
-.howtouse_div ol ol {
-	counter-reset: b;
-	list-style-type: none;
-}
-
-.howtouse_div ol ol li::before {
-	counter-increment: b;
-	/*
+.howtouse_div ol ol li::before{
+	counter-increment:b;
+/*
 	content:counters(a,".")"."counters(b,".") ".";
 */
-	content: "(" counter(b) ")";
+	content:"("counter(b) ")";
 }
-
-.howtouse_div ol ol li {
-	text-indent: -2em;
+.howtouse_div ol ol li{
+	text-indent:-2em;
 }
 
 
@@ -1020,379 +834,280 @@ h3.opener.closed:hover+*.hide {
 
 
 /*▲艦隊*/
-.btn_in_table {
-	padding: 0 8px;
-	position: relative;
-	cursor: help;
-	float: right;
+.btn_in_table{
+	padding:0 8px;
+	position:relative;
+	cursor:help;
+	float:right;
 }
-
-.btn_in_table:hover {
-	background: #e9e9e9;
+.btn_in_table:hover{
+	background:#e9e9e9;
 }
-
-#remove_kanmusu,
-#add_kanmusu_in_a_row,
-#remove_equip {
-	float: left;
+#remove_kanmusu,#add_kanmusu_in_a_row,#remove_equip{float:left;}
+#add_kanmusu_in_a_row img{
+	transform:rotate(45deg);
 }
-
-#add_kanmusu_in_a_row img {
-	transform: rotate(45deg);
+.help_on_mouse{cursor:pointer}
+.help_on_mouse:hover::after, .kome:hover{
+	padding-bottom:260px;
 }
-
-.help_on_mouse {
-	cursor: pointer
+.help_on_mouse:hover::after, .kome:hover::after{
+	content:attr(data-help);
+	position:absolute;
+	top:20px;left:0;
+	background:white;
+	border:1px solid #344;
+	overflow:auto;
+	font-size:14px;
+	font-weight:normal;
+	line-height:16px;
+	text-align:left;
+	height:auto;
+	width:200px;
+	padding:7px;
+	max-height:260px;
+	z-index:101;
+	box-shadow:1px 2px 2px #ddd;
 }
-
-.help_on_mouse:hover::after,
-.kome:hover {
-	padding-bottom: 260px;
-}
-
-.help_on_mouse:hover::after,
-.kome:hover::after {
-	content: attr(data-help);
-	position: absolute;
-	top: 20px;
-	left: 0;
-	background: white;
-	border: 1px solid #344;
-	overflow: auto;
-	font-size: 14px;
-	font-weight: normal;
-	line-height: 16px;
-	text-align: left;
-	height: auto;
-	width: 200px;
-	padding: 7px;
-	max-height: 260px;
-	z-index: 101;
-	box-shadow: 1px 2px 2px #ddd;
-}
-
-.btn_in_table img {
-	height: 18px;
+.btn_in_table img{
+	height:18px;
 	vertical-align: middle;
 }
-
-#自動空襲モード {
-	display: none;
+#自動空襲モード{
+	display:none;
 }
-
-#自動空襲モード+img {
+#自動空襲モード+img{
 	transition: transform 0.5s;
-	transform: rotate(45deg);
+	transform:rotate(45deg);
 }
-
-#自動空襲モード:checked+img {
-	transform: rotate(0deg);
+#自動空襲モード:checked+img{
+	transform:rotate(0deg);
 }
-
-.btn_in_table.fault {}
-
-#自艦隊親,
-#編成展開親,
-#外部サイトフォーム {
-	margin-left: 5em;
-	background-color: inherit;
-	position: relative;
-	z-index: 10;
+.btn_in_table.fault{
+	
 }
-
-#自艦隊 th {
+#自艦隊親,#編成展開親, #外部サイトフォーム{
+	margin-left:5em;
+	background-color:inherit;
+	position:relative;
+	z-index:10;
+}
+#自艦隊 th{
 	vertical-align: middle;
 }
-
-#自艦隊 td.separate {
+#自艦隊 td.separate{
 	border-width: 1px 0;
 }
-
-#編成展開親,
-#外部サイトフォーム {
-	display: none;
+#編成展開親, #外部サイトフォーム{
+	display:none;
 }
-
-#外部サイトフォーム {
-	border-left: 1px solid #222;
-	min-height: 250px;
-	padding: 12px;
+#外部サイトフォーム{
+	border-left:1px solid #222;
+	min-height:250px;
+	padding:12px;
 }
-
-#外部サイト出力 {
-	width: 90%;
-	height: 10em;
+#外部サイト出力{
+	width:90%;
+	height:10em;
 }
 
 
 
 
 
-#艦娘一覧 {
-	position: relative;
-	background-color: inherit;
+#艦娘一覧{
+	position:relative;
+	background-color:inherit;
 }
 
-#編成ボタン親 {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 5;
+#編成ボタン親{
+	position:absolute;
+	top:0;left:0;
+	z-index:5;
+}
+.編成ボタン, .編成戻るボタン{
+	display:block;
+	border:1px solid #567;
+	margin:4px 1px 1px;
+	padding:3px 20px 3px 6px;
+	border-radius:0.3em;
+}
+.編成ボタン:hover{
+	padding:2px 19px 2px 5px;
+	border-width:2px;
+}
+.編成戻るボタン{
+	display:table-cell;
+	padding:3px 8px;
+}
+.編成戻るボタン:hover{
+	padding:2px 7px;
+	border-width:2px;
+}
+.編成艦娘数{
+	display:block;
+}
+.編成展開ボタン{
+	display:inline-block;
+	border:1px solid #300;
+	padding:2px 4px;
+	border-radius:4px;
+	color:#fff;
+	white-space:nowrap;
+}
+.編成展開展記.記録{background:#3aa;}
+.編成展開展記.展開{background:rgb(62,147,216)}
+.編成展開削除{background:#b99;}
+
+.一時非表示 td, .一時非表示 th{
+	background-color:#dde !important;
+}
+.艦娘を追加親{
+	text-align:center;
+}
+.艦娘を追加親 input{
+	margin:0 auto;
+}
+.艦種{
+	display:block;
+	font-size:12px;
+}
+td.jukuren,td.kaishu{
+	user-select:none;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	text-align:center;
+}
+.jukuren,kaishu{
+	font-weight:bold;
+	font-family:"IMPACT", monospace;
+}
+.jukuren[data-juk_color="k"]{color:#000;}
+.jukuren[data-juk_color="b"]{color:#00f;text-shadow:0 0 3px #88f;}
+.jukuren[data-juk_color="y"]{color:#fa0;text-shadow:0 0 3px #fe9;}
+.kaishu{
+	color:#408080;
+	text-shadow:0 0 1px rgba(64,128,128,0.5);
+}
+#艦娘追加{
+	width:100px;
 }
 
-.編成ボタン,
-.編成戻るボタン {
-	display: block;
-	border: 1px solid #567;
-	margin: 4px 1px 1px;
-	padding: 3px 20px 3px 6px;
-	border-radius: 0.3em;
+#艦娘選択{
+	width:350px;
+	line-height:26px;
+}
+#艦娘選択 dt{
+	margin-bottom:-26px;
+}
+#艦娘選択 dd{
+	margin-left:20px;
+}
+.艦娘改造艦娘名{
+	display:inline-block;
+	width:41px;
+	overflow:hidden;
+	vertical-align:middle;
+}
+#装備変更{
+	max-height:600px;
+	padding:0 !important;
+}
+.艦娘備考 ul, .艦娘備考.li{
+	margin:0;
+	padding:0;
+	list-style-type:none;
 }
 
-.編成ボタン:hover {
-	padding: 2px 19px 2px 5px;
-	border-width: 2px;
+.艦娘改造リスト{
+	display:block;
+	margin:0;
+	padding:0;
 }
-
-.編成戻るボタン {
-	display: table-cell;
-	padding: 3px 8px;
+.艦娘セル{
+	line-height:1.2em;
 }
-
-.編成戻るボタン:hover {
-	padding: 2px 7px;
-	border-width: 2px;
-}
-
-.編成艦娘数 {
-	display: block;
-}
-
-.編成展開ボタン {
-	display: inline-block;
-	border: 1px solid #300;
-	padding: 2px 4px;
-	border-radius: 4px;
-	color: #fff;
-	white-space: nowrap;
-}
-
-.編成展開展記.記録 {
-	background: #3aa;
-}
-
-.編成展開展記.展開 {
-	background: rgb(62, 147, 216)
-}
-
-.編成展開削除 {
-	background: #b99;
-}
-
-.一時非表示 td,
-.一時非表示 th {
-	background-color: #dde !important;
-}
-
-.艦娘を追加親 {
-	text-align: center;
-}
-
-.艦娘を追加親 input {
-	margin: 0 auto;
-}
-
-.艦種 {
-	display: block;
-	font-size: 12px;
-}
-
-td.jukuren,
-td.kaishu {
-	user-select: none;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	text-align: center;
-}
-
-.jukuren,
-kaishu {
-	font-weight: bold;
-	font-family: "IMPACT", monospace;
-}
-
-.jukuren[data-juk_color="k"] {
-	color: #000;
-}
-
-.jukuren[data-juk_color="b"] {
-	color: #00f;
-	text-shadow: 0 0 3px #88f;
-}
-
-.jukuren[data-juk_color="y"] {
-	color: #fa0;
-	text-shadow: 0 0 3px #fe9;
-}
-
-.kaishu {
-	color: #408080;
-	text-shadow: 0 0 1px rgba(64, 128, 128, 0.5);
-}
-
-#艦娘追加 {
-	width: 100px;
-}
-
-#艦娘選択 {
-	width: 350px;
-	line-height: 26px;
-}
-
-#艦娘選択 dt {
-	margin-bottom: -26px;
-}
-
-#艦娘選択 dd {
-	margin-left: 20px;
-}
-
-.艦娘改造艦娘名 {
-	display: inline-block;
-	width: 41px;
-	overflow: hidden;
-	vertical-align: middle;
-}
-
-#装備変更 {
-	max-height: 600px;
-	padding: 0 !important;
-}
-
-.艦娘備考 ul,
-.艦娘備考.li {
-	margin: 0;
-	padding: 0;
-	list-style-type: none;
-}
-
-.艦娘改造リスト {
-	display: block;
-	margin: 0;
-	padding: 0;
-}
-
-.艦娘セル {
-	line-height: 1.2em;
-}
-
-.装備できない,
-.装備できない.対空値有 {
-	/*	background-image:url("imgs/clickablebg.png") !important;*/
-	background-color: rgb(128, 0, 0) !important;
-	color: #fff !important;
-	text-decoration: line-through;
+.装備できない,.装備できない.対空値有{
+/*	background-image:url("imgs/clickablebg.png") !important;*/
+	background-color:rgb(128,0,0) !important;
+	color:#fff !important;
+	text-decoration:line-through;
 }
 
 
 
 /*▲マップ*/
-#マップフィルタ選択>span {
-	display: inline-block;
-	margin: 0 0 4px;
-	padding: 4px 12px;
-	border-left: 1px dotted #567;
+#マップフィルタ選択>span{
+	display:inline-block;
+	margin:0 0 4px;
+	padding:4px 12px;
+	border-left:1px dotted #567;
+}
+#マップフィルタ選択>span:first-child{
+	padding-left:0;
+	border:none;
 }
 
-#マップフィルタ選択>span:first-child {
-	padding-left: 0;
-	border: none;
+#広域海域リスト::before{content:"方面……"}
+#方面選択.該当海域なし #広域海域リスト::before{content:"該当する海域がありません。絞り込み条件を確認してください"}
+#海域選択リスト::before{content:"海域……"}
+#広域海域リスト, #海域選択リスト{
+	display:block;
+	white-space:nowrap;
+	overflow-x:auto;
+	margin:0 0 6px;
+	padding:0;
+	
+	height:70px;
 }
 
-#広域海域リスト::before {
-	content: "方面……"
+#広域海域リスト>li, #海域選択リスト>li{
+	font-size:16px;
 }
-
-#方面選択.該当海域なし #広域海域リスト::before {
-	content: "該当する海域がありません。絞り込み条件を確認してください"
+#広域海域リスト li.終了済{
+	font-size:14px;
+	line-height:14px;
+	vertical-align:bottom;
 }
-
-#海域選択リスト::before {
-	content: "海域……"
+#広域海域リスト li .属性{
+	display:block;
+	font-size:12px;
 }
-
-#広域海域リスト,
-#海域選択リスト {
-	display: block;
-	white-space: nowrap;
-	overflow-x: auto;
-	margin: 0 0 6px;
-	padding: 0;
-
-	height: 70px;
+#広域海域リスト li .属性>span{
+	display:inline-block;
+	margin-right:4px;
 }
-
-#広域海域リスト>li,
-#海域選択リスト>li {
-	font-size: 16px;
+#広域海域リスト>li.selected, #海域選択リスト>li.selected,
+#広域海域リスト>li:hover,    #海域選択リスト>li:hover{
 }
-
-#広域海域リスト li.終了済 {
-	font-size: 14px;
-	line-height: 14px;
-	vertical-align: bottom;
+#海域選択リスト li a:hover{
+	background-color:#cde;
 }
-
-#広域海域リスト li .属性 {
-	display: block;
-	font-size: 12px;
+#広域海域リスト a{
+	display:inline-block;
+	font-size:12px;
+	margin-left:8px;
 }
-
-#広域海域リスト li .属性>span {
-	display: inline-block;
-	margin-right: 4px;
+#広域海域リスト a:hover{
+	background-color:#cde;
 }
-
-#広域海域リスト>li.selected,
-#海域選択リスト>li.selected,
-#広域海域リスト>li:hover,
-#海域選択リスト>li:hover {}
-
-#海域選択リスト li a:hover {
-	background-color: #cde;
+#広域海域リスト .hide{
+	display:none;
 }
-
-#広域海域リスト a {
-	display: inline-block;
-	font-size: 12px;
-	margin-left: 8px;
-}
-
-#広域海域リスト a:hover {
-	background-color: #cde;
-}
-
-#広域海域リスト .hide {
-	display: none;
-}
-
 #広域海域リスト [class*="4-1"]:hover,
-#広域海域リスト [class*="4-1"].selected {
-	background: #350200;
-	color: white;
-	box-shadow: 4px 4px rgba(255, 0, 0, 0.3) 6px 6px;
+#広域海域リスト [class*="4-1"].selected{
+	background:#350200;
+	color:white;
+	box-shadow:4px 4px rgba(255,0,0,0.3) 6px 6px;
 }
-
-#広域海域リスト [class*="4-1"]:hover {
+#広域海域リスト [class*="4-1"]:hover{
 	animation: yure .3s infinite;
 }
-
 #広域海域リスト [class*="4-1"]:hover a,
-#広域海域リスト [class*="4-1"].selected a {
-	color: white;
+	#広域海域リスト [class*="4-1"].selected a{
+	color:white;
 }
-
 @keyframes yure {
 	0% {
 		transform: translate(0, 0) rotateZ(0)
@@ -1415,261 +1130,218 @@ kaishu {
 	}
 }
 
-#マップ {
-	/*	width:400px;
+#マップ{
+/*	width:400px;
 	height:272px;*/
-	background: url(imgs/mapbg_2d.png) repeat center bottom;
-	background-size: cover;
-
-	margin: 0 4px 4px 2px;
-	padding: 0;
-	border: 1px solid #026;
+	background:url(imgs/mapbg_2d.png) repeat center bottom;
+	background-size:cover;
+	
+	margin:0 4px 4px 2px;
+	padding:0;
+	border:1px solid #026;
 	outline: 1px solid #026;
-	display: inline-block;
+	display:inline-block;
 }
-
-#マップ h3 {
-	background: white;
+#マップ h3{
+	background:white;
 }
-
-#マップ svg {
-	display: inline-block;
+#マップ svg{
+	display:inline-block;
 }
-
-#空のマップ {
-	width: 400px;
-	height: 250px;
+#空のマップ{
+	width:400px;
+	height:250px;
 }
-
-.マップ_補足 {
-	display: inline-block;
+.マップ_補足{
+	display:inline-block;
 }
-
-.マップ_補足 dl {
-	width: 5em;
-	padding-left: 2em;
+.マップ_補足 dl{
+	width:5em;
+	padding-left:2em;
 }
-
-.マップ_補足 dl * {
-	display: inline-block;
-	margin: 0;
-	padding: 0;
+.マップ_補足 dl *{
+	display:inline-block;
+	margin:0;padding:0;
 }
-
-.マップ_補足 dt {
-	width: 3.5em;
+.マップ_補足 dt{
+	width:3.5em;
 }
-
-.マップ_補足 dd {
-	width: 1.5em;
+.マップ_補足 dd{
+	width:1.5em;
 }
-
 #マップ.chked,
 #ルート選択親.chked,
 #敵艦隊選択親.chked,
-#航空隊選択親.chked {
+#航空隊選択親.chked{
 	outline-width: 0;
 }
-
-#マップ h3,
-#ルート選択親 h3,
-#敵艦隊選択親 h3,
-#航空隊選択親 h3 {
-	padding: 0;
-	text-indent: 24px;
-	position: relative;
-	height: 20px;
-	border-bottom: 1px solid #026;
+#マップ h3, #ルート選択親 h3, #敵艦隊選択親 h3, #航空隊選択親 h3{
+	padding:0;
+	text-indent:24px;
+	position:relative;
+	height:20px;
+	border-bottom:1px solid #026;
 }
-
-#マップ.chked h3,
-#ルート選択親.chked h3,
-#敵艦隊選択親.chked h3 {}
-
+#マップ.chked h3, #ルート選択親.chked h3, #敵艦隊選択親.chked h3{}
 #マップ.chked h3::before,
 #ルート選択親.chked h3::before,
 #敵艦隊選択親.chked h3::before,
-#航空隊選択親.chked h3::before {
-	content: "";
-	display: inline-block;
-	position: absolute;
-	left: 6px;
-	bottom: 4px;
-	width: 9px;
-	height: 14px;
-	border: 0px solid #29f;
-	border-width: 0 3px 3px 0;
-	transform: rotate(45deg);
-	margin-right: 4px;
+#航空隊選択親.chked h3::before{
+	content:"";
+	display:inline-block;
+	position:absolute;
+	left:6px;
+	bottom:4px;
+	width:9px;
+	height:14px;
+	border:0px solid #29f;
+	border-width:0 3px 3px 0;
+	transform:rotate(45deg);
+	margin-right:4px;
 }
-
 #マップ.chked h3::after,
 #ルート選択親.chked h3::after,
-#敵艦隊選択親.chked h3::after {
-	display: inline-block;
-	content: attr(data-selected);
-	font-size: 80%;
-	padding-left: 6px;
+#敵艦隊選択親.chked h3::after{
+	display:inline-block;
+	content:attr(data-selected);
+	font-size:80%;
+	padding-left:6px;
+}
+#戦闘行動半径表示{
+	display:block;
+	width:auto;
+	height:auto;
+	position:absolute;
+	top:0;
+	left:0;
+	padding:4px;
+	margin:26px 0 0 4px;
+	
+	background:rgba(0,0,0,0.8);
+	color:white;
+	border:none;
+	border-radius:5px ;
+}
+#戦闘行動半径表示::after{
+	content:"";
+	position:absolute;
+	top:-16px;
+	left:0;
+	width:0;
+	height:0;
+	border:4px solid transparent;
+	border-width:16px 0 0 6px;
+	border-left-color:rgba(0,0,0,0.8);
+	transform:skew(10deg) translateX(10px);
 }
 
-#戦闘行動半径表示 {
-	display: block;
-	width: auto;
-	height: auto;
-	position: absolute;
-	top: 0;
-	left: 0;
-	padding: 4px;
-	margin: 26px 0 0 4px;
-
-	background: rgba(0, 0, 0, 0.8);
-	color: white;
-	border: none;
-	border-radius: 5px;
-}
-
-#戦闘行動半径表示::after {
-	content: "";
-	position: absolute;
-	top: -16px;
-	left: 0;
-	width: 0;
-	height: 0;
-	border: 4px solid transparent;
-	border-width: 16px 0 0 6px;
-	border-left-color: rgba(0, 0, 0, 0.8);
-	transform: skew(10deg) translateX(10px);
-}
 
 
-
-#ルート選択親,
-#敵艦隊選択親,
-#航空隊選択親 {
-	display: inline-block;
-	vertical-align: top;
-	border: 1px solid #026;
+#ルート選択親, #敵艦隊選択親, #航空隊選択親{
+	display:inline-block;
+	vertical-align:top;
+	border:1px solid #026;
 	outline: 1px solid #026;
-	min-height: 276px;
-	margin: 0 2px 2px 2px;
+	min-height:276px;
+	margin:0 2px 2px 2px;
+}
+#ルート選択親{
+	min-width:144px;
+}
+#敵艦隊選択親{
+	min-width:244px;
+}
+#航空隊選択親 table, #航空隊選択親 tr, #航空隊選択親 td, #航空隊選択親 th{
+	border:none;
+}
+.航空隊出撃マス{
+}
+.航空隊出撃マス:hover,.航空隊出撃マス.selected{
 }
 
-#ルート選択親 {
-	min-width: 144px;
+#敵艦隊選択{
+	list-style-type:none;
+	white-space:nowrap;
+	margin:2px;
+	padding:0;
 }
-
-#敵艦隊選択親 {
-	min-width: 244px;
+#敵艦隊選択 li{
+	border-bottom:1px solid transparent;
 }
-
-#航空隊選択親 table,
-#航空隊選択親 tr,
-#航空隊選択親 td,
-#航空隊選択親 th {
-	border: none;
-}
-
-.航空隊出撃マス {}
-
-.航空隊出撃マス:hover,
-.航空隊出撃マス.selected {}
-
-#敵艦隊選択 {
-	list-style-type: none;
-	white-space: nowrap;
-	margin: 2px;
-	padding: 0;
-}
-
-#敵艦隊選択 li {
-	border-bottom: 1px solid transparent;
-}
-
-#敵艦隊選択 li:hover {
-	border-bottom: 1px solid #29f;
+#敵艦隊選択 li:hover{
+	border-bottom:1px solid #29f;
 }
 
 /*ルート選択*/
-#ルート選択 {
-	text-align: left;
-	line-height: 24px;
+#ルート選択{
+	text-align:left;
+	line-height:24px;
 	vertical-align: text-bottom;
 }
-
-#ルート選択>div {
-	float: left;
-	margin-right: 1em;
+#ルート選択>div{
+	float:left;
+	margin-right:1em;
+}
+#ルート選択>div>div{
+	border-bottom:1px solid transparent;
+}
+#ルート選択>div>div:hover{
+	border-bottom:1px solid #29f;
 }
 
-#ルート選択>div>div {
-	border-bottom: 1px solid transparent;
+#ルート抽出{
+	display:block;
 }
 
-#ルート選択>div>div:hover {
-	border-bottom: 1px solid #29f;
+#深海棲艦追加親{
 }
-
-#ルート抽出 {
-	display: block;
+#深海棲艦追加親>*{
+	display:inline-block;
+	vertical-align:top;
 }
-
-#深海棲艦追加親 {}
-
-#深海棲艦追加親>* {
-	display: inline-block;
-	vertical-align: top;
+.深海棲艦追加{
+	margin:0;
+	list-style-type:none;
+	background:white;
+	padding:7px;
+	border:1px solid #765;
+	white-space:nowrap;
+	overflow:auto;
+	font-size:14px;
+	line-height:16px;
+	box-shadow:1px 2px 2px #ddd;
+	height:300px;
+	width:auto;
 }
-
-.深海棲艦追加 {
-	margin: 0;
-	list-style-type: none;
-	background: white;
-	padding: 7px;
-	border: 1px solid #765;
-	white-space: nowrap;
-	overflow: auto;
-	font-size: 14px;
-	line-height: 16px;
-	box-shadow: 1px 2px 2px #ddd;
-	height: 300px;
-	width: auto;
+#深海棲艦追加親 dl{
+	margin:0 12px;
 }
-
-#深海棲艦追加親 dl {
-	margin: 0 12px;
-}
-
 #深海棲艦一覧 tfoot tr:nth-child(1) td,
-#深海棲艦一覧 tfoot tr:nth-child(1) th {
-	border-top-width: 2px;
+#深海棲艦一覧 tfoot tr:nth-child(1) th{
+	border-top-width:2px;
 }
 
 
 /*▲結果*/
-#結果 td {
-	padding: 0 2px;
+#結果 td{
+	padding:0 2px;
 }
-
-.深海棲艦名+.深海棲艦名::before {
-	content: ",";
+.深海棲艦名 + .深海棲艦名::before{
+	content:",";
 }
-
-.深海棲艦名 {
-	display: inline-block;
+.深海棲艦名{
+	display:inline-block;
 }
-
-.左見出し {
-	text-align: right;
+.左見出し{
+	text-align:right;
 }
-
-.目的地結果 {
-	font-weight: bold;
-	font-size: 15px;
-	background: #def;
+.目的地結果{
+	font-weight:bold;
+	font-size:15px;
+	background:#def;
 }
-
-#結果 tfoot tr:nth-of-type(1) td {
-	border-top-width: 2px;
+#結果 tfoot tr:nth-of-type(1) td{
+	border-top-width:2px;
 }
 
 /*
@@ -1678,131 +1350,115 @@ kaishu {
 #結果 .装備無し::after{content:")";}
 */
 
-#結果一行 {
-	padding: 2px 0 0;
+#結果一行{
+	padding:2px 0 0;
 }
 
-.kome {
-	font-size: 12px;
-	vertical-align: top;
-	position: relative;
+.kome{
+	font-size:12px;
+	vertical-align:top;
+	position:relative;
+}
+.現在の制空状況{
+	font-weight:normal;
+}
+.現在の制空状況 small{
+	font-weight:bold;
+}
+.採用制空値{
+}
+.非採用制空値{
+	font-size:12px;
 }
 
-.現在の制空状況 {
-	font-weight: normal;
+#結果,#防空結果{
+	display:inline-block;
+	vertical-align:top;
+	border:none;
+	margin-left:2px;
 }
-
-.現在の制空状況 small {
-	font-weight: bold;
+#防空結果 td{
+	padding:0 2px;
 }
-
-.採用制空値 {}
-
-.非採用制空値 {
-	font-size: 12px;
+#防空結果 ul, #防空結果 li{
+	list-style-type:none;
+	margin:0;
+	padding:0;
 }
-
-#結果,
-#防空結果 {
-	display: inline-block;
-	vertical-align: top;
-	border: none;
-	margin-left: 2px;
-}
-
-#防空結果 td {
-	padding: 0 2px;
-}
-
-#防空結果 ul,
-#防空結果 li {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-}
-
-#防空結果 tr:nth-of-type(2) td {
-	border-bottom-width: 2px;
+#防空結果 tr:nth-of-type(2) td{
+	border-bottom-width:2px;
 }
 
 
-.航空隊後敵制空値,
-.航空隊後敵制空値 li {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
+.航空隊後敵制空値, .航空隊後敵制空値 li{
+	list-style-type:none;
+	margin:0;
+	padding:0;
 }
-
-#航空隊詳細 {
-	width: 400px;
-	height: 476px;
+#航空隊詳細{
+	width:400px;
+	height:476px;
 }
 
 /*▲設定*/
-.設定項目 div {
-	margin-left: 2em;
+.設定項目 div{
+	margin-left:2em;
 }
-
-.航空隊関連情報 {
-	max-height: 20px;
-	overflow-y: auto;
+.航空隊関連情報{
+	max-height:20px;
+	overflow-y:auto;
 }
 
 
 
 /*▼更新履歴*/
-#his {
-	margin-right: 12px;
+#his{
+	margin-right:12px;
 }
-
-#his dd {
-	padding-left: 1em;
-	margin: 0 auto 0 0;
-	width: 95%;
+#his dd{
+	padding-left:1em;
+	margin:0 auto 0 0;
+	width:95%;
 }
-
-#his dd>* {
-	vertical-align: middle;
+#his dd>*{
+	vertical-align:middle;
 }
-
-#his dd:before {
-	content: "・";
-	display: inline-block;
-	width: 18px;
-	height: 18px;
+#his dd:before{
+	content:"・";
+	display:inline-block;
+	width:18px;
+	height:18px;
 }
-
-#his dd.kancolle:before {
-	content: " ";
-	background: url(./imgs/log_kc.png) no-repeat 50% 50%;
+#his dd.kancolle:before{
+	content:" ";
+	background:url(./imgs/log_kc.png) no-repeat 50% 50%;
 }
-
-#his dd.beg_of_month {
-	padding-bottom: .6em;
-	border-bottom: 1px dashed #99c;
-	margin-bottom: .6em;
+#his dd.beg_of_month{
+	padding-bottom:.6em;
+	border-bottom:1px dashed #99c;
+	margin-bottom:.6em;
 }
 
 
 /*エラー*/
-#エラー {
-	left: 0;
-	display: block;
-	position: relative;
-	margin: 36px 2px;
-	border: 1px solid #f00;
-	background-color: #ecdada;
-	transition: left 0.5s ease-out 0.3s;
-	-moz-transition: left 0.5s ease-out 0.3s;
-	height: auto;
+#エラー{
+	left:0;
+	display:block;
+	position:relative;
+	margin:36px 2px;
+	border:1px solid #f00;
+	background-color:#ecdada;
+	transition:left 0.5s ease-out 0.3s;
+	-moz-transition:left 0.5s ease-out 0.3s;
+	height:auto;
 }
 
-#エラー.hide {
-	left: 5000px;
-	height: 0;
-	overflow: hidden;
-	border: none;
-	margin: 0;
+#エラー.hide{
+	left:5000px;
+	height:0;
+	overflow:hidden;
+	border:none;
+	margin:0;
 }
 
 
@@ -1815,22 +1471,19 @@ kaishu {
 
 
 
-@keyframes howtouse {
-	0% {
-		left: 10em;
+@keyframes howtouse{
+	0%{
+		left:10em;
 	}
-
-	100% {
-		left: 10.6em;
+	100%{
+		left:10.6em;
 	}
 }
-
-@keyframes jump {
-	0% {
-		box-shadow: 0 0 2px 2px rgba(0, 255, 120, .5);
+@keyframes jump{
+	0%{
+		box-shadow:0 0 2px 2px rgba(0,255,120,.5);
 	}
-
-	100% {
-		box-shadow: 0 0 10px 10px rgba(0, 255, 80, .5);
+	100%{
+		box-shadow:0 0 10px 10px rgba(0,255,80,.5);
 	}
 }
