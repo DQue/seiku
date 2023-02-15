@@ -1090,6 +1090,7 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 				var radMin = 99; //戦闘行動半径のうち最短のもの
 				var radTei = 0;  //偵察機の戦闘行動半径のうち最長のもの
 				var radStr = "";
+				let unextendable = false; //行動半径延長不可フラグ
 				for (var j = 0; j < rows; j++) {
 					const 装備 = tableData.soubi[j];
 					const 種類 = 零_種類(装備);
@@ -1128,8 +1129,12 @@ function 二_自艦隊の行を生成(tableData, idx) { //tableData:艦娘名 �
 					} else {
 						radMin = Math.min(radMin, 零_行動半径(tableData.soubi[j]));
 					}
+
+					if (eq(種類, ["回転翼機", "対潜哨戒機"]) && 装備 !== "一式戦 隼II型改(20戦隊)") {
+						unextendable = true;
+					}
 				}
-				if (radTei > radMin) { //偵察機による延長
+				if (unextendable === false && radTei > radMin) { //偵察機による延長
 					radStr = `${radMin}+${Math.min(3, Math.round(sqrt(radTei - radMin)))}`
 				} else {
 					radStr = String(radMin)
@@ -1778,9 +1783,10 @@ function 零_艦娘改造度の文字(a) {
 	if (a === "無印") return "";
 	return a;
 }
-function 零_制空値を計算(soubi, tousai, jukuren, kaishu, kanmusu, kaizou) {
+const 零_制空値を計算 = (soubi, tousai, jukuren, kaishu, kanmusu, kaizou) => {
+	let s1 = 0;
 	if (soubi === "-" || tousai === 0) return 0;
-	var taiku = 零_対空値(soubi);
+	const taiku = 零_対空値(soubi);
 	if (零_種類(soubi) === "艦上戦闘機") {
 		taiku += 0.2 * kaishu;
 	} else if (零_種類(soubi) === "艦上爆撃機" && taiku >= 4) {
@@ -1792,14 +1798,14 @@ function 零_制空値を計算(soubi, tousai, jukuren, kaishu, kanmusu, kaizou)
 	} else if (零_種類(soubi) === "陸上攻撃機") {
 		taiku += 0.5 * sqrt(kaishu);
 	}
-	var geigeki = 零_迎撃値(soubi);
-	var taibaku = 零_対爆値(soubi);
+	const geigeki = 零_迎撃値(soubi);
+	const taibaku = 零_対爆値(soubi);
 	if (kanmusu === "基地航空隊" && kaizou === "防空") {
-		var s1 = (taiku + geigeki + taibaku * 2) * sqrt(tousai);
+		s1 = (taiku + geigeki + taibaku * 2) * sqrt(tousai);
 	} else {
-		var s1 = (taiku + geigeki * 1.5) * sqrt(tousai);
+		s1 = (taiku + geigeki * 1.5) * sqrt(tousai);
 	}
-	var s2 = 零_熟練ボーナス(jukuren, soubi);
+	const s2 = 零_熟練ボーナス(jukuren, soubi);
 
 	return Math.floor(s1 + s2);
 }
@@ -1889,17 +1895,19 @@ const 零_装備爆装値 = (s) => {
 	const a = 艦戦データ[s].爆装;
 	return a ? a : 0;
 }
-function 零_熟練ボーナス(j, s) {
+const 零_熟練ボーナス = (j, s) => {
 
 	//熟練ボーナス=√(a/10)+b
 	//a:内部熟練度 b:熟練度段階による加算値
 	//熟練度：0-9,-24,-39,-54,-69,-84,-99,-120
 
-	var sh = 零_種類(s);
-	var a = 0, b = 0;
-	if (sh == "装備無し") return 0;
+	const sh = 零_種類(s);
+	let a = 0, b = 0;
+	if (sh === "装備無し") return 0;
+	if (sh === "回転翼機") return 0;
+	if (sh === "対潜哨戒機" && s !== "一式戦 隼II型改(20戦隊)") return 0;
 
-	if (零_戦闘機か(s)) {
+	if (零_戦闘機か(s) || s === "一式戦 隼II型改(20戦隊)") {
 		b = [0, 0, 2, 5, 9, 14, 14, 22][j];
 	} else if (sh == "水上爆撃機") {
 		b = [0, 0, 1, 1, 1, 3, 3, 6][j];
@@ -4161,6 +4169,38 @@ const 零_装備できるか = (艦種, 艦名, 改造, 種類, 装備名) => {
 			if (艦名 === "加賀" && 改造 === "改二護") return true;
 			if (艦名 === "Victorious" && 改造 === "改") return true;
 			break;
+		case "回転翼機":
+			if (eq(艦名, ["Samuel B.Roberts", "天龍", "龍田", "球磨", "多摩", "能代", "矢矧", "Commandant Teste", "Victorious", "あきつ丸", "速吸", "宗谷", "山汐丸"])) return true;
+			if (艦名 === "加賀" && 改造 === "改二護") return true;
+			if (艦名 === "Gotland" && eq(改造, ["無印", "andra"])) return true;
+			if (艦名 === "陸奥" && 改造 === "改二") return true;
+			if (艦名 === "大和" && 改造 === "改二") return true;
+			if (艦名 === "武蔵" && 改造 === "改二") return true;
+			if (艦名 === "神州丸" && 改造 === "改") return true;
+			if (艦名 === "神威" && eq(改造, ["無印", "改母"])) return true;
+			if (艦名 === "日進" && eq(改造, ["改", "甲"])) return true;
+
+			if (艦名 === "春日丸" && eq(改造, ["無印", "大鷹改", "大鷹改"])) return false;
+			if (艦名 === "八幡丸" && eq(改造, ["無印", "雲鷹", "雲鷹改", "雲鷹改二"])) return false;
+			if (艦名 === "神鷹" && eq(改造, ["無印", "改"])) return false;
+
+			if (eq(艦種, ["軽空母", "航空戦艦", "航空巡洋艦", "潜水母艦", "工作艦"])) return true;
+			break;
+		case "対潜哨戒機":
+			if (艦名 === "あきつ丸") return true;
+			if (艦名 === "山汐丸") return true;
+			if (艦名 === "伊勢" && 改造 === "改二") return true;
+			if (艦名 === "日向" && 改造 === "改二") return true;
+			if (艦名 === "加賀" && 改造 === "改二護") return true;
+
+			if (艦名 === "春日丸" && eq(改造, ["無印", "大鷹"])) return false;
+			if (艦名 === "八幡丸" && eq(改造, ["無印", "雲鷹"])) return false;
+			if (艦名 === "神鷹" && eq(改造, ["無印"])) return false;
+			if (艦名 === "鳳翔" && eq(改造, ["改二"])) return false;
+
+			if (艦種 === "軽空母") return true;
+			break;
+
 	}
 	return false;
 }
