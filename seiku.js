@@ -2669,11 +2669,12 @@ const 零_n2i = (name, s, kaizou) => {
 
 const 零_制空判定 = (f, e) => {
 	if (e === 0) {
-		if (f > 0) {
-			return "確保";
-		} else {
-			return "拮抗";
-		}
+		//		if (f > 0) {
+		//			return "確保";
+		//		} else {
+		//			return "拮抗";
+		//		}
+		return "確保"; //敵制空値が0なら全部確保にしておく
 	} else {
 		var p = f / e;
 		if (p <= 1 / 3) {
