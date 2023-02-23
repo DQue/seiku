@@ -1790,7 +1790,7 @@ const 零_制空値を計算 = (soubi, tousai, jukuren, kaishu, kanmusu, kaizou)
 	if (soubi === "-" || tousai === 0) return 0;
 	let taiku = 零_対空値(soubi);
 	const shu = 零_種類(soubi);
-	if (零_戦闘機か(shu)) {
+	if (零_戦闘機か(soubi)) {
 		taiku += 0.2 * kaishu;
 	} else if (shu === "陸上偵察機") {
 		taiku += 0.2 * kaishu; //仮置き　★2以外が出たら再検証
