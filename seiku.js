@@ -1783,19 +1783,20 @@ function 零_艦娘改造度の文字(a) {
 	if (a === "無印") return "";
 	return a;
 }
+
+
 const 零_制空値を計算 = (soubi, tousai, jukuren, kaishu, kanmusu, kaizou) => {
 	let s1 = 0;
 	if (soubi === "-" || tousai === 0) return 0;
 	let taiku = 零_対空値(soubi);
-	if (零_種類(soubi) === "艦上戦闘機") {
+	const shu = 零_種類(soubi);
+	if (零_戦闘機か(shu)) {
 		taiku += 0.2 * kaishu;
-	} else if (零_種類(soubi) === "艦上爆撃機" && taiku >= 4) {
+	} else if (shu === "陸上偵察機") {
+		taiku += 0.2 * kaishu; //仮置き　★2以外が出たら再検証
+	} else if (shu === "艦上爆撃機" && taiku >= 4) {
 		taiku += 0.25 * kaishu;
-	} else if (零_種類(soubi) === "水上戦闘機") {
-		taiku += 0.2 * kaishu;
-	} else if (eq(零_種類(soubi), ["局地戦闘機", "陸軍戦闘機"])) {
-		taiku += 0.2 * kaishu;
-	} else if (零_種類(soubi) === "陸上攻撃機") {
+	} else if (shu === "陸上攻撃機") {
 		taiku += 0.5 * sqrt(kaishu);
 	}
 	const geigeki = 零_迎撃値(soubi);
